@@ -1,3 +1,5 @@
+We have pictures of our view controllers. Ask us to show them to you.
+
 James: Finished first load screen, login view, login screens and signup screens. Setup the layout of the app. Worked with Jonathan to setup Firebase to work with login/signup. https://github.com/ECS189E/project-f19-down/tree/Login-View
 
 Jonathan: Studied how to use Firebase. Worked with James to add Firebase functionality to login/signup. https://github.com/ECS189E/project-f19-down/tree/API-Login-View https://github.com/ECS189E/project-f19-down/tree/Nov-09-API
