@@ -6,11 +6,14 @@
 //
 
 import UIKit
+import Firebase
+
 class NameView: UIViewController, UITextFieldDelegate{
     @IBOutlet weak var FirstName: UITextField!
     @IBOutlet weak var LastName: UITextField!
     @IBOutlet weak var NextButton: UIButton!
     @IBOutlet weak var NextBottomButton: UIButton!
+    let user: User? = Auth.auth().currentUser
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,7 +29,19 @@ class NameView: UIViewController, UITextFieldDelegate{
         NextBottomButton.isHidden = true
         return true
     }
-
+    
+    func updateName() {
+        guard let changeRequest = user?.createProfileChangeRequest() else {
+            return
+        }
+        if let firstName = FirstName.text, let lastName = LastName.text {
+            changeRequest.displayName = firstName + " " + lastName
+            changeRequest.commitChanges { (error) in
+                // ...
+            }
+        }
+    }
+    
     // Probably should add some condition to make sure user entered something for First name at least
     @IBAction func NextPressed(_ sender: Any) {
         NextButton.isHidden = true

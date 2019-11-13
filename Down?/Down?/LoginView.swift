@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Firebase
+
 class LoginView: UIViewController, UITextFieldDelegate{
 
     @IBOutlet weak var EmailText: UITextField!
@@ -13,6 +15,7 @@ class LoginView: UIViewController, UITextFieldDelegate{
     @IBOutlet weak var ErrorMessage: UILabel!
     @IBOutlet weak var LoginButton: UIButton!
     @IBOutlet weak var LoginBottomButton: UIButton!
+    let user: User? = Auth.auth().currentUser
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,8 +33,36 @@ class LoginView: UIViewController, UITextFieldDelegate{
         return true
     }
     
+    func displayMessage(message: String, color: UIColor) {
+        self.ErrorMessage.text = message
+        self.ErrorMessage.textColor = color
+        self.ErrorMessage.isHidden = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+            self.ErrorMessage.isHidden = true
+        }
+    }
+    
     // Please create a forgot Password view controller
     @IBAction func ForgotPasswordPressed(_ sender: Any) {
+    }
+    
+    func loginUser() {
+        if let email = EmailText.text, let password = PasswordText.text, !email.isEmpty && !password.isEmpty {
+            Auth.auth().signIn(withEmail: email, password: password) { user, error in
+                // Notify the user that the mail has sent or couldn't because of an error.
+                if let error = error {
+                    self.displayMessage(message: error.localizedDescription, color: .red)
+                    return
+                }
+                //user data from server
+                if let user = user?.user, !user.isEmailVerified {
+                    self.displayMessage(message: "Verification email was sent but email unverified.", color: .red)
+                    return
+                }
+            }
+        } else {
+            displayMessage(message: "Please enter valid credentials", color: .red)
+        }
     }
     
     @IBAction func LoginPressed(_ sender: Any) {
@@ -40,6 +71,7 @@ class LoginView: UIViewController, UITextFieldDelegate{
         LoginButton.isHidden = true
         LoginBottomButton.isHidden = false
         //Add api call here!
+        loginUser()
     }
     
     @IBAction func BackButtonPressed(_ sender: Any) {
