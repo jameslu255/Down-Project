@@ -19,3 +19,6 @@ Maxim: Created the event creation view. Began to add map functionality to events
 https://docs.google.com/document/d/1u9fCno2mnBhMV4XySzwLCMdz7slrgkXB8fR7AhyXl54/edit?usp=sharing
 https://trello.com/b/GnoBa4dZ/down
 
+# Testing Plan #
+
+We will have our friends and peers test our app.
