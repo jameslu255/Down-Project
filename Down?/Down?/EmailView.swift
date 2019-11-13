@@ -15,6 +15,8 @@ class EmailView: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var SignupButton: UIButton!
     @IBOutlet weak var SignupBottomButton: UIButton!
     var user: User?
+    var firstName: String?
+    var lastName: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +41,24 @@ class EmailView: UIViewController, UITextFieldDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
             self.ErrorMessage.isHidden = true
         }
+    }
+    
+    func updatedName() -> Bool {
+        guard let changeRequest = self.user?.createProfileChangeRequest() else {
+            return false
+        }
+        var updateSuccess = false
+        if let firstName = firstName, let lastName = lastName {
+            changeRequest.displayName = firstName + " " + lastName
+            changeRequest.commitChanges { (error) in
+                if let error = error {
+                    self.displayMessage(message: error.localizedDescription, color: .red)
+                } else {
+                    updateSuccess = true
+                }
+            }
+        }
+        return updateSuccess
     }
     
     func sendVerificationEmail() {
@@ -72,6 +92,18 @@ class EmailView: UIViewController, UITextFieldDelegate {
                     self.displayMessage(message: error.localizedDescription, color: .red)
                 } else {
                     self.user = user?.user
+                    guard let changeRequest = self.user?.createProfileChangeRequest() else {
+                        return
+                    }
+                    if let firstName = self.firstName, let lastName = self.lastName {
+                        changeRequest.displayName = firstName + " " + lastName
+                        changeRequest.commitChanges { (error) in
+                            if let error = error {
+                                self.displayMessage(message: error.localizedDescription, color: .red)
+                                return
+                            }
+                        }
+                    }
                     self.sendVerificationEmail()
                 }
             }

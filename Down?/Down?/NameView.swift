@@ -14,7 +14,6 @@ class NameView: UIViewController, UITextFieldDelegate{
     @IBOutlet weak var NextButton: UIButton!
     @IBOutlet weak var NextBottomButton: UIButton!
     @IBOutlet weak var ErrorMessage: UILabel!
-    let user: User? = Auth.auth().currentUser
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,17 +39,6 @@ class NameView: UIViewController, UITextFieldDelegate{
         }
     }
     
-    func updateName() {
-        guard let changeRequest = user?.createProfileChangeRequest() else {
-            return
-        }
-        if let firstName = FirstName.text, let lastName = LastName.text {
-            changeRequest.displayName = firstName + " " + lastName
-            changeRequest.commitChanges { (error) in
-                // ...
-            }
-        }
-    }
     
     // Probably should add some condition to make sure user entered something for First name at least
     @IBAction func NextPressed(_ sender: Any) {
@@ -70,7 +58,9 @@ class NameView: UIViewController, UITextFieldDelegate{
         view.window!.layer.add(transition, forKey: kCATransition)
         // Present like normal after changing transition type.
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let newController = storyboard.instantiateViewController(withIdentifier: "EmailView")
+        let newController = storyboard.instantiateViewController(withIdentifier: "EmailView") as! EmailView
+        newController.firstName = FirstName.text
+        newController.lastName = LastName.text
         newController.modalPresentationStyle = .fullScreen
         present(newController, animated: false, completion: nil)
     }
