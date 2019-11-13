@@ -44,6 +44,17 @@ class LoginView: UIViewController, UITextFieldDelegate{
     
     // Please create a forgot Password view controller
     @IBAction func ForgotPasswordPressed(_ sender: Any) {
+        let transition = CATransition()
+        transition.duration = 0.5
+        transition.type = CATransitionType.push
+        transition.subtype = CATransitionSubtype.fromRight
+        transition.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.easeInEaseOut)
+        view.window!.layer.add(transition, forKey: kCATransition)
+        // Present like normal after changing transition type.
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let newController = storyboard.instantiateViewController(withIdentifier: "ResetView")
+        newController.modalPresentationStyle = .fullScreen
+        present(newController, animated: false, completion: nil)
     }
     
     func loginUser() {

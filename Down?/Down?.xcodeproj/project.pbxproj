@@ -11,6 +11,7 @@
 		095269A7237A430E00A21F35 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095269A6237A430E00A21F35 /* LoginView.swift */; };
 		095269A9237A5B6E00A21F35 /* NameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095269A8237A5B6E00A21F35 /* NameView.swift */; };
 		095269AB237A5E6400A21F35 /* EmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095269AA237A5E6400A21F35 /* EmailView.swift */; };
+		09DD15D1237BF501002BE8C9 /* ResetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09DD15D0237BF501002BE8C9 /* ResetView.swift */; };
 		846C10BA237B96D9001A4BDD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 846C10B9237B96D9001A4BDD /* GoogleService-Info.plist */; };
 		8486A9C42376269200ABB50B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8486A9C32376269200ABB50B /* AppDelegate.swift */; };
 		8486A9C62376269200ABB50B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8486A9C52376269200ABB50B /* SceneDelegate.swift */; };
@@ -26,6 +27,7 @@
 		095269A6237A430E00A21F35 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		095269A8237A5B6E00A21F35 /* NameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameView.swift; sourceTree = "<group>"; };
 		095269AA237A5E6400A21F35 /* EmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailView.swift; sourceTree = "<group>"; };
+		09DD15D0237BF501002BE8C9 /* ResetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetView.swift; sourceTree = "<group>"; };
 		28FF674DFB0DE9169FFD342A /* Pods_Down_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Down_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F4BD3769F55183FE0DC25A5 /* Pods-Down?.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Down?.debug.xcconfig"; path = "Target Support Files/Pods-Down?/Pods-Down?.debug.xcconfig"; sourceTree = "<group>"; };
 		846C10B9237B96D9001A4BDD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 				846C10B9237B96D9001A4BDD /* GoogleService-Info.plist */,
 				095269A8237A5B6E00A21F35 /* NameView.swift */,
 				095269AA237A5E6400A21F35 /* EmailView.swift */,
+				09DD15D0237BF501002BE8C9 /* ResetView.swift */,
 			);
 			path = "Down?";
 			sourceTree = "<group>";
@@ -221,6 +224,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				09DD15D1237BF501002BE8C9 /* ResetView.swift in Sources */,
 				8486A9C82376269200ABB50B /* ViewController.swift in Sources */,
 				8486A9C42376269200ABB50B /* AppDelegate.swift in Sources */,
 				095269A7237A430E00A21F35 /* LoginView.swift in Sources */,
