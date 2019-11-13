@@ -86,12 +86,12 @@
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="etJ-gb-aaK">
                                 <rect key="frame" x="66" y="146" width="282" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" textContentType="email"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TCp-Ry-qmI">
                                 <rect key="frame" x="66" y="198" width="282" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
                             </textField>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WFh-tQ-FJP">
                                 <rect key="frame" x="108" y="817" width="198" height="45"/>
@@ -190,7 +190,6 @@
         <!--Name View-->
         <scene sceneID="HZz-xR-kdm">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="beg-XT-NgN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="NameView" id="W3R-3G-u9Q" customClass="NameView" customModule="Down_" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="NEp-7l-6bK">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
@@ -205,12 +204,12 @@
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="First Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xUR-Gr-8Ry">
                                 <rect key="frame" x="66" y="146" width="282" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" textContentType="given-name"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Last Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Xo1-Q6-EHK">
                                 <rect key="frame" x="66" y="198" width="282" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" textContentType="family-name"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uMS-MX-eeu">
                                 <rect key="frame" x="20" y="48" width="13" height="18"/>
@@ -247,11 +246,18 @@
                                     <action selector="NextPressed:" destination="W3R-3G-u9Q" eventType="touchUpInside" id="7tW-Nm-N8y"/>
                                 </connections>
                             </button>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error Message" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K8Z-hb-Edb">
+                                <rect key="frame" x="20" y="255" width="374" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="2Jz-S6-mpy" firstAttribute="trailing" secondItem="unm-JN-oNA" secondAttribute="trailing" constant="108" id="0ep-CJ-kPn"/>
                             <constraint firstItem="2Jz-S6-mpy" firstAttribute="trailing" secondItem="Xo1-Q6-EHK" secondAttribute="trailing" constant="66" id="0zh-8n-DZZ"/>
+                            <constraint firstItem="K8Z-hb-Edb" firstAttribute="leading" secondItem="2Jz-S6-mpy" secondAttribute="leading" constant="20" id="1g8-md-NyX"/>
                             <constraint firstItem="uMS-MX-eeu" firstAttribute="leading" secondItem="2Jz-S6-mpy" secondAttribute="leading" constant="20" id="2Qt-EA-BcZ"/>
                             <constraint firstItem="LaG-Gr-U4Z" firstAttribute="top" secondItem="2Jz-S6-mpy" secondAttribute="top" constant="49" id="2lf-7K-a05"/>
                             <constraint firstItem="2Jz-S6-mpy" firstAttribute="trailing" secondItem="neC-LP-Hvk" secondAttribute="trailing" constant="108" id="5Je-Q6-nMe"/>
@@ -259,11 +265,13 @@
                             <constraint firstItem="LaG-Gr-U4Z" firstAttribute="leading" secondItem="2Jz-S6-mpy" secondAttribute="leading" constant="20" id="7bv-0Z-bLg"/>
                             <constraint firstItem="2Jz-S6-mpy" firstAttribute="trailing" secondItem="LaG-Gr-U4Z" secondAttribute="trailing" constant="20" id="8uA-A6-fac"/>
                             <constraint firstItem="neC-LP-Hvk" firstAttribute="leading" secondItem="2Jz-S6-mpy" secondAttribute="leading" constant="108" id="Fej-P1-OaQ"/>
+                            <constraint firstItem="2Jz-S6-mpy" firstAttribute="trailing" secondItem="K8Z-hb-Edb" secondAttribute="trailing" constant="20" id="J3W-6q-kSv"/>
                             <constraint firstItem="neC-LP-Hvk" firstAttribute="top" secondItem="Xo1-Q6-EHK" secondAttribute="bottom" constant="108" id="Jff-rn-xA7"/>
                             <constraint firstItem="Xo1-Q6-EHK" firstAttribute="leading" secondItem="2Jz-S6-mpy" secondAttribute="leading" constant="66" id="Kzj-CH-eMR"/>
                             <constraint firstItem="unm-JN-oNA" firstAttribute="leading" secondItem="2Jz-S6-mpy" secondAttribute="leading" constant="108" id="MMf-dl-tIf"/>
                             <constraint firstItem="unm-JN-oNA" firstAttribute="bottom" secondItem="2Jz-S6-mpy" secondAttribute="bottom" id="aCX-rE-o38"/>
                             <constraint firstItem="2Jz-S6-mpy" firstAttribute="trailing" secondItem="xUR-Gr-8Ry" secondAttribute="trailing" constant="66" id="atW-ir-1Na"/>
+                            <constraint firstItem="K8Z-hb-Edb" firstAttribute="top" secondItem="Xo1-Q6-EHK" secondAttribute="bottom" constant="23" id="fYu-PR-2kP"/>
                             <constraint firstItem="xUR-Gr-8Ry" firstAttribute="leading" secondItem="2Jz-S6-mpy" secondAttribute="leading" constant="66" id="kOt-kJ-84t"/>
                             <constraint firstItem="2Jz-S6-mpy" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="uMS-MX-eeu" secondAttribute="trailing" constant="381" id="s64-zH-O2D"/>
                             <constraint firstItem="xUR-Gr-8Ry" firstAttribute="top" secondItem="LaG-Gr-U4Z" secondAttribute="bottom" constant="25" id="wGk-LW-3TY"/>
@@ -272,12 +280,14 @@
                         <viewLayoutGuide key="safeArea" id="2Jz-S6-mpy"/>
                     </view>
                     <connections>
+                        <outlet property="ErrorMessage" destination="K8Z-hb-Edb" id="lg9-3o-BRM"/>
                         <outlet property="FirstName" destination="xUR-Gr-8Ry" id="RBb-rJ-3Sc"/>
                         <outlet property="LastName" destination="Xo1-Q6-EHK" id="A9I-1a-EZX"/>
                         <outlet property="NextBottomButton" destination="unm-JN-oNA" id="66U-HN-aLb"/>
                         <outlet property="NextButton" destination="neC-LP-Hvk" id="Kb1-LU-NHg"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="beg-XT-NgN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2295.6521739130435" y="138.61607142857142"/>
         </scene>
@@ -298,17 +308,12 @@
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2t3-hU-qvA">
                                 <rect key="frame" x="66" y="146" width="282" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="New Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="iZ0-4E-LqL">
-                                <rect key="frame" x="66" y="198" width="282" height="34"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" textContentType="email"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Confirm Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GW9-ac-nzH">
                                 <rect key="frame" x="66" y="250" width="282" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="new-password"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZCK-Dg-3cs">
                                 <rect key="frame" x="20" y="48" width="13" height="18"/>
@@ -351,6 +356,11 @@
                                 <color key="textColor" systemColor="systemPinkColor" red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="New Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="iZ0-4E-LqL">
+                                <rect key="frame" x="66" y="198" width="282" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="new-password"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>

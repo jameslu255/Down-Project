@@ -14,7 +14,7 @@ class EmailView: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var ErrorMessage: UILabel!
     @IBOutlet weak var SignupButton: UIButton!
     @IBOutlet weak var SignupBottomButton: UIButton!
-    let user: User? = Auth.auth().currentUser
+    var user: User?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,6 +71,7 @@ class EmailView: UIViewController, UITextFieldDelegate {
                 if let error = error {
                     self.displayMessage(message: error.localizedDescription, color: .red)
                 } else {
+                    self.user = user?.user
                     self.sendVerificationEmail()
                 }
             }

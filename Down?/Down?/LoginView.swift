@@ -59,6 +59,8 @@ class LoginView: UIViewController, UITextFieldDelegate{
                     self.displayMessage(message: "Verification email was sent but email unverified.", color: .red)
                     return
                 }
+                self.displayMessage(message: "Succesfully logged in", color: .green)
+
             }
         } else {
             displayMessage(message: "Please enter valid credentials", color: .red)

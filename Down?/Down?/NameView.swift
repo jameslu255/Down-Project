@@ -13,6 +13,7 @@ class NameView: UIViewController, UITextFieldDelegate{
     @IBOutlet weak var LastName: UITextField!
     @IBOutlet weak var NextButton: UIButton!
     @IBOutlet weak var NextBottomButton: UIButton!
+    @IBOutlet weak var ErrorMessage: UILabel!
     let user: User? = Auth.auth().currentUser
     
     override func viewDidLoad() {
@@ -30,6 +31,15 @@ class NameView: UIViewController, UITextFieldDelegate{
         return true
     }
     
+    func displayMessage(message: String, color: UIColor) {
+        self.ErrorMessage.text = message
+        self.ErrorMessage.textColor = color
+        self.ErrorMessage.isHidden = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+            self.ErrorMessage.isHidden = true
+        }
+    }
+    
     func updateName() {
         guard let changeRequest = user?.createProfileChangeRequest() else {
             return
@@ -44,6 +54,11 @@ class NameView: UIViewController, UITextFieldDelegate{
     
     // Probably should add some condition to make sure user entered something for First name at least
     @IBAction func NextPressed(_ sender: Any) {
+        if let firstNameEmpty = FirstName.text?.isEmpty, let lastNameEmpty = LastName.text?.isEmpty, firstNameEmpty || lastNameEmpty {
+            displayMessage(message: "Please enter a valid name.", color: .red)
+            return
+        }
+        
         NextButton.isHidden = true
         NextBottomButton.isHidden = false
         // This is a cheeky way to change the animation of "present" or "dismiss" to look like push
