@@ -4,7 +4,7 @@ James: Finished first load screen, login view, login screens and signup screens.
 
 Jonathan: Studied how to use Firebase. Worked with James to add Firebase functionality to login/signup. https://github.com/ECS189E/project-f19-down/tree/API-Login-View https://github.com/ECS189E/project-f19-down/tree/Nov-09-API
 
-Caleb: Created the homescreen of the app. Added button view controller that can be accessed on the home screen.
+Caleb: Made a [custom bottom menu bar view controller](https://github.com/ECS189E/project-f19-down/blob/HomeFeed-ViewController/Down%3F/Down%3F/HomeFeed/BottomMenuBar.swift) for the home screen and began making the the [event feed](https://github.com/ECS189E/project-f19-down/blob/HomeFeed-ViewController/Down%3F/Down%3F/HomeFeed/HomeViewController.swift) on the home screen using a UICollectionView.
 
 Maxim: Created the event creation view. Began to add map functionality to events. https://github.com/ECS189E/project-f19-down/tree/create-event
 
@@ -21,4 +21,4 @@ https://trello.com/b/GnoBa4dZ/down
 
 # Testing Plan #
 
-We will have our friends and peers test our app.
+We will test known edge cases in the app ourselves and have our friends and peers test our app as well.
