@@ -82,7 +82,7 @@ DEPENDENCIES:
   - Firebase/Auth
 
 SPEC REPOS:
-  trunk:
+  https://github.com/cocoapods/specs.git:
     - DateTimePicker
     - Firebase
     - FirebaseAnalytics
@@ -118,4 +118,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: ac924e55d21b4bf2cb5fd463d6eccdb61d1a7470
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.7.5

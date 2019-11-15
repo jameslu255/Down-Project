@@ -14,9 +14,9 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "7B4595CF13390D75070F62F7DB540924"
-               BuildableName = "Pods-Down?.framework"
-               BlueprintName = "Pods-Down?"
+               BlueprintIdentifier = "31E89965CFA54DE4BCC99C05112D7483"
+               BuildableName = "DateTimePicker.framework"
+               BlueprintName = "DateTimePicker"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
