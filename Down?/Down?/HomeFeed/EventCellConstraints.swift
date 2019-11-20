@@ -36,19 +36,29 @@ extension EventCell {
         // durationIcon Constraints
         durationIconImage.topAnchor.constraint(equalTo: userProfileImageView.bottomAnchor, constant: 8).isActive = true
         durationIconImage.rightAnchor.constraint(equalTo: userProfileImageView.centerXAnchor, constant: 0).isActive = true
+        durationIconImage.widthAnchor.constraint(equalToConstant: 13).isActive = true
+        durationIconImage.heightAnchor.constraint(equalToConstant: 13).isActive = true
         
         // durationLabel Constraints
         durationLabel.centerYAnchor.constraint(equalTo: durationIconImage.centerYAnchor, constant: 0).isActive = true
         durationLabel.leftAnchor.constraint(equalTo: durationIconImage.rightAnchor, constant: 4).isActive = true
+        
+        durationLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        durationLabel.setContentHuggingPriority(.required, for: .horizontal)
             
         // locationIcon Constraints
         locationIconImage.centerYAnchor.constraint(equalTo: durationIconImage.centerYAnchor, constant: 0).isActive = true
         locationIconImage.leftAnchor.constraint(equalTo: durationLabel.rightAnchor, constant: 8).isActive = true
 
+        locationIconImage.widthAnchor.constraint(equalToConstant: 13).isActive = true
+        locationIconImage.heightAnchor.constraint(equalToConstant: 13).isActive = true
+        
         // locationLabel Constraints
         locationText.centerYAnchor.constraint(equalTo: locationIconImage.centerYAnchor, constant: 0).isActive = true
         locationText.leftAnchor.constraint(equalTo: locationIconImage.rightAnchor, constant: 4).isActive = true
         locationText.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -16).isActive = true
+        locationText.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        //locationText.setContentHuggingPriority(.defaultLow, for: .horizontal)
         
         locationText.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -6).isActive = true
     }
