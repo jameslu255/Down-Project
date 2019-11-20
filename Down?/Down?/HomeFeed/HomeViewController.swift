@@ -30,7 +30,7 @@ class HomeViewController: UIViewController {
         
         for n in 1...50{
             events.insert(event, at: 0)
-            events.insert(event2, at: 1)
+            events.insert(event2, at: 0)
         }
         
         
@@ -41,12 +41,9 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         Feed.dataSource = self
         self.Feed.rowHeight = UITableView.automaticDimension
-        self.Feed.estimatedRowHeight = 1
+        self.Feed.estimatedRowHeight = UITableView.automaticDimension
         self.setUpFeed()
     }
-    
-    
-
 }
 
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
@@ -72,11 +69,10 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         let cell = Feed.dequeueReusableCell(withIdentifier: "cellId", for: indexPath)
         
         guard let eventCell = cell as? EventCell else {
+            print("ISSUE")
             return cell
         }
-        
-        eventCell.layoutSubviews()
-        
+                
         let event = events[indexPath.section]
         
         eventCell.userProfileImageView.image = event.user.profilePicture
@@ -84,6 +80,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         eventCell.eventTitleLabel.text = event.title
         eventCell.durationLabel.text = event.duration.stringFormat
         eventCell.locationText.text = event.location
+        
         return eventCell
     }
     

@@ -22,13 +22,9 @@ class EventCell: UITableViewCell {
         self.layer.cornerRadius = 10
         self.selectionStyle = .none
         setSubviewsConstraints()
+        self.contentView.clipsToBounds = true
     }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-    }
-    
+
     let userProfileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -41,6 +37,7 @@ class EventCell: UITableViewCell {
     let userNameLabel: UILabel = {
        let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.lineBreakMode = .byTruncatingTail
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

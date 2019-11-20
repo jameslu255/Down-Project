@@ -10,19 +10,19 @@ import UIKit
 
 extension EventCell {
     func setSubviewsConstraints(){
-        addSubview(userProfileImageView)
-        addSubview(userNameLabel)
-        addSubview(eventTitleLabel)
-        addSubview(durationIconImage)
-        addSubview(durationLabel)
-        addSubview(locationIconImage)
-        addSubview(locationText)
+        self.contentView.addSubview(userProfileImageView)
+        self.contentView.addSubview(userNameLabel)
+        self.contentView.addSubview(eventTitleLabel)
+        self.contentView.addSubview(durationIconImage)
+        self.contentView.addSubview(durationLabel)
+        self.contentView.addSubview(locationIconImage)
+        self.contentView.addSubview(locationText)
                 
         // userProfileImageView Constraints
         userProfileImageView.heightAnchor.constraint(equalToConstant: 44.0).isActive = true
         userProfileImageView.widthAnchor.constraint(equalToConstant: 44.0).isActive = true
-        userProfileImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8).isActive = true
-        userProfileImageView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8).isActive = true
+        userProfileImageView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 8).isActive = true
+        userProfileImageView.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 8).isActive = true
         
         // userNameLabel Constraints
         userNameLabel.topAnchor.constraint(equalTo: userProfileImageView.topAnchor, constant: 0.0).isActive = true
@@ -31,7 +31,7 @@ extension EventCell {
         // eventTitle Constraints
         eventTitleLabel.topAnchor.constraint(equalTo: userNameLabel.bottomAnchor, constant: 4).isActive = true
         eventTitleLabel.leftAnchor.constraint(equalTo: userNameLabel.leftAnchor, constant: 0).isActive = true
-        eventTitleLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -16).isActive = true
+        eventTitleLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -16).isActive = true
         
         // durationIcon Constraints
         durationIconImage.topAnchor.constraint(equalTo: userProfileImageView.bottomAnchor, constant: 8).isActive = true
@@ -46,11 +46,10 @@ extension EventCell {
         locationIconImage.leftAnchor.constraint(equalTo: durationLabel.rightAnchor, constant: 8).isActive = true
 
         // locationLabel Constraints
-        locationText.topAnchor.constraint(equalTo: locationIconImage.topAnchor, constant: 0).isActive = true
+        locationText.centerYAnchor.constraint(equalTo: locationIconImage.centerYAnchor, constant: 0).isActive = true
         locationText.leftAnchor.constraint(equalTo: locationIconImage.rightAnchor, constant: 4).isActive = true
-        locationText.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -16).isActive = true
+        locationText.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -16).isActive = true
         
-        self.bottomAnchor.constraint(equalTo: durationIconImage.bottomAnchor, constant: 8).isActive = true
-        
+        locationText.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -6).isActive = true
     }
 }
