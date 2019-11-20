@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		035836B7237F61D7000C0D30 /* BottomMenuBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035836B6237F61D7000C0D30 /* BottomMenuBarViewController.swift */; };
+		035836BC237F9442000C0D30 /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035836BA237F9442000C0D30 /* EventCell.swift */; };
+		03759DE1238231A8009ACE37 /* EventCellConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03759DE0238231A8009ACE37 /* EventCellConstraints.swift */; };
+		03759DE5238243AA009ACE37 /* DownClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03759DE4238243AA009ACE37 /* DownClasses.swift */; };
+		03759DE72383D221009ACE37 /* EventDetailsPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03759DE62383D221009ACE37 /* EventDetailsPopupViewController.swift */; };
 		095269A5237A411300A21F35 /* FirstLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095269A4237A411300A21F35 /* FirstLoginView.swift */; };
 		095269A7237A430E00A21F35 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095269A6237A430E00A21F35 /* LoginView.swift */; };
 		095269A9237A5B6E00A21F35 /* NameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095269A8237A5B6E00A21F35 /* NameView.swift */; };
@@ -31,6 +35,10 @@
 
 /* Begin PBXFileReference section */
 		035836B6237F61D7000C0D30 /* BottomMenuBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomMenuBarViewController.swift; sourceTree = "<group>"; };
+		035836BA237F9442000C0D30 /* EventCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCell.swift; sourceTree = "<group>"; };
+		03759DE0238231A8009ACE37 /* EventCellConstraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCellConstraints.swift; sourceTree = "<group>"; };
+		03759DE4238243AA009ACE37 /* DownClasses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownClasses.swift; sourceTree = "<group>"; };
+		03759DE62383D221009ACE37 /* EventDetailsPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailsPopupViewController.swift; sourceTree = "<group>"; };
 		095269A4237A411300A21F35 /* FirstLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstLoginView.swift; sourceTree = "<group>"; };
 		095269A6237A430E00A21F35 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		095269A8237A5B6E00A21F35 /* NameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameView.swift; sourceTree = "<group>"; };
@@ -68,13 +76,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0366AA59238495BE00D66E59 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		845F4A85237E61E30054BC18 /* HomeFeed */ = {
 			isa = PBXGroup;
 			children = (
+				0366AA59238495BE00D66E59 /* Views */,
 				845F4A86237E61E30054BC18 /* HomeFeed.storyboard */,
-				845F4A87237E61E30054BC18 /* BottomMenuBar.swift */,
 				845F4A88237E61E30054BC18 /* HomeViewController.swift */,
+				845F4A87237E61E30054BC18 /* BottomMenuBar.swift */,
 				035836B6237F61D7000C0D30 /* BottomMenuBarViewController.swift */,
+				035836BA237F9442000C0D30 /* EventCell.swift */,
+				03759DE0238231A8009ACE37 /* EventCellConstraints.swift */,
+				03759DE62383D221009ACE37 /* EventDetailsPopupViewController.swift */,
 			);
 			path = HomeFeed;
 			sourceTree = "<group>";
@@ -125,6 +144,7 @@
 				845F4A8D237E62870054BC18 /* CreateEvent */,
 				845F4A8C237E61FC0054BC18 /* Login */,
 				845F4A85237E61E30054BC18 /* HomeFeed */,
+				03759DE4238243AA009ACE37 /* DownClasses.swift */,
 				8486A9C52376269200ABB50B /* SceneDelegate.swift */,
 				8486A9C72376269200ABB50B /* ViewController.swift */,
 				8486A9C92376269200ABB50B /* Main.storyboard */,
@@ -273,17 +293,21 @@
 			files = (
 				84D83E84237E5EC500B2D140 /* CreateEventController.swift in Sources */,
 				09DD15D1237BF501002BE8C9 /* ResetView.swift in Sources */,
+				03759DE5238243AA009ACE37 /* DownClasses.swift in Sources */,
 				84D83E82237E5EBA00B2D140 /* UIStyling.swift in Sources */,
 				8486A9C82376269200ABB50B /* ViewController.swift in Sources */,
 				8486A9C42376269200ABB50B /* AppDelegate.swift in Sources */,
 				095269A7237A430E00A21F35 /* LoginView.swift in Sources */,
 				035836B7237F61D7000C0D30 /* BottomMenuBarViewController.swift in Sources */,
+				035836BC237F9442000C0D30 /* EventCell.swift in Sources */,
 				095269AB237A5E6400A21F35 /* EmailView.swift in Sources */,
 				8486A9C62376269200ABB50B /* SceneDelegate.swift in Sources */,
 				095269A5237A411300A21F35 /* FirstLoginView.swift in Sources */,
 				095269A9237A5B6E00A21F35 /* NameView.swift in Sources */,
+				03759DE72383D221009ACE37 /* EventDetailsPopupViewController.swift in Sources */,
 				845F4A8A237E61E30054BC18 /* BottomMenuBar.swift in Sources */,
 				845F4A8B237E61E30054BC18 /* HomeViewController.swift in Sources */,
+				03759DE1238231A8009ACE37 /* EventCellConstraints.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -429,13 +453,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 6WJ796BDL9;
+				DEVELOPMENT_TEAM = J2Y7FW72RW;
 				INFOPLIST_FILE = "Down?/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ECS189E.Down;
+				PRODUCT_BUNDLE_IDENTIFIER = ECS189E.Down1234;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -448,13 +472,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 6WJ796BDL9;
+				DEVELOPMENT_TEAM = J2Y7FW72RW;
 				INFOPLIST_FILE = "Down?/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ECS189E.Down;
+				PRODUCT_BUNDLE_IDENTIFIER = ECS189E.Down1234;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
