@@ -9,95 +9,89 @@ import UIKit
 
 class HomeViewController: UIViewController {
 
-    @IBOutlet weak var Feed: UITableView!
+    @IBOutlet weak var Feed: UICollectionView!
     @IBOutlet weak var BottomMenuBar: UIView!
-    
-    
-    var events: [Event] = {
-        var events: [Event] = []
-        let userPic = UIImage(named: "Matloff")
-        let user = DownUser(name: "Prof. Matloff", profilePicture: userPic)
-        let duration = Duration(startTime: Date(), endTime: Date())
-        
-        let event = Event(user: user, title: "Free styling about mailing tubes", duration: duration, description: "Come thruuuuuu", numDown: 43, location: "1234 Statistics Rd.", coordinates: nil, isPublic: false)
-        
-        let user2Pic = UIImage(named: "Sam")
-        let user2 = DownUser(name: "Sam King", profilePicture: user2Pic)
-        let duration2 = Duration(startTime: Date(timeIntervalSince1970: 0), endTime: Date(timeIntervalSince1970: 60))
-        let event2 = Event(user: user2, title: "Dropping some sick beats about cyber security", duration: duration2, description: "", numDown: 500, location: "The MF White House. Through the front doors and on the first right.", coordinates: nil, isPublic: false)
-        
-        events.insert(event, at: 0)
-        events.insert(event2, at: 1)
-        events.insert(event, at: 0)
-        events.insert(event2, at: 1)
-        events.insert(event, at: 0)
-        events.insert(event2, at: 1)
-        events.insert(event, at: 0)
-        events.insert(event2, at: 1)
-        events.insert(event, at: 0)
-        events.insert(event2, at: 1)
-        events.insert(event, at: 0)
-        events.insert(event2, at: 1)
-        
-        return events
-    }()
+    @IBOutlet weak var GradientView: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         Feed.dataSource = self
-        self.Feed.rowHeight = UITableView.automaticDimension
-        self.Feed.estimatedRowHeight = 1
         self.setUpFeed()
     }
-    
-    
 
 }
 
-extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-    }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        events.count
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        10
+extension HomeViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 50;
     }
 
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = UIView()
-        headerView.backgroundColor = UIColor.clear
-        return headerView
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = Feed.dequeueReusableCell(withReuseIdentifier: "cellId", for: indexPath)
+
+        return cell
     }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = Feed.dequeueReusableCell(withIdentifier: "cellId", for: indexPath)
-        
-        guard let eventCell = cell as? EventCell else {
-            return cell
-        }
-        
-        eventCell.layoutSubviews()
-        
-        let event = events[indexPath.section]
-        
-        eventCell.userProfileImageView.image = event.user.profilePicture
-        eventCell.userNameLabel.text = event.user.name
-        eventCell.eventTitleLabel.text = event.title
-        eventCell.durationLabel.text = event.duration.stringFormat
-        eventCell.locationText.text = event.location
-        return eventCell
-    }
-    
-    
 
     private func setUpFeed(){
-        Feed.register(EventCell.self, forCellReuseIdentifier: "cellId")
+        Feed.register(EventCell.self, forCellWithReuseIdentifier: "cellId")
         Feed.delegate = self
-        Feed.separatorStyle = .none
+    }
+}
+
+extension HomeViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: Feed.frame.width, height: 200)
+    }
+}
+
+
+class EventCell: UICollectionViewCell {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.backgroundColor = UIColor.systemBackground
+        self.layer.borderWidth = 1
+        self.layer.borderColor = UIColor.label.cgColor
+        self.layer.cornerRadius = 10
+        setupViews()
+    }
+    
+    let userProfileImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "Matloff_Thanos")
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.layer.cornerRadius = 10
+        return imageView
+    }()
+    
+    let userNameLabel: UILabel = {
+       let label = UILabel()
+        label.text = "Prof. Matloff"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let downButton: UIButton = {
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+        button.titleLabel?.text = "Down?"
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.systemBlue.cgColor
+        return button
+    }()
+    
+    func setupViews(){
+        addSubview(userProfileImageView)
+        addSubview(userNameLabel)
+        //addSubview(downButton)
+        
+        addConstraintWithFormat(format: "H:|-16-[v0(40)]-8-[v1]", views: userProfileImageView, userNameLabel)
+        addConstraint(NSLayoutConstraint(item: userNameLabel, attribute: .centerY, relatedBy: .equal, toItem: userProfileImageView, attribute: .centerY, multiplier: 1, constant: 0))
+        addConstraintWithFormat(format: "V:|-16-[v0(40)]", views: userProfileImageView)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 
