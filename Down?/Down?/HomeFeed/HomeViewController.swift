@@ -12,6 +12,8 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var Feed: UITableView!
     @IBOutlet weak var BottomMenuBar: UIView!
     
+    let cellSpacing: CGFloat = 5.0
+    let numTestCells: Int = 50
     
     var events: [Event] = {
         var events: [Event] = []
@@ -26,18 +28,11 @@ class HomeViewController: UIViewController {
         let duration2 = Duration(startTime: Date(timeIntervalSince1970: 0), endTime: Date(timeIntervalSince1970: 60))
         let event2 = Event(user: user2, title: "Dropping some sick beats about cyber security", duration: duration2, description: "", numDown: 500, location: "The MF White House. Through the front doors and on the first right.", coordinates: nil, isPublic: false)
         
-        events.insert(event, at: 0)
-        events.insert(event2, at: 1)
-        events.insert(event, at: 0)
-        events.insert(event2, at: 1)
-        events.insert(event, at: 0)
-        events.insert(event2, at: 1)
-        events.insert(event, at: 0)
-        events.insert(event2, at: 1)
-        events.insert(event, at: 0)
-        events.insert(event2, at: 1)
-        events.insert(event, at: 0)
-        events.insert(event2, at: 1)
+        for n in 1...50{
+            events.insert(event, at: 0)
+            events.insert(event2, at: 1)
+        }
+        
         
         return events
     }()
@@ -64,9 +59,9 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        10
+        return cellSpacing
     }
-
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView()
         headerView.backgroundColor = UIColor.clear

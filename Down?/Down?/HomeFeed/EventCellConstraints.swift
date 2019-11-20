@@ -51,5 +51,6 @@ extension EventCell {
         locationText.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -16).isActive = true
         
         self.bottomAnchor.constraint(equalTo: durationIconImage.bottomAnchor, constant: 8).isActive = true
+        
     }
 }

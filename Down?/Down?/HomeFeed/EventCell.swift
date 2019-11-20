@@ -47,7 +47,6 @@ class EventCell: UITableViewCell {
     
     let eventTitleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Rambling about mailing tubes"
         label.font = UIFont.boldSystemFont(ofSize: 14)
         label.textColor = .secondaryLabel
         label.numberOfLines = 1
@@ -67,7 +66,6 @@ class EventCell: UITableViewCell {
     
     let durationLabel: UILabel = {
         let label = UILabel()
-        label.text = "4 pm - 6:30 pm"
         label.font = .systemFont(ofSize: 13)
         label.textColor = .secondaryLabel
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -84,7 +82,6 @@ class EventCell: UITableViewCell {
     
     let locationText: UILabel = {
         let label = UILabel()
-        label.text = "Olson 134"
         label.textColor = .secondaryLabel
         label.font = .systemFont(ofSize: 13)
         label.numberOfLines = 1
