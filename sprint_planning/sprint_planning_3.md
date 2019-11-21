@@ -1,4 +1,4 @@
-# November 8, 2019 Sprint Planning #
+# November 18, 2019 Sprint Planning #
 
 # Summary # 
 Down? is an app that allows users to put up small-scale events that will happen within the day. The idea is to let users use Down? as a way to spontaneously meetup and do something together rather than carefully planning when and what is going on like facebook. Users can post events that they are going to be doing (ex. Studying for ECS 189, Playing Video Games: need a player 2!, Getting Raja's: Anyone else down?) and other users will see the events and mark that they are down to join.
@@ -23,7 +23,9 @@ is receiving a revamp where the date time picker bugs are fixed and categories a
 James: 
 * Started working on the creation of filter button view
 * Added a table collection view with buttons of specifications to filter the events
-https://github.com/ECS189E/project-f19-down/tree/Login-View
+* Created Sort and Filter views
+https://github.com/ECS189E/project-f19-down/tree/Filter-Buttons
+https://github.com/ECS189E/project-f19-down/tree/Filter-Buttons-V2
 
 
 Jonathan: 
@@ -31,16 +33,18 @@ Jonathan:
 * Designed the backend schema
 * Made methods to easily add events and post them to database
 * Created event structure to represent user event data from database
-https://github.com/ECS189E/project-f19-down/tree/api-event/sprint_planning
+https://github.com/ECS189E/project-f19-down/tree/api-event
 
 Caleb:
 * Worded on event tiles layout (for hours on end)
 * Started designing event details popup
+https://github.com/ECS189E/project-f19-down/tree/HomeFeed
 
 Maxim:
 * Redesigned the create event screen
 * Added category selector for create event screen
 * Preliminary autofill for start time, end time, and current location
+https://github.com/ECS189E/project-f19-down/tree/create-event
 
 
 ## What we plan to do ##
