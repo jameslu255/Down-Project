@@ -17,6 +17,12 @@ extension EventCell {
         self.contentView.addSubview(durationLabel)
         self.contentView.addSubview(locationIconImage)
         self.contentView.addSubview(locationText)
+        self.contentView.addSubview(downCueBackground)
+        self.contentView.addSubview(downCueLabel)
+        self.contentView.addSubview(notDownCueBackground)
+        self.contentView.addSubview(notDownCueLabel)
+        
+        
                 
         // userProfileImageView Constraints
         userProfileImageView.heightAnchor.constraint(equalToConstant: 44.0).isActive = true
@@ -27,6 +33,7 @@ extension EventCell {
         // userNameLabel Constraints
         userNameLabel.topAnchor.constraint(equalTo: userProfileImageView.topAnchor, constant: 0.0).isActive = true
         userNameLabel.leftAnchor.constraint(equalTo: userProfileImageView.rightAnchor, constant: 8.0).isActive = true
+        userNameLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -8).isActive = true
         
         // eventTitle Constraints
         eventTitleLabel.topAnchor.constraint(equalTo: userNameLabel.bottomAnchor, constant: 4).isActive = true
@@ -58,8 +65,24 @@ extension EventCell {
         locationText.leftAnchor.constraint(equalTo: locationIconImage.rightAnchor, constant: 4).isActive = true
         locationText.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -16).isActive = true
         locationText.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        //locationText.setContentHuggingPriority(.defaultLow, for: .horizontal)
         
         locationText.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -6).isActive = true
+        
+        downCueLabel.rightAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: -16).isActive = true
+        downCueLabel.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor, constant: 0).isActive = true
+        
+        notDownCueLabel.leftAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: 16).isActive = true
+        notDownCueLabel.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor, constant: 0).isActive = true
+        
+        downCueBackground.widthAnchor.constraint(equalTo: self.contentView.widthAnchor, constant: 25).isActive = true
+        downCueBackground.rightAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 0).isActive = true
+        downCueBackground.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor, constant: 0).isActive = true
+        downCueBackground.heightAnchor.constraint(equalTo: self.contentView.heightAnchor, constant: 0).isActive = true
+        
+        notDownCueBackground.widthAnchor.constraint(equalTo: self.contentView.widthAnchor, constant: 25).isActive = true
+        notDownCueBackground.leftAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: 0).isActive = true
+        notDownCueBackground.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor, constant: 0).isActive = true
+        notDownCueBackground.heightAnchor.constraint(equalTo: self.contentView.heightAnchor, constant: 0).isActive = true
+        
     }
 }

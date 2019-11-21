@@ -9,108 +9,48 @@ import UIKit
 
 class EventDetailsPopupViewController: UIViewController {
 
+    var event: Event? = nil
+    
+    @IBOutlet weak var Container: UIView!
+    @IBOutlet weak var ProfilePicture: UIImageView!
+    @IBOutlet weak var Username: UILabel!
+    @IBOutlet weak var EventTitle: UILabel!
+    @IBOutlet weak var Duration: UITextView!
+    @IBOutlet weak var Location: UITextView!
+    @IBOutlet weak var Description: UITextView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        Container.layer.cornerRadius = 10
+        Container.clipsToBounds = true
+        setupViews()
+        loadEventToViews()
     }
     
-    let profilePicture: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
-        imageView.clipsToBounds = true
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.layer.cornerRadius = 10
-        return imageView
-    }()
+    func setupViews(){
+        ProfilePicture.contentMode = .scaleAspectFill
+        ProfilePicture.clipsToBounds = true
+        ProfilePicture.layer.cornerRadius = 5
+        Duration.layer.cornerRadius = 5
+        Location.layer.cornerRadius = 5
+        Description.layer.cornerRadius = 5
+    }
     
-    let userNameLabel: UILabel = {
-       let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
+    func loadEventToViews(){
+        self.ProfilePicture.image = event?.user.profilePicture
+        self.Username.text = event?.user.name
+        self.EventTitle.text = event?.title
+        self.Duration.text = event?.duration.stringFormat
+        self.Location.text = event?.location
+        self.Description.text = event?.description
+        if self.Description.text.isEmpty {
+            self.Description.removeFromSuperview()
+        }
+    }
     
-    let eventTitleLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 14)
-        label.textColor = .secondaryLabel
-        label.numberOfLines = 0
-        label.lineBreakMode = .byTruncatingTail
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    let durationIconImage: UIImageView = {
-        let imageConfig = UIImage.SymbolConfiguration(pointSize: 13)
-        let image = UIImage(systemName: "clock", withConfiguration: imageConfig)
-        let imageView = UIImageView(image: image)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        
-        return imageView
-    }()
-    
-    let durationLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 13)
-        label.textColor = .secondaryLabel
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    let locationIconImage: UIImageView = {
-        let imageConfig = UIImage.SymbolConfiguration(pointSize: 13)
-        let image = UIImage(systemName: "mappin.and.ellipse", withConfiguration: imageConfig)
-        let imageView = UIImageView(image: image)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
-    }()
-    
-    let locationText: UITextView = {
-        let textView = UITextView()
-        textView.textColor = .secondaryLabel
-        textView.font = .systemFont(ofSize: 13)
-        textView.isEditable = false
-        textView.isScrollEnabled = false
-        textView.dataDetectorTypes = .address
-        let newSize = textView.sizeThatFits(CGSize(width: textView.frame.width, height: CGFloat(MAXFLOAT)))
-        var newFrame: CGRect = textView.frame
-        newFrame.size = CGSize(width: newFrame.width, height: newSize.height)
-        textView.frame = newFrame
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        return textView
-    }()
-    
-    let descriptionText: UITextView = {
-        let text = UITextView()
-        text.text = "asdf"
-        text.backgroundColor = .tertiarySystemBackground
-        text.textColor = .tertiaryLabel
-        text.layer.cornerRadius = 5
-        text.isEditable = false
-        text.isSelectable = false
-        text.isScrollEnabled = false
-        let newSize = text.sizeThatFits(CGSize(width: text.frame.width, height: CGFloat(MAXFLOAT)))
-        var newFrame: CGRect = text.frame
-        newFrame.size = CGSize(width: newFrame.width, height: newSize.height)
-        text.frame = newFrame
-        text.translatesAutoresizingMaskIntoConstraints = false
-        return text
-    }()
-    
-    let downButton: UIButton = {
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 500, height: 75))
-        let color = UIColor.secondaryLabel
-        button.setTitle("Down?", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-        button.setTitleColor(color, for: .normal)
-        button.setTitleColor(UIColor.tertiaryLabel, for: .highlighted)
-        button.layer.cornerRadius = 5
-        button.layer.borderWidth = 1
-        button.layer.borderColor = color.cgColor
-        button.contentEdgeInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+    @IBAction func Tapped(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
 }
 
 

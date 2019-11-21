@@ -8,6 +8,8 @@
 import Foundation
 import UIKit
 
+let formatter = DateFormatter()
+
 class Event {
     
     init(user: DownUser, title: String, duration: Duration, description: String?, numDown: Int, location: String, coordinates: Coordinates?, isPublic: Bool) {
