@@ -13,6 +13,10 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var BottomMenuBar: UIView!
     @IBOutlet weak var FeedBottomCover: UIView!
     
+    @IBOutlet weak var collectionView: UICollectionView!
+    
+    var buttons = ["Filter", "Sort", "Search", "Location", "Some", "Other", "Buttons", "That", "I", "Put", "In", "Here", "To", "Test", "Functionality"]
+    
     let cellSpacing: CGFloat = 5.0
     let numTestCells: Int = 50
     
@@ -56,17 +60,61 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        registerNib()
         Feed.dataSource = self
         self.Feed.rowHeight = UITableView.automaticDimension
         self.Feed.estimatedRowHeight = UITableView.automaticDimension
         self.setUpFeed()
         Feed.backgroundColor = .clear
+        collectionView.backgroundColor = .red
         self.view.setGradientBackground(gradient: backgroundGradient, colorOne: .clear, colorTwo: .label, firstColorStart: 0.5, secondColorStart: 1.0)
         self.FeedBottomCover.setGradientBackground(gradient: feedBottomCoverGradient, colorOne: .clear, colorTwo: .label, firstColorStart: -1.0, secondColorStart: 1)
         Feed.clipsToBounds = false
     }
+    
+    func registerNib() {
+        let nib = UINib(nibName: CollectionViewCell.nibName, bundle: nil)
+        collectionView?.register(nib, forCellWithReuseIdentifier: CollectionViewCell.reuseIdentifier)
+        if let flowLayout = self.collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
+            flowLayout.estimatedItemSize = CGSize(width: 1, height: 1)
+        }
+    }
+}
+// James ------------------------------------------------------------------------------------------------------------
+extension HomeViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return buttons.count
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollectionViewCell.reuseIdentifier,
+                                                        for: indexPath) as? CollectionViewCell {
+            cell.backgroundColor = .blue
+            let name = buttons[indexPath.row]
+            cell.configureCell(buttonName: name)
+            return cell
+        }
+        return UICollectionViewCell()
+    }
 }
 
+extension HomeViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        guard let cell: CollectionViewCell = Bundle.main.loadNibNamed(CollectionViewCell.nibName,
+                                                                      owner: self,
+                                                                      options: nil)?.first as? CollectionViewCell else {
+            return CGSize.zero
+        }
+        cell.configureCell(buttonName: buttons[indexPath.row])
+        cell.setNeedsLayout()
+        cell.layoutIfNeeded()
+        let size: CGSize = cell.contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        return CGSize(width: size.width, height: 30)
+    }
+}
+// -------------------------------------------------------------------------------------------
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
