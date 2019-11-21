@@ -25,7 +25,7 @@ class HomeViewController: UIViewController {
         let user = DownUser(name: "Prof. Matloff", profilePicture: userPic)
         let duration = Duration(startTime: Date(), endTime: Date())
         
-        let event = Event(user: user, title: "Free styling about mailing tubes", duration: duration, description: "Come thruuuuuu", numDown: 43, location: "1234 Statistics Rd.", coordinates: nil, isPublic: false)
+        let event = Event(user: user, title: "Free styling about mailing tubes", duration: duration, description: "Come thruuuuuu", numDown: 43, location: "545 Bainer Hall Dr, Davis, CA 95616", coordinates: nil, isPublic: false)
         
         let user2Pic = UIImage(named: "Sam")
         let user2 = DownUser(name: "Sam King", profilePicture: user2Pic)
