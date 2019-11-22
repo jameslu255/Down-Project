@@ -21,6 +21,7 @@
                                 <rect key="frame" x="20" y="133" width="374" height="763"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <sections/>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nNc-Nx-piw">
                                 <rect key="frame" x="0.0" y="797" width="414" height="99"/>
@@ -57,7 +58,7 @@
                                     <inset key="sectionInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="ron-oe-maV" customClass="CollectionViewCell" customModule="Down_" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="FilterButton" id="ron-oe-maV" customClass="CollectionViewCell" customModule="Down_" customModuleProvider="target">
                                         <rect key="frame" x="15" y="-2.6666666666666665" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="vJo-Nw-ebr">
@@ -110,6 +111,7 @@
         <!--Bottom Menu Bar View Controller-->
         <scene sceneID="wTT-e8-D6T">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wf0-3d-y2I" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <viewController id="5zB-Tz-O1o" customClass="BottomMenuBarViewController" customModule="Down_" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ROQ-2i-jdv">
                         <rect key="frame" x="0.0" y="0.0" width="384" height="82"/>
@@ -224,7 +226,6 @@
                         <viewLayoutGuide key="safeArea" id="f9W-k2-c1b"/>
                     </view>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="wf0-3d-y2I" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="128" y="553"/>
         </scene>

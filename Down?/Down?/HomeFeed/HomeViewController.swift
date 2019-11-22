@@ -66,7 +66,6 @@ class HomeViewController: UIViewController {
         self.Feed.estimatedRowHeight = UITableView.automaticDimension
         self.setUpFeed()
         Feed.backgroundColor = .clear
-        collectionView.backgroundColor = .red
         self.view.setGradientBackground(gradient: backgroundGradient, colorOne: .clear, colorTwo: .label, firstColorStart: 0.5, secondColorStart: 1.0)
         self.FeedBottomCover.setGradientBackground(gradient: feedBottomCoverGradient, colorOne: .clear, colorTwo: .label, firstColorStart: -1.0, secondColorStart: 1)
         Feed.clipsToBounds = false
@@ -89,7 +88,6 @@ extension HomeViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollectionViewCell.reuseIdentifier,
                                                         for: indexPath) as? CollectionViewCell {
-            cell.backgroundColor = .blue
             let name = buttons[indexPath.row]
             cell.configureCell(buttonName: name)
             return cell
