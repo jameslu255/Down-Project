@@ -8,6 +8,7 @@ target 'Down?' do
   # Pods for Down?
   pod 'Firebase/Analytics' 
   pod 'Firebase/Auth'
-  pod 'DateTimePicker'
+  pod 'Firebase/Core'
+  pod 'Firebase/Firestore'
 
 end

@@ -10,7 +10,7 @@ import UIKit
 
 let formatter = DateFormatter()
 
-class Event {
+class OldEvent {
     
     init(user: DownUser, title: String, duration: Duration, description: String?, numDown: Int, location: String, coordinates: Coordinates?, isPublic: Bool) {
         self.user = user

@@ -8,15 +8,15 @@
 import UIKit
 
 protocol EventCellDelegate {
-    func notDown(event: Event)
-    func down(event: Event)
-    func tapped(event: Event)
+    func notDown(event: OldEvent)
+    func down(event: OldEvent)
+    func tapped(event: OldEvent)
 }
 
 class EventCell: UITableViewCell {
 
     var delegate: EventCellDelegate?
-    var event: Event?
+    var event: OldEvent?
         
     var originalCenter = CGPoint()
     var notDownOnDragRelease = false

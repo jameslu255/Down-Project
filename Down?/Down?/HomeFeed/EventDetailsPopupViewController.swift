@@ -9,7 +9,7 @@ import UIKit
 
 class EventDetailsPopupViewController: UIViewController {
 
-    var event: Event? = nil
+    var event: OldEvent? = nil
     
     @IBOutlet weak var Container: UIView!
     @IBOutlet weak var ProfilePicture: UIImageView!
