@@ -9,9 +9,15 @@ import UIKit
 
 class BottomMenuBarViewController: UIViewController {
 
+    @IBOutlet weak var createButtonShadowCaster: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        createButtonShadowCaster.layer.masksToBounds = false
+        createButtonShadowCaster.layer.shadowColor = UIColor.black.cgColor
+        createButtonShadowCaster.layer.shadowOffset = .zero
+        createButtonShadowCaster.layer.shadowRadius = 4
+        createButtonShadowCaster.layer.shadowOpacity = 1.0
     }
 
     @IBAction func createEventPressed(_ sender: Any) {
@@ -19,6 +25,4 @@ class BottomMenuBarViewController: UIViewController {
         let newController = storyboard.instantiateViewController(withIdentifier: "createEvent")
         self.present(newController, animated: true, completion: nil)
     }
-    
-    
 }

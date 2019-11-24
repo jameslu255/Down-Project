@@ -9,7 +9,7 @@ import UIKit
 
 class EventDetailsPopupViewController: UIViewController {
 
-    var event: OldEvent? = nil
+    var event: Event? = nil
     
     @IBOutlet weak var Container: UIView!
     @IBOutlet weak var ProfilePicture: UIImageView!
@@ -37,12 +37,17 @@ class EventDetailsPopupViewController: UIViewController {
     }
     
     func loadEventToViews(){
-        self.ProfilePicture.image = event?.user.profilePicture
-        self.Username.text = event?.user.name
-        self.EventTitle.text = event?.title
-        self.Duration.text = event?.duration.stringFormat
-        self.Location.text = event?.location
-        self.Description.text = event?.description
+        self.ProfilePicture.image = UIImage(named: "Default.ProfilePicture")
+        self.Username.text = event?.originalPoster ?? "Error"
+        if let title = event?.title {
+            self.EventTitle.text = title.isEmpty ? "No title" : title
+        }
+        else {
+            self.EventTitle.text = "Error"
+        }
+        self.Duration.text = event?.stringShortFormat ?? "Error"
+        self.Location.text = event?.location?.place ?? "Error"
+        self.Description.text = event?.description ?? "Error"
         if self.Description.text.isEmpty {
             self.Description.removeFromSuperview()
         }

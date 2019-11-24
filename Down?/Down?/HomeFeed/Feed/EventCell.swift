@@ -8,33 +8,41 @@
 import UIKit
 
 protocol EventCellDelegate {
-    func notDown(event: OldEvent)
-    func down(event: OldEvent)
-    func tapped(event: OldEvent)
+    func notDown(cell: EventCell)
+    func down(cell: EventCell)
+    func tapped(event: Event)
 }
 
 class EventCell: UITableViewCell {
 
+    @IBOutlet weak var profilePictureImageView: UIImageView!
+    @IBOutlet weak var eventTitleLabel: UILabel!
+    @IBOutlet weak var usernameLabel: UILabel!
+    @IBOutlet weak var durationLabelBackgroundView: UIView!
+    @IBOutlet weak var durationLabel: UILabel!
+    @IBOutlet weak var locationTextView: UITextView!
+    @IBOutlet weak var CellSpacer: UIView!
+    
+    
     var delegate: EventCellDelegate?
-    var event: OldEvent?
+    var event: Event?
         
+    var cellId: Int = 0
     var originalCenter = CGPoint()
     var notDownOnDragRelease = false
     var downOnDragRelease = false
     var cueMaragin: CGFloat = 10.0
     var cueWidth: CGFloat = 50.0
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+    override func awakeFromNib() {
         self.backgroundColor = .systemBackground
-        self.layer.borderWidth = 1
-        self.layer.borderColor = UIColor.label.cgColor
-        self.layer.cornerRadius = 10
         self.selectionStyle = .none
+        
+        setupSubviews()
         setSubviewsConstraints()
         setupGestureRecognizers()
     }
-
+    
     func setupGestureRecognizers(){
         let panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
         panRecognizer.delegate = self
@@ -46,7 +54,9 @@ class EventCell: UITableViewCell {
     }
     
     @objc func handleTap(recognizer: UITapGestureRecognizer){
-        
+        if let event = self.event {
+            self.delegate?.tapped(event: event)
+        }
     }
     
     @objc func handlePan(recognizer: UIPanGestureRecognizer){
@@ -76,13 +86,13 @@ class EventCell: UITableViewCell {
                 }
             }
             if notDownOnDragRelease {
-                if let delegate = self.delegate, let event = self.event {
-                    delegate.notDown(event: event)
+                if let delegate = self.delegate {
+                    delegate.notDown(cell: self)
                 }
             }
             if downOnDragRelease {
-                if let delegate = self.delegate, let event = self.event {
-                    delegate.down(event: event)
+                if let delegate = self.delegate {
+                    delegate.down(cell: self)
                 }
             }
             UIView.animate(withDuration: 0.2){
@@ -103,9 +113,7 @@ class EventCell: UITableViewCell {
             return false
         }
         else if gestureRecognizer is UITapGestureRecognizer{
-            if let event = self.event {
-                self.delegate?.tapped(event: event)
-            }
+            return true
         }
         return false
     }
@@ -118,7 +126,7 @@ class EventCell: UITableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
+
     let notDownCueBackground: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 5
@@ -127,7 +135,7 @@ class EventCell: UITableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
+
     let downCueLabel: UILabel = {
         let label = UILabel()
         label.text = "Down."
@@ -138,7 +146,7 @@ class EventCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     let notDownCueLabel: UILabel = {
         let label = UILabel()
         label.text = "Not Down."
@@ -150,72 +158,9 @@ class EventCell: UITableViewCell {
         return label
     }()
     
-    let userProfileImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
-        imageView.clipsToBounds = true
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.layer.cornerRadius = 10
-        return imageView
-    }()
-    
-    let userNameLabel: UILabel = {
-       let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.lineBreakMode = .byTruncatingTail
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    let eventTitleLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 14)
-        label.textColor = .secondaryLabel
-        label.numberOfLines = 1
-        label.lineBreakMode = .byTruncatingTail
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    let durationIconImage: UIImageView = {
-        let imageConfig = UIImage.SymbolConfiguration(pointSize: 13)
-        let image = UIImage(systemName: "clock", withConfiguration: imageConfig)
-        let imageView = UIImageView(image: image)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        
-        return imageView
-    }()
-    
-    let durationLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 13)
-        label.textColor = .secondaryLabel
-        label.backgroundColor = .secondarySystemBackground
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    let locationIconImage: UIImageView = {
-        let imageConfig = UIImage.SymbolConfiguration(pointSize: 13)
-        let image = UIImage(systemName: "mappin.and.ellipse", withConfiguration: imageConfig)
-        let imageView = UIImageView(image: image)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
-    }()
-    
-    let locationText: UILabel = {
-        let label = UILabel()
-        label.textColor = .secondaryLabel
-        label.font = .systemFont(ofSize: 13)
-        label.numberOfLines = 1
-        label.lineBreakMode = .byTruncatingTail
-        label.backgroundColor = .secondarySystemBackground
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    func setupSubviews(){
+        profilePictureImageView.layer.cornerRadius = 5
+        durationLabelBackgroundView.layer.cornerRadius = 5
+        locationTextView.layer.cornerRadius = 5
     }
 }
