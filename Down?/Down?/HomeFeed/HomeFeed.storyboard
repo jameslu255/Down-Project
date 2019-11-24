@@ -238,10 +238,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Fa-Je-jxW">
-                                <rect key="frame" x="12" y="115.66666666666669" width="390" height="664.66666666666652"/>
+                                <rect key="frame" x="30.666666666666657" y="79" width="352.66666666666674" height="738.33333333333337"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Adl-w8-Cnb">
-                                        <rect key="frame" x="0.0" y="0.0" width="390" height="76"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="352.66666666666669" height="76"/>
                                         <color key="backgroundColor" systemColor="tertiarySystemBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="82H-kg-t5m">
@@ -252,34 +252,34 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="990" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="goS-uz-N1a">
-                                        <rect key="frame" x="76" y="13.999999999999986" width="306" height="48"/>
+                                        <rect key="frame" x="76" y="14" width="268.66666666666669" height="48"/>
                                         <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Event Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1cA-JV-bGE">
-                                        <rect key="frame" x="10" y="83.999999999999986" width="370" height="20.333333333333329"/>
+                                        <rect key="frame" x="10" y="84" width="332.66666666666669" height="20.333333333333329"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                         <color key="textColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="clock" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="H73-ZQ-KY5">
-                                        <rect key="frame" x="8" y="125.99999999999999" width="25" height="23.666666666666657"/>
+                                        <rect key="frame" x="7.9999999999999964" y="126.00000000000001" width="25.000000000000004" height="23.666666666666657"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="25" id="EbS-Fg-TM8"/>
                                             <constraint firstAttribute="height" constant="25" id="oDL-2t-72F"/>
                                         </constraints>
                                     </imageView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mappin.and.ellipse" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="XMs-iR-PcY">
-                                        <rect key="frame" x="8" y="168.99999999999997" width="25" height="24.999999999999986"/>
+                                        <rect key="frame" x="7.9999999999999964" y="169" width="25.000000000000004" height="25.000000000000014"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="25" id="dH8-mD-42I"/>
                                             <constraint firstAttribute="width" constant="25" id="vkB-80-NF8"/>
                                         </constraints>
                                     </imageView>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" scrollEnabled="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="cIk-rt-49S">
-                                        <rect key="frame" x="20" y="456.66666666666674" width="350" height="200"/>
+                                        <rect key="frame" x="20" y="496.99999999999994" width="312.66666666666669" height="233.33333333333331"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                         <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                         <color key="textColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
@@ -287,7 +287,7 @@
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalCompressionResistancePriority="998" scrollEnabled="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="teQ-bO-QRR">
-                                        <rect key="frame" x="41" y="163.66666666666663" width="337" height="280"/>
+                                        <rect key="frame" x="41" y="163.66666666666666" width="299.66666666666669" height="320.33333333333337"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                         <inset key="scrollIndicatorInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
@@ -297,7 +297,7 @@
                                         <dataDetectorType key="dataDetectorTypes" address="YES"/>
                                     </textView>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalCompressionResistancePriority="1000" scrollEnabled="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nha-5R-NZy">
-                                        <rect key="frame" x="41" y="119.33333333333333" width="337" height="36.333333333333329"/>
+                                        <rect key="frame" x="41" y="119.33333333333333" width="299.66666666666669" height="36.333333333333329"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                         <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                         <color key="textColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
@@ -342,14 +342,14 @@
                         <color key="backgroundColor" name="SystemBackgroundHighOpacity"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="Bvi-Eg-GpP" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="2Fa-Je-jxW" secondAttribute="bottom" constant="8" id="Eby-fD-GRf"/>
+                            <constraint firstItem="Bvi-Eg-GpP" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="2Fa-Je-jxW" secondAttribute="bottom" constant="24" id="Eby-fD-GRf"/>
                             <constraint firstItem="2Fa-Je-jxW" firstAttribute="centerX" secondItem="GN1-jC-c6s" secondAttribute="centerX" id="Fh4-hz-ARm"/>
-                            <constraint firstItem="Bvi-Eg-GpP" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="2Fa-Je-jxW" secondAttribute="trailing" constant="8" id="UTD-T9-cjD"/>
+                            <constraint firstItem="Bvi-Eg-GpP" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="2Fa-Je-jxW" secondAttribute="trailing" constant="24" id="UTD-T9-cjD"/>
                             <constraint firstItem="Bvi-Eg-GpP" firstAttribute="trailing" secondItem="2Fa-Je-jxW" secondAttribute="trailing" priority="985" constant="48" id="V8j-sd-V2l"/>
                             <constraint firstItem="2Fa-Je-jxW" firstAttribute="leading" secondItem="Bvi-Eg-GpP" secondAttribute="leading" priority="985" constant="48" id="XJQ-3C-Pfg"/>
-                            <constraint firstItem="2Fa-Je-jxW" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Bvi-Eg-GpP" secondAttribute="top" constant="8" id="Xa9-OH-v3h"/>
+                            <constraint firstItem="2Fa-Je-jxW" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Bvi-Eg-GpP" secondAttribute="top" constant="24" id="Xa9-OH-v3h"/>
                             <constraint firstItem="2Fa-Je-jxW" firstAttribute="centerY" secondItem="GN1-jC-c6s" secondAttribute="centerY" id="ipr-kf-dkP"/>
-                            <constraint firstItem="2Fa-Je-jxW" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Bvi-Eg-GpP" secondAttribute="leading" constant="8" id="pEg-ZJ-apn"/>
+                            <constraint firstItem="2Fa-Je-jxW" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Bvi-Eg-GpP" secondAttribute="leading" constant="24" id="pEg-ZJ-apn"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Bvi-Eg-GpP"/>
                         <connections>

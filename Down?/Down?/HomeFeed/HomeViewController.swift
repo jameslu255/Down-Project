@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 class HomeViewController: UIViewController {
 
@@ -15,6 +16,8 @@ class HomeViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
     
+    // USING BANG HERE, NEED TO FIGURE OUT WAY TO DEAL WITH THIS
+    var user: User = Auth.auth().currentUser!
     var buttons = ["Filter", "Sort", "Search", "Location", "Some", "Other", "Buttons", "That", "I", "Put", "In", "Here", "To", "Test", "Functionality"]
     
     let cellSpacing: CGFloat = 5.0
@@ -23,41 +26,37 @@ class HomeViewController: UIViewController {
     var backgroundGradient: CAGradientLayer = CAGradientLayer()
     var feedBottomCoverGradient: CAGradientLayer = CAGradientLayer()
     
-    var events: [OldEvent] = {
-        var events: [OldEvent] = []
-        let userPic = UIImage(named: "Matloff")
-        let user = DownUser(name: "Prof. Matloff", profilePicture: userPic)
-        let duration = Duration(startTime: Date(), endTime: Date())
-        
-        let event = OldEvent(user: user, title: "Free styling about mailing tubes", duration: duration, description: "Come thruuuuuu", numDown: 43, location: "545 Bainer Hall Dr, Davis, CA 95616", coordinates: nil, isPublic: false)
-        
-        let user2Pic = UIImage(named: "Sam")
-        let user2 = DownUser(name: "Sam King", profilePicture: user2Pic)
-        let duration2 = Duration(startTime: Date(timeIntervalSince1970: 0), endTime: Date(timeIntervalSince1970: 60))
-        let event2 = OldEvent(user: user2, title: "Dropping some sick beats about cyber security", duration: duration2, description: "", numDown: 500, location: "The MF White House. Through the front doors and on the first right.", coordinates: nil, isPublic: false)
-        
-        let testPic = UIImage()
-        let testUser = DownUser(name: "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.")
-        let testDuration = Duration(startTime: Date(timeIntervalSince1970: 0), endTime: Date(timeIntervalSince1970: 3600))
-        let testEvent = OldEvent(user: testUser, title: "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.", duration: testDuration, description: "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.", numDown: 50, location: "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.", coordinates: nil, isPublic: false)
-        
-        
-        for n in 1...50{
-            events.insert(event, at: 0)
-            events.insert(event2, at: 0)
-            events.insert(testEvent, at: 0)
-        }
-        
-        
-        return events
-    }()
+    var events: [Event] = []
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        view.updateGradient(gradient: backgroundGradient)
-        FeedBottomCover.updateGradient(gradient: feedBottomCoverGradient)
-    }
-    
+//    var events: [OldEvent] = {
+//        var events: [OldEvent] = []
+//        let userPic = UIImage(named: "Matloff")
+//        let user = DownUser(name: "Prof. Matloff", profilePicture: userPic)
+//        let duration = Duration(startTime: Date(), endTime: Date())
+//
+//        let event = OldEvent(user: user, title: "Free styling about mailing tubes", duration: duration, description: "Come thruuuuuu", numDown: 43, location: "545 Bainer Hall Dr, Davis, CA 95616", coordinates: nil, isPublic: false)
+//
+//        let user2Pic = UIImage(named: "Sam")
+//        let user2 = DownUser(name: "Sam King", profilePicture: user2Pic)
+//        let duration2 = Duration(startTime: Date(timeIntervalSince1970: 0), endTime: Date(timeIntervalSince1970: 60))
+//        let event2 = OldEvent(user: user2, title: "Dropping some sick beats about cyber security", duration: duration2, description: "", numDown: 500, location: "The MF White House. Through the front doors and on the first right.", coordinates: nil, isPublic: false)
+//
+//        let testPic = UIImage()
+//        let testUser = DownUser(name: "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.")
+//        let testDuration = Duration(startTime: Date(timeIntervalSince1970: 0), endTime: Date(timeIntervalSince1970: 3600))
+//        let testEvent = OldEvent(user: testUser, title: "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.", duration: testDuration, description: "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.", numDown: 50, location: "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.", coordinates: nil, isPublic: false)
+//
+//
+//        for n in 1...50{
+//            events.insert(event, at: 0)
+//            events.insert(event2, at: 0)
+//            events.insert(testEvent, at: 0)
+//        }
+//
+//
+//        return events
+//    }()
+//
     override func viewDidLoad() {
         super.viewDidLoad()
         registerNib()
@@ -66,9 +65,12 @@ class HomeViewController: UIViewController {
         self.Feed.estimatedRowHeight = UITableView.automaticDimension
         self.setUpFeed()
         Feed.backgroundColor = .clear
-        self.view.setGradientBackground(gradient: backgroundGradient, colorOne: .clear, colorTwo: .label, firstColorStart: 0.5, secondColorStart: 1.0)
-        self.FeedBottomCover.setGradientBackground(gradient: feedBottomCoverGradient, colorOne: .clear, colorTwo: .label, firstColorStart: -1.0, secondColorStart: 1)
+        self.FeedBottomCover.setGradientBackground(gradient: feedBottomCoverGradient, colorOne: .clear, colorTwo: .label, firstColorStart: 0.0, secondColorStart: 1)
         Feed.clipsToBounds = false
+        ApiEvent.getUnviewedEvent(uid: user.uid) { apiEvents in
+            self.events = apiEvents
+            self.Feed.reloadData()
+        }
     }
     
     func registerNib() {
@@ -78,7 +80,13 @@ class HomeViewController: UIViewController {
             flowLayout.estimatedItemSize = CGSize(width: 1, height: 1)
         }
     }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        FeedBottomCover.updateGradient(gradient: feedBottomCoverGradient)
+    }
 }
+
 // James ------------------------------------------------------------------------------------------------------------
 extension HomeViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -143,13 +151,13 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         let event = events[indexPath.section]
         
         eventCell.delegate = self
-        eventCell.event = event
+        //eventCell.event = event
         
-        eventCell.userProfileImageView.image = event.user.profilePicture
-        eventCell.userNameLabel.text = event.user.name
-        eventCell.eventTitleLabel.text = event.title
-        eventCell.durationLabel.text = event.duration.stringFormat
-        eventCell.locationText.text = event.location
+        eventCell.userProfileImageView.image = UIImage(named: "Default.ProfilePicture")
+        eventCell.userNameLabel.text = event.originalPoster
+        eventCell.eventTitleLabel.text = event.title ?? "error"
+        eventCell.durationLabel.text = event.stringShortFormat
+        eventCell.locationText.text = event.location?.place ?? "error"
         
         return eventCell
     }
@@ -221,8 +229,6 @@ extension UIView {
         gradientLayer.frame = self.bounds
         gradientLayer.colors = [colorOne.cgColor, colorTwo.cgColor]
         gradientLayer.locations = [firstColorStart, secondColorStart]
-//        gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
-//        gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
         
         layer.insertSublayer(gradientLayer, at: 0)
     }

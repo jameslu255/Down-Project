@@ -218,3 +218,20 @@ public class ApiEvent {
     }
 }
 
+
+// Display functionality
+extension Event {
+    var stringShortFormat: String {
+        get{
+            var result: String = ""
+            let formatter = DateFormatter()
+            formatter.dateStyle = .none
+            formatter.timeStyle = .short
+            let start = formatter.string(from: self.dates.startDate)
+            let end = formatter.string(from: self.dates.endDate)
+            result = "\(start) - \(end)"
+            result = result.replacingOccurrences(of: ":00", with: "")
+            return result
+        }
+    }
+}
