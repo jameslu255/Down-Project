@@ -226,6 +226,7 @@ class CreateEventController: UITableViewController {
       // segue to search location
       let nextVC = storyboard?.instantiateViewController(identifier: "searchLocation") as! SearchLocationController
       //nextVC.modalPresentationStyle = .fullScreen
+      //nextVC.userLocation = self.locationManager.location
       present(nextVC, animated: true, completion: nil)
       //locationField.becomeFirstResponder()
     case 7:
@@ -280,7 +281,6 @@ extension CreateEventController: CLLocationManagerDelegate {
   }
   
   func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-    print("auth did change")
     checkLocationAuthorization()
   }
 }

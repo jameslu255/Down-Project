@@ -3,6 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -318,40 +319,43 @@
             <point key="canvasLocation" x="884.05797101449286" y="70.982142857142847"/>
         </scene>
         <!--Search Location Controller-->
-        <scene sceneID="lXh-lS-bAl">
+        <scene sceneID="Wii-iE-7no">
             <objects>
-                <tableViewController storyboardIdentifier="searchLocation" id="VSv-hf-6kh" customClass="SearchLocationController" customModule="Down_" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="ix1-vC-gru">
+                <viewController storyboardIdentifier="searchLocation" id="BGx-dK-RNJ" customClass="SearchLocationController" customModule="Down_" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="F2x-ZF-wC3">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="qnx-ma-p17">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="DtB-5f-hhM" appends="YES" id="o8c-oz-Ud9"/>
+                                </connections>
+                            </mapView>
+                        </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <searchBar key="tableHeaderView" contentMode="redraw" searchBarStyle="minimal" placeholder="Search" showsCancelButton="YES" id="Se6-Sw-Dex">
-                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                            <textInputTraits key="textInputTraits"/>
-                        </searchBar>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" id="9r2-AB-pvY">
-                                <rect key="frame" x="0.0" y="72" width="414" height="43.5"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="9r2-AB-pvY" id="wGq-qx-RyH">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="VSv-hf-6kh" id="Hhs-Ml-5sp"/>
-                            <outlet property="delegate" destination="VSv-hf-6kh" id="3AP-B9-Bdt"/>
-                        </connections>
-                    </tableView>
+                        <constraints>
+                            <constraint firstItem="qnx-ma-p17" firstAttribute="top" secondItem="F2x-ZF-wC3" secondAttribute="top" id="1bA-ta-kMC"/>
+                            <constraint firstItem="qnx-ma-p17" firstAttribute="leading" secondItem="F2x-ZF-wC3" secondAttribute="leading" id="FXx-Wm-mbd"/>
+                            <constraint firstAttribute="trailing" secondItem="qnx-ma-p17" secondAttribute="trailing" id="sGk-vL-uiV"/>
+                            <constraint firstAttribute="bottom" secondItem="qnx-ma-p17" secondAttribute="bottom" id="wtc-2Z-oiR"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="VjU-MV-2vq"/>
+                    </view>
                     <connections>
-                        <outlet property="searchBar" destination="Se6-Sw-Dex" id="JJa-d0-uHk"/>
+                        <outlet property="mapView" destination="qnx-ma-p17" id="LUG-hG-9IQ"/>
+                        <outlet property="tapGesture" destination="DtB-5f-hhM" id="lL2-FG-Xu9"/>
                     </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="99R-ci-Pvp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Lwh-L6-RHg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="DtB-5f-hhM">
+                    <connections>
+                        <action selector="addPin:" destination="BGx-dK-RNJ" id="tz9-Q6-dUd"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2742.0289855072465" y="70.982142857142847"/>
+            <point key="canvasLocation" x="1657" y="71"/>
         </scene>
     </scenes>
 </document>
