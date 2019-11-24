@@ -189,6 +189,12 @@ class CreateEventController: UITableViewController {
     tableView.endUpdates()
   }
   
+  func setLocation() {
+    if let loc = location, let name = loc.name {
+      locationField.text = name
+    }
+  }
+  
   // MARK: Protocol Methods
   
   override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -225,8 +231,8 @@ class CreateEventController: UITableViewController {
     case 6:
       // segue to search location
       let nextVC = storyboard?.instantiateViewController(identifier: "searchLocation") as! SearchLocationController
-      //nextVC.modalPresentationStyle = .fullScreen
-      //nextVC.userLocation = self.locationManager.location
+      nextVC.modalPresentationStyle = .fullScreen
+      nextVC.createEventScreen = self
       present(nextVC, animated: true, completion: nil)
       //locationField.becomeFirstResponder()
     case 7:

@@ -18,6 +18,10 @@ class SearchLocationController: UIViewController, MKMapViewDelegate {
   let regionInMeters = 500.0
   
   let geoCoder = CLGeocoder()
+  
+  var selectedLocation: CLPlacemark?
+  
+  var createEventScreen: CreateEventController?
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -36,12 +40,19 @@ class SearchLocationController: UIViewController, MKMapViewDelegate {
     
     geoCoder.reverseGeocodeLocation(location) { placemarks, error in
       guard let placemark = placemarks?[0] else { return }
+      
+      self.selectedLocation = placemark
+      
       if let name = placemark.name, let coordinate = placemark.location?.coordinate {
         let pin = LocationPin(title: name, coordinate: coordinate)
         self.mapView.removeAnnotations(self.mapView.annotations)
         self.mapView.addAnnotation(pin)
       }
     }
+  }
+  
+  @IBAction func cancel(_ sender: Any) {
+    dismiss(animated: true, completion: nil)
   }
   
   func setupMapView() {
@@ -77,6 +88,32 @@ class SearchLocationController: UIViewController, MKMapViewDelegate {
     }
   }
   
+  @objc func action(_ sender: UIButton) {
+    let screen = createEventScreen!
+    screen.location = selectedLocation
+    screen.setLocation()
+    dismiss(animated: true, completion: nil)
+  }
+  
+  func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+    if (annotation is MKUserLocation) {
+      return nil
+    }
+    let annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "anno")
+    let button = UIButton(type: .contactAdd)
+    button.addTarget(self, action: #selector(action(_:)), for: .touchUpInside)
+    
+    annotationView.rightCalloutAccessoryView = button
+    annotationView.canShowCallout = true
+    return annotationView
+  }
+  
+  func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
+    
+    if let annotation = views.first(where: { $0.reuseIdentifier == "anno" })?.annotation {
+      mapView.selectAnnotation(annotation, animated: true)
+    }
+  }
 //  func search() {
 //    let search = MKLocalSearch(request: request)
 //    guard let query = request.naturalLanguageQuery else { return }
