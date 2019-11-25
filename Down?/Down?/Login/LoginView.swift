@@ -72,7 +72,7 @@ class LoginView: UIViewController, UITextFieldDelegate{
                 }
                 self.displayMessage(message: "Succesfully logged in", color: .green)
                 let storyboard = UIStoryboard(name: "HomeFeed", bundle: nil)
-                let newController = storyboard.instantiateViewController(withIdentifier: "homeViewController")
+                let newController = storyboard.instantiateViewController(withIdentifier: "mainNavigationViewController")
                 newController.modalPresentationStyle = .fullScreen
                 self.present(newController, animated: true, completion: nil)
             }

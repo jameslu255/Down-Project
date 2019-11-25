@@ -7,38 +7,24 @@
 
 import UIKit
 
-protocol EventCellDelegate {
-    func notDown(cell: EventCell)
-    func down(cell: EventCell)
+protocol SwipeableEventCellDelegate {
+    func swipeLeft(cell: EventCell)
+    func swipeRight(cell: EventCell)
     func tapped(event: Event)
 }
 
-class EventCell: UITableViewCell {
-
-    @IBOutlet weak var profilePictureImageView: UIImageView!
-    @IBOutlet weak var eventTitleLabel: UILabel!
-    @IBOutlet weak var usernameLabel: UILabel!
-    @IBOutlet weak var durationLabelBackgroundView: UIView!
-    @IBOutlet weak var durationLabel: UILabel!
-    @IBOutlet weak var locationTextView: UITextView!
-    @IBOutlet weak var CellSpacer: UIView!
+class SwipeableEventCell: EventCell {
     
+    var delegate: SwipeableEventCellDelegate?
     
-    var delegate: EventCellDelegate?
-    var event: Event?
-        
-    var cellId: Int = 0
     var originalCenter = CGPoint()
     var notDownOnDragRelease = false
     var downOnDragRelease = false
     var cueMaragin: CGFloat = 10.0
     var cueWidth: CGFloat = 50.0
-
-    override func awakeFromNib() {
-        self.backgroundColor = .systemBackground
-        self.selectionStyle = .none
-        
-        setupSubviews()
+    
+    override func commonInit() {
+        super.commonInit()
         setSubviewsConstraints()
         setupGestureRecognizers()
     }
@@ -71,10 +57,10 @@ class EventCell: UITableViewCell {
             downOnDragRelease = frame.origin.x > frame.size.width / 3.0
             
             let cueAlpha = abs(frame.origin.x) / (frame.size.width / 2.0)
-            downCueLabel.alpha = cueAlpha
-            downCueBackground.alpha = cueAlpha
-            notDownCueLabel.alpha = cueAlpha
-            notDownCueBackground.alpha = cueAlpha
+            rightSwipeCueLabel.alpha = cueAlpha
+            rightSwipeCueBackground.alpha = cueAlpha
+            leftSwipeCueLabel.alpha = cueAlpha
+            leftSwipeCueBackground.alpha = cueAlpha
             
         }
         
@@ -87,19 +73,19 @@ class EventCell: UITableViewCell {
             }
             if notDownOnDragRelease {
                 if let delegate = self.delegate {
-                    delegate.notDown(cell: self)
+                    delegate.swipeLeft(cell: self)
                 }
             }
             if downOnDragRelease {
                 if let delegate = self.delegate {
-                    delegate.down(cell: self)
+                    delegate.swipeRight(cell: self)
                 }
             }
             UIView.animate(withDuration: 0.2){
-                self.downCueLabel.alpha = 0
-                self.downCueBackground.alpha = 0
-                self.notDownCueLabel.alpha = 0
-                self.notDownCueBackground.alpha = 0
+                self.rightSwipeCueLabel.alpha = 0
+                self.rightSwipeCueBackground.alpha = 0
+                self.leftSwipeCueLabel.alpha = 0
+                self.leftSwipeCueBackground.alpha = 0
             }
         }
     }
@@ -118,27 +104,27 @@ class EventCell: UITableViewCell {
         return false
     }
     
-    let downCueBackground: UIView = {
+    let rightSwipeCueBackground: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 5
-        view.backgroundColor = .systemGreen
+        view.backgroundColor = .systemGray
         view.alpha = 0
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
-    let notDownCueBackground: UIView = {
+    let leftSwipeCueBackground: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 5
-        view.backgroundColor = .systemRed
+        view.backgroundColor = .systemGray
         view.alpha = 0
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
-    let downCueLabel: UILabel = {
+    let rightSwipeCueLabel: UILabel = {
         let label = UILabel()
-        label.text = "Down."
+        label.text = "No text"
         label.textColor = .white
         label.font = UIFont(name: "Noteworthy", size: 30)
         label.textAlignment = .center
@@ -147,9 +133,9 @@ class EventCell: UITableViewCell {
         return label
     }()
 
-    let notDownCueLabel: UILabel = {
+    let leftSwipeCueLabel: UILabel = {
         let label = UILabel()
-        label.text = "Not Down."
+        label.text = "No text"
         label.textColor = .white
         label.font = UIFont(name: "Noteworthy", size: 30)
         label.textAlignment = .center
@@ -157,10 +143,4 @@ class EventCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
-    func setupSubviews(){
-        profilePictureImageView.layer.cornerRadius = 5
-        durationLabelBackgroundView.layer.cornerRadius = 5
-        locationTextView.layer.cornerRadius = 5
-    }
 }

@@ -9,14 +9,14 @@ import Foundation
 import UIKit
 
 
-extension HomeViewController: EventCellDelegate {
-    func down(cell: EventCell) {
+extension HomeViewController: SwipeableEventCellDelegate {
+    func swipeRight(cell: EventCell) {
         removeEventCell(cell, withDirection: .right)
         print("down")
         // API call to add this event to Down list
     }
     
-    func notDown(cell: EventCell) {
+    func swipeLeft(cell: EventCell) {
         removeEventCell(cell, withDirection: .left)
         print("notDown")
         // API call to add this event to notDown list
@@ -29,13 +29,20 @@ extension HomeViewController: EventCellDelegate {
         eventDetailsPopup.event = event
         self.present(eventDetailsPopup, animated: true) {
             
-        }
-        
-        
+        }        
     }
 }
 
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
+    
+    func setUpFeed(){
+        self.Feed.rowHeight = UITableView.automaticDimension
+        self.Feed.estimatedRowHeight = UITableView.automaticDimension
+        Feed.register(SwipeableEventCell.self, forCellReuseIdentifier: "cellId")
+        Feed.delegate = self
+        Feed.separatorStyle = .none
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
@@ -57,7 +64,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = Feed.dequeueReusableCell(withIdentifier: "cellId", for: indexPath)
         
-        guard let eventCell = cell as? EventCell else {
+        guard let eventCell = cell as? SwipeableEventCell else {
             print("ISSUE")
             return cell
         }
@@ -65,7 +72,6 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         let event = events[indexPath.section]
         eventCell.delegate = self
         eventCell.event = event
-        
         eventCell.profilePictureImageView.image = UIImage(named: "Default.ProfilePicture")
         eventCell.usernameLabel.text = event.originalPoster
         eventCell.eventTitleLabel.text = event.title == "" ? "No title" : event.title ?? "No title"
@@ -73,15 +79,6 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         eventCell.locationTextView.text = event.location?.place ?? "No Location"
         
         return eventCell
-    }
-    
-    
-
-    func setUpFeed(){
-        let nibName = UINib(nibName: "EventCell", bundle: nil)
-        Feed.register(nibName, forCellReuseIdentifier: "cellId")
-        Feed.delegate = self
-        Feed.separatorStyle = .none
     }
     
     func removeEventCell(_ cell: EventCell, withDirection direction: UITableView.RowAnimation){

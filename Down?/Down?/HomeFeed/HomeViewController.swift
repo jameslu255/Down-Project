@@ -11,8 +11,6 @@ import Firebase
 class HomeViewController: UIViewController {
 
     @IBOutlet weak var Feed: UITableView!
-    @IBOutlet weak var BottomMenuBar: UIView!
-    
     @IBOutlet weak var collectionView: UICollectionView!
     
     // USING BANG HERE, NEED TO FIGURE OUT WAY TO DEAL WITH THIS
@@ -28,8 +26,6 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         registerNib()
         Feed.dataSource = self
-        self.Feed.rowHeight = UITableView.automaticDimension
-        self.Feed.estimatedRowHeight = UITableView.automaticDimension
         self.setUpFeed()
         
         ApiEvent.getUnviewedEvent(uid: user.uid) { apiEvents in

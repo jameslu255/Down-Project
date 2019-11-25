@@ -9,7 +9,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="178" id="KGk-i7-Jjw" customClass="EventCell" customModule="Down_" customModuleProvider="target">
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="178" id="KGk-i7-Jjw">
             <rect key="frame" x="0.0" y="0.0" width="320" height="178"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
@@ -110,15 +110,6 @@
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
-            <connections>
-                <outlet property="CellSpacer" destination="PJC-rt-0Ly" id="rsS-oA-Llh"/>
-                <outlet property="durationLabel" destination="JMz-CZ-DNy" id="Xmp-dG-uxk"/>
-                <outlet property="durationLabelBackgroundView" destination="L5w-mt-CdX" id="AgK-0a-cYq"/>
-                <outlet property="eventTitleLabel" destination="ZdB-7K-C6K" id="6Qe-qq-tUs"/>
-                <outlet property="locationTextView" destination="I0D-tU-9Pi" id="hdn-v9-jPv"/>
-                <outlet property="profilePictureImageView" destination="38V-Cg-uSd" id="PRx-wJ-MFe"/>
-                <outlet property="usernameLabel" destination="3JQ-h9-Cxo" id="zmP-zx-Y8R"/>
-            </connections>
             <point key="canvasLocation" x="131.8840579710145" y="178.79464285714286"/>
         </tableViewCell>
     </objects>
