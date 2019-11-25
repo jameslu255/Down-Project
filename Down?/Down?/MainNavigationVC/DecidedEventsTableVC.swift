@@ -16,7 +16,13 @@ class DecidedEventsTableVC: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         loadEvents()
+        tableView.register(EventCell.self, forCellReuseIdentifier: "down")
+        tableView.register(EventCell.self, forCellReuseIdentifier: "notDown")
         tableView.reloadData() // See if work without
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        tableView.reloadData()
     }
     
     func loadEvents(){
@@ -67,16 +73,30 @@ class DecidedEventsTableVC: UITableViewController {
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
         if indexPath.section == 0 {
-            
+            let cell = tableView.dequeueReusableCell(withIdentifier: "down", for: indexPath)
+            if let eventCell = cell as? EventCell {
+                let event = downEvents[indexPath.row]
+                eventCell.eventTitleLabel.text = event.title ?? "No title"
+                eventCell.usernameLabel.text = event.originalPoster
+                eventCell.durationLabel.text = event.stringShortFormat
+                eventCell.locationTextView.text = event.location?.place ?? "No location"
+                return eventCell
+            }
+            return cell
         }
         else {
-            
+            let cell = tableView.dequeueReusableCell(withIdentifier: "notDown", for: indexPath)
+            if let eventCell = cell as? EventCell {
+                let event = downEvents[indexPath.row]
+                eventCell.eventTitleLabel.text = event.title ?? "No title"
+                eventCell.usernameLabel.text = event.originalPoster
+                eventCell.durationLabel.text = event.stringShortFormat
+                eventCell.locationTextView.text = event.location?.place ?? "No location"
+                return eventCell
+            }
+            return cell
         }
-
-        return cell
     }
     
 

@@ -219,10 +219,10 @@
             </objects>
             <point key="canvasLocation" x="-1613" y="839"/>
         </scene>
-        <!--Table View Controller-->
+        <!--Decided Events TableVC-->
         <scene sceneID="3bw-Vi-8hJ">
             <objects>
-                <tableViewController storyboardIdentifier="decidedEventsVC" id="GMR-aN-IPH" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="decidedEventsVC" id="GMR-aN-IPH" customClass="DecidedEventsTableVC" customModule="Down_" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="BwI-FI-Evh">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

@@ -12,18 +12,19 @@ import UIKit
 extension HomeViewController: SwipeableEventCellDelegate {
     func swipeRight(cell: EventCell) {
         removeEventCell(cell, withDirection: .right)
-        print("down")
-        // API call to add this event to Down list
+        if let event = cell.event {
+            ApiEvent.addUserDown(event: event) {print("Added down to event")}
+        }
     }
     
     func swipeLeft(cell: EventCell) {
         removeEventCell(cell, withDirection: .left)
-        print("notDown")
-        // API call to add this event to notDown list
+                if let event = cell.event {
+            ApiEvent.addUserNotDown(event: event) {print("Added notDown to event")}
+        }
     }
     
     func tapped(event: Event) {
-        print("tapped")
         let storyboard = UIStoryboard(name: "HomeFeed", bundle: nil)
         guard let eventDetailsPopup = storyboard.instantiateViewController(withIdentifier: "eventDetailsPopup") as? EventDetailsPopupViewController else {return}
         eventDetailsPopup.event = event
@@ -38,7 +39,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     func setUpFeed(){
         self.Feed.rowHeight = UITableView.automaticDimension
         self.Feed.estimatedRowHeight = UITableView.automaticDimension
-        Feed.register(SwipeableEventCell.self, forCellReuseIdentifier: "cellId")
+        Feed.register(FeedEventCell.self, forCellReuseIdentifier: "cellId")
         Feed.delegate = self
         Feed.separatorStyle = .none
     }
