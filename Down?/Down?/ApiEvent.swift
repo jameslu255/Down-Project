@@ -287,7 +287,65 @@ public class ApiEvent {
     */
     public static func getUnviewedEvent(uid: String, completion: @escaping ([Event]) -> Void) {
         getViewedEventIDs(uid: uid) { viewedEventIDs in
-            db.collection("events").getDocuments() { (snapshot, error) in
+            db.collection("events")
+                .whereField("endTime", isLessThanOrEqualTo: Timestamp(date: Date()))
+                .getDocuments() { (snapshot, error) in
+                    var unviewedEvents = [Event]()
+                    if error != nil { return }
+                    guard let documents = snapshot?.documents else { return }
+                    for document in documents {
+                        let eventID = document.documentID
+                        if !viewedEventIDs.contains(eventID) {
+                            let event = Event(dict: document.data(), autoID: eventID)
+                            unviewedEvents.append(event)
+                        }
+                    }
+                    completion(unviewedEvents)
+            }
+        }
+    }
+    
+    /**
+        Fetches a list of event objects that the user did not respond to by optional filters.
+        
+        # Notes: #
+         This makes three separate API calls to get the down event IDs, not down event IDs, and the event IDs that
+          are not present in the those two former lists.
+
+        - parameter uid: The user ID
+        - parameter categories: The list of categories
+        - parameter distance: The distance from the current location
+        - parameter currentLocation: The user's current location
+        - parameter completion: Closure whose callback will contain the list of the event objects
+        - returns: Void
+
+       */
+    public static func getUnviewedEventFilter(uid: String, categories: [String]?, distance: Double?, currentLocation: EventLocation?, completion: @escaping ([Event]) -> Void) {
+        getViewedEventIDs(uid: uid) { viewedEventIDs in
+            var ref = db.collection("events")
+                .whereField("endTime", isLessThanOrEqualTo: Timestamp(date: Date()))
+            if let categories = categories {
+                ref = ref.whereField("categories", arrayContains: categories)
+            }
+            if let distance = distance, let currentLocation = currentLocation {
+                // ~1 mile of lat and lon in degrees
+                let lat = 0.0144927536231884
+                let lon = 0.0181818181818182
+
+                let lowerLat = currentLocation.latitude - (lat * distance)
+                let lowerLon = currentLocation.longitude - (lon * distance)
+
+                let greaterLat = currentLocation.latitude + (lat * distance)
+                let greaterLon = currentLocation.longitude + (lon * distance)
+
+                let lesserGeopoint = GeoPoint(latitude: lowerLat, longitude: lowerLon)
+                let greaterGeopoint = GeoPoint(latitude: greaterLat, longitude: greaterLon)
+                
+                ref = ref.whereField("location", isGreaterThan: lesserGeopoint)
+                        .whereField("location", isLessThan: greaterGeopoint)
+            }
+            
+            ref.getDocuments() { (snapshot, error) in
                 var unviewedEvents = [Event]()
                 if error != nil { return }
                 guard let documents = snapshot?.documents else { return }
@@ -326,7 +384,7 @@ public class ApiEvent {
         //we can't hae null doubles, so this is a workaround
         if let location = event.location {
             eventDict["location"] = GeoPoint(latitude: location.latitude,
-                                                   longitude: location.longitude)
+                                            longitude: location.longitude)
         }
         
         //add to the events collection
@@ -342,7 +400,11 @@ public class ApiEvent {
         let autoID = ref.documentID
         
         //add to user events table
-        db.collection("user_events").document(event.uid).collection("created").document(autoID).setData(["date": Timestamp(date: Date())]) { error in
+        db.collection("user_events")
+            .document(event.uid)
+            .collection("created")
+            .document(autoID)
+            .setData(["date": Timestamp(date: Date())]) { error in
             if let error = error {
                 responseError = error
             }
@@ -388,10 +450,14 @@ public class ApiEvent {
     public static func addUserDown(event: Event, completion: @escaping () -> Void) {
         guard let eventID = event.autoID else { return }
         
-        db.collection("user_events").document(event.uid).collection("down").document(eventID).setData(["date": Timestamp(date: Date())]) { error in
-            if error != nil { return }
-            db.collection("events").document(eventID).updateData(["numDown": FieldValue.increment(Int64(1))])
-            completion()
+        db.collection("user_events")
+            .document(event.uid)
+            .collection("down")
+            .document(eventID)
+            .setData(["date": Timestamp(date: Date())]) { error in
+                if error != nil { return }
+                db.collection("events").document(eventID).updateData(["numDown": FieldValue.increment(Int64(1))])
+                completion()
         }
     }
     
@@ -410,9 +476,94 @@ public class ApiEvent {
     public static func addUserNotDown(event: Event, completion: @escaping () -> Void) {
         guard let eventID = event.autoID else { return }
 
-        db.collection("user_events").document(event.uid).collection("not_down").document(eventID).setData(["date": Timestamp(date: Date())]) { error in
-            if error != nil { return }
-            completion()
+        db.collection("user_events")
+            .document(event.uid)
+            .collection("not_down")
+            .document(eventID)
+            .setData(["date": Timestamp(date: Date())]) { error in
+                if error != nil { return }
+                completion()
+        }
+    }
+    
+    /***
+    Updates the event information on Firestore on the `events` collection
+
+      - parameter event: The event object to be added to Firestore
+      - returns: AutoID of newly added event if added to events on Firestore
+
+     */
+    public static func updateEvent(event: Event, completion: @escaping () -> Void) {
+        guard let eventID = event.autoID else { return }
+        var eventDict = [
+            "title": event.title ?? "",
+            "description": event.description ?? "",
+            "uid": eventID,
+            "displayName": event.originalPoster,
+            "startTime": Timestamp(date: event.dates.startDate),
+            "endTime": Timestamp(date: event.dates.endDate),
+            "numDown": event.numDown,
+            "isPublic": event.isPublic,
+            "categories": event.categories ?? []
+            ] as [String : Any]
+        //we can't hae null doubles, so this is a workaround
+        if let location = event.location {
+            eventDict["location"] = GeoPoint(latitude: location.latitude,
+                                             longitude: location.longitude)
+        }
+        
+        //add to the events collection
+        db.collection("events").document(eventID).setData(eventDict) { error in
+            if let error = error {
+                print(error)
+            } else {
+                completion()
+            }
+        }
+    }
+    
+    /**
+     Undo the user's action on the event
+
+     - parameter event: The event object
+     - parameter uid: The user's event
+     - parameter from: Undo action from either `down` or `not_down`
+     - parameter completion: Closure whose callback will contain the list of the event objects
+     - returns: Void
+
+    */
+    public static func undoEventAction(event: Event, uid: String, from: String, completion: @escaping () -> Void) {
+        if (from != "down" || from != "not_down") { return }
+        guard let eventID = event.autoID else { return }
+        db.collection("user_events").document(uid).collection(from).document(eventID).delete() { error in
+            if let error = error {
+                print(error)
+            } else {
+                completion()
+            }
+        }
+    }
+    
+    /**
+     Removes the event from the `event` collection
+     
+     # Note: #
+     This only removes the event object from `event`, but it doesn't remove the references from
+     the `user_events` tables
+
+     - parameter event: The event object
+     - parameter completion: Closure whose callback will contain the list of the event objects
+     - returns: Void
+
+    */
+    public static func deleteEvent(event: Event, completion: @escaping () -> Void) {
+        guard let eventID = event.autoID else { return }
+        db.collection("events").document(eventID).delete() { error in
+            if let error = error {
+                print(error)
+            } else {
+                completion()
+            }
         }
     }
 }
