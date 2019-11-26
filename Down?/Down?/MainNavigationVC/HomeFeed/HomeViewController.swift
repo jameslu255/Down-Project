@@ -7,9 +7,12 @@
 
 import UIKit
 import Firebase
+import MapKit
 
 class HomeViewController: UIViewController {
 
+    let geoCoder = CLGeocoder()
+    
     @IBOutlet weak var Feed: UITableView!
     @IBOutlet weak var collectionView: UICollectionView!
     

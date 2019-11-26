@@ -7,7 +7,7 @@
 
 import Foundation
 import UIKit
-
+import MapKit
 
 extension HomeViewController: SwipeableEventCellDelegate {
     func swipeRight(cell: EventCell) {
@@ -73,7 +73,17 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         eventCell.usernameLabel.text = event.originalPoster
         eventCell.eventTitleLabel.text = event.title == "" ? "No title" : event.title ?? "No title"
         eventCell.durationLabel.text = event.stringShortFormat
-        eventCell.locationTextView.text = event.location?.place ?? "No Location"
+        if let lat = event.location?.latitude, let long = event.location?.longitude {
+            let location = CLLocation(latitude: lat, longitude: long)
+            var locationString: String?
+            geoCoder.reverseGeocodeLocation(location) { placemarks, error in
+                if error != nil {return}
+                if let placemark = placemarks?[0] {
+                    locationString = placemark.name
+                }
+            }
+            eventCell.locationTextView.text = locationString ?? "No location"
+        }
         
         return eventCell
     }

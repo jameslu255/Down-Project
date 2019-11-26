@@ -7,11 +7,13 @@
 
 import UIKit
 import Firebase
+import MapKit
 
 class DecidedEventsTableVC: UITableViewController {
 
     var downEvents: [Event] = []
     var notDownEvents: [Event] = []
+    let geoCoder = CLGeocoder()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,68 +32,49 @@ class DecidedEventsTableVC: UITableViewController {
         notDownEvents = getNotDownEvents()
     }
     
-    
-    // ------ For testing only -------
-    func getDownEvents() -> [Event] {
-        let dateStart = Date()
-        let dateEnd = dateStart.advanced(by: 3600)
-        let location = EventLocation(latitude: 38.558451, longitude: -121.743431)
-        let event = Event(displayName: "Caleb Bolton", uid: "lgefCO4Io2ffOzETaEaAw1GeKvb2", date: EventDate(startDate: dateStart, endDate: dateEnd), isPublic: false, description: "Having a hell of a time", title: "Building an Iron Man suit", location: location)
-        return [event]
+    func getDownEvents() -> [Event]{
+        guard let user = Auth.auth().currentUser else {
+            print("Invalid user in DecidedEventsTableVC")
+            return []
+        }
+        var downEvents: [Event] = []
+        var downEventIDs: [String] = []
+        ApiEvent.getDownEventIDs(uid: user.uid) { eventIDs in
+            downEventIDs = eventIDs
+        }
+        downEventIDs.forEach { id in
+            ApiEvent.getEventDetails(autoID: id) { event in
+                if let event = event {
+                    downEvents.append(event)
+                }
+            }
+        }
+        return downEvents
     }
-    
-    func getNotDownEvents() -> [Event] {
-        let dateStart = Date()
-        let dateEnd = dateStart.advanced(by: 7200)
-        let location = EventLocation(latitude: 38.897810, longitude: -77.036909)
-        let event = Event(displayName: "Donald Trump", uid: "lgefCO4Io2ffOzETaEaAw1GeKvb2", date: EventDate(startDate: dateStart, endDate: dateEnd), isPublic: false, description: "Gee how great am I", title: "Staring at self in mirror", location: location)
-        return [event]
+
+    func getNotDownEvents() -> [Event]{
+        guard let user = Auth.auth().currentUser else {
+            print("Invalid user in DecidedEventsTableVC")
+            return []
+        }
+
+        var notDownEvents: [Event] = []
+        var notDownEventIDs: [String] = []
+
+        ApiEvent.getNotDownEventIDs(uid: user.uid) { eventIDs in
+            notDownEventIDs = eventIDs
+        }
+
+        notDownEventIDs.forEach { id in
+            ApiEvent.getEventDetails(autoID: id) { event in
+                if let event = event {
+                    notDownEvents.append(event)
+                }
+            }
+        }
+
+        return notDownEvents
     }
-    // ------------------------------
-    
-//    func getDownEvents() -> [Event]{
-//        guard let user = Auth.auth().currentUser else {
-//            print("Invalid user in DecidedEventsTableVC")
-//            return []
-//        }
-//        var downEvents: [Event] = []
-//        var downEventIDs: [String] = []
-//        ApiEvent.getDownEventIDs(uid: user.uid) { eventIDs in
-//            downEventIDs = eventIDs
-//        }
-//        downEventIDs.forEach { id in
-//            ApiEvent.getEventDetails(autoID: id) { event in
-//                if let event = event {
-//                    downEvents.append(event)
-//                }
-//            }
-//        }
-//        return downEvents
-//    }
-//
-//    func getNotDownEvents() -> [Event]{
-//        guard let user = Auth.auth().currentUser else {
-//            print("Invalid user in DecidedEventsTableVC")
-//            return []
-//        }
-//
-//        var notDownEvents: [Event] = []
-//        var notDownEventIDs: [String] = []
-//
-//        ApiEvent.getNotDownEventIDs(uid: user.uid) { eventIDs in
-//            notDownEventIDs = eventIDs
-//        }
-//
-//        notDownEventIDs.forEach { id in
-//            ApiEvent.getEventDetails(autoID: id) { event in
-//                if let event = event {
-//                    notDownEvents.append(event)
-//                }
-//            }
-//        }
-//
-//        return notDownEvents
-//    }
     
     // MARK: - Table view data source
 
@@ -119,7 +102,17 @@ class DecidedEventsTableVC: UITableViewController {
                 eventCell.eventTitleLabel.text = event.title ?? "No title"
                 eventCell.usernameLabel.text = event.originalPoster
                 eventCell.durationLabel.text = event.stringShortFormat
-                eventCell.locationTextView.text = event.location?.place ?? "No location"
+                if let lat = event.location?.latitude, let long = event.location?.longitude {
+                    let location = CLLocation(latitude: lat, longitude: long)
+                    var locationString: String?
+                    geoCoder.reverseGeocodeLocation(location) { placemarks, error in
+                        if error != nil {return}
+                        if let placemark = placemarks?[0] {
+                            locationString = placemark.name
+                        }
+                    }
+                    eventCell.locationTextView.text = locationString ?? "No location"
+                }
                 return eventCell
             }
             return cell
@@ -131,7 +124,17 @@ class DecidedEventsTableVC: UITableViewController {
                 eventCell.eventTitleLabel.text = event.title ?? "No title"
                 eventCell.usernameLabel.text = event.originalPoster
                 eventCell.durationLabel.text = event.stringShortFormat
-                eventCell.locationTextView.text = event.location?.place ?? "No location"
+                if let lat = event.location?.latitude, let long = event.location?.longitude {
+                    let location = CLLocation(latitude: lat, longitude: long)
+                    var locationString: String?
+                    geoCoder.reverseGeocodeLocation(location) { placemarks, error in
+                        if error != nil {return}
+                        if let placemark = placemarks?[0] {
+                            locationString = placemark.name
+                        }
+                    }
+                    eventCell.locationTextView.text = locationString ?? "No location"
+                }
                 return eventCell
             }
             return cell

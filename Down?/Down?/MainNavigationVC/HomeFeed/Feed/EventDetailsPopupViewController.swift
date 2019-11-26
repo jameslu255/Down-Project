@@ -6,10 +6,12 @@
 //
 
 import UIKit
+import MapKit
 
 class EventDetailsPopupViewController: UIViewController {
 
     var event: Event? = nil
+    let geoCoder = CLGeocoder()
     
     @IBOutlet weak var Container: UIView!
     @IBOutlet weak var ProfilePicture: UIImageView!
@@ -46,7 +48,17 @@ class EventDetailsPopupViewController: UIViewController {
             self.EventTitle.text = "Error"
         }
         self.Duration.text = event?.stringShortFormat ?? "Error"
-        self.Location.text = event?.location?.place ?? "Error"
+        if let lat = event?.location?.latitude, let long = event?.location?.longitude {
+            let location = CLLocation(latitude: lat, longitude: long)
+            var locationString: String?
+            geoCoder.reverseGeocodeLocation(location) { placemarks, error in
+                if error != nil {return}
+                if let placemark = placemarks?[0] {
+                    locationString = placemark.name
+                }
+            }
+            self.Location.text = locationString ?? "No location"
+        }
         self.Description.text = event?.description ?? "Error"
         if self.Description.text.isEmpty {
             self.Description.removeFromSuperview()
