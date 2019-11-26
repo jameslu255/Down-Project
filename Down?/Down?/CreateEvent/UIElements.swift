@@ -8,6 +8,7 @@
 //
 
 import UIKit
+import MapKit
 
 // Adds a place holder for UITextView that matches that of UITextField
 extension UITextView: UITextViewDelegate {
@@ -98,5 +99,16 @@ class RoundButton: UIButton {
   required init?(coder: NSCoder) {
     super.init(coder: coder)
     setup()
+  }
+}
+
+class LocationPin: NSObject, MKAnnotation {
+  var coordinate: CLLocationCoordinate2D
+  var title: String?
+  
+  init(title: String, coordinate: CLLocationCoordinate2D) {
+    self.title = title
+    self.coordinate = coordinate
+    super.init()
   }
 }

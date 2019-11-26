@@ -8,126 +8,156 @@
 import UIKit
 import MapKit
 
-class SearchLocationController: UITableViewController {
+class SearchLocationController: UIViewController, MKMapViewDelegate {
   
-  @IBOutlet weak var searchBar: UISearchBar!
+  @IBOutlet weak var mapView: MKMapView!
+  @IBOutlet var tapGesture: UITapGestureRecognizer!
   
-  let request = MKLocalSearch.Request()
-  var searchResults: [MKPlacemark] = []
+  let locationManager = CLLocationManager()
+  //var userLocation: CLLocation?
+  let regionInMeters = 500.0
+  
+  let geoCoder = CLGeocoder()
+  
+  var selectedLocation: CLPlacemark?
+  
+  var createEventScreen: CreateEventController?
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    searchBar.delegate = self
-    request.resultTypes = .pointOfInterest
+    mapView.delegate = self
+    mapView.showsUserLocation = true
+    mapView.isRotateEnabled = false
+    locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
     
-    // Uncomment the following line to preserve selection between presentations
-    // self.clearsSelectionOnViewWillAppear = false
-
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-     self.navigationItem.rightBarButtonItem = self.editButtonItem
+    setupMapView()
   }
   
-  func search() {
-    var tempList: [MKPlacemark] = []
-    let search = MKLocalSearch(request: request)
-    guard let query = request.naturalLanguageQuery else { return }
-    if (query.isEmpty) {
-      if (search.isSearching) {
-        search.cancel()
-      }
-      searchResults = tempList
-      tableView.reloadData()
-    }
+  @IBAction func addPin(_ sender: UITapGestureRecognizer) {
+    let tapLocation = sender.location(in: mapView)
+    let mapCoords = mapView.convert(tapLocation, toCoordinateFrom: mapView)
+    let location = CLLocation(latitude: mapCoords.latitude, longitude: mapCoords.longitude)
     
-    if (search.isSearching) {
-      print("cancel search")
-      search.cancel()
-    }
-    search.start { response, error in
-      guard let r = response else { print("no r")
-        return } // no r if type in gibberish
-      if (r.mapItems.isEmpty) {
-        print("no results")
-      }
+    geoCoder.reverseGeocodeLocation(location) { placemarks, error in
+      guard let placemark = placemarks?[0] else { return }
       
-      for item in r.mapItems {
-        print("\(item.name!)")
-        tempList.append(item.placemark)
-      }
-      if (error != nil) {
-        print("error")
-      }
+      self.selectedLocation = placemark
       
-      self.searchResults = tempList
-     
+      if let name = placemark.name, let coordinate = placemark.location?.coordinate {
+        let pin = LocationPin(title: name, coordinate: coordinate)
+        self.mapView.removeAnnotations(self.mapView.annotations)
+        self.mapView.addAnnotation(pin)
+      }
     }
-    tableView.reloadData()
-  }
-
-  // MARK: - Table view data source
-
-  override func numberOfSections(in tableView: UITableView) -> Int {
-      // #warning Incomplete implementation, return the number of sections
-      return 1
-  }
-
-  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return searchResults.count
-  }
-
-  
-  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-    cell.textLabel?.text = searchResults[indexPath.row].name!
-    return cell
   }
   
-
-  /*
-  // Override to support conditional editing of the table view.
-  override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-      // Return false if you do not want the specified item to be editable.
-      return true
+  @IBAction func cancel(_ sender: Any) {
+    dismiss(animated: true, completion: nil)
   }
-  */
-
-  /*
-  // Override to support editing the table view.
-  override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-      if editingStyle == .delete {
-          // Delete the row from the data source
-          tableView.deleteRows(at: [indexPath], with: .fade)
-      } else if editingStyle == .insert {
-          // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-      }
+  
+  @IBAction func centerScreen(_ sender: Any) {
+    setupMapView()
   }
-  */
-
-  /*
-  // Override to support rearranging the table view.
-  override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+  
+  func setupMapView() {
+    if let coordinate = locationManager.location?.coordinate {
+      let region = MKCoordinateRegion(center: coordinate, latitudinalMeters: regionInMeters, longitudinalMeters: regionInMeters)
+      mapView.setRegion(region, animated: true)
+    }
   }
-  */
-
-  /*
-  // Override to support conditional rearranging of the table view.
-  override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-      // Return false if you do not want the item to be re-orderable.
-      return true
+  
+  func checkLocationAuthorization() {
+    switch CLLocationManager.authorizationStatus() {
+    case .authorizedWhenInUse:
+      // Do something
+      setupMapView()
+      locationManager.startUpdatingLocation()
+      break
+    case .denied:
+      // Tell user to enable
+      break
+    case .notDetermined:
+      // Prompt a request
+      locationManager.requestWhenInUseAuthorization()
+      break
+    case .restricted:
+      // Show alert letting them know what's up
+      break
+    case .authorizedAlways:
+      // I guess we do stuff here too
+      break
+    default:
+      print("shit")
+      break
+    }
   }
-  */
+  
+  @objc func action(_ sender: UIButton) {
+    let screen = createEventScreen!
+    screen.location = selectedLocation
+    screen.setLocation()
+    dismiss(animated: true, completion: nil)
+  }
+  
+  func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+    if (annotation is MKUserLocation) {
+      return nil
+    }
+    let annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "anno")
+    let button = UIButton(type: .contactAdd)
+    button.addTarget(self, action: #selector(action(_:)), for: .touchUpInside)
+    
+    annotationView.rightCalloutAccessoryView = button
+    annotationView.canShowCallout = true
+    return annotationView
+  }
+  
+  func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
+    
+    if let annotation = views.first(where: { $0.reuseIdentifier == "anno" })?.annotation {
+      mapView.selectAnnotation(annotation, animated: true)
+    }
+  }
+//  func search() {
+//    let search = MKLocalSearch(request: request)
+//    guard let query = request.naturalLanguageQuery else { return }
+//    if (query.isEmpty) {
+//      if (search.isSearching) {
+//        search.cancel()
+//      }
+//    }
+//
+//    if (search.isSearching) {
+//      print("cancel search")
+//      search.cancel()
+//    }
+//    search.start { response, error in
+//      guard let r = response else { print("no r")
+//        return } // no r if type in gibberish
+//      if (r.mapItems.isEmpty) {
+//        print("no results")
+//      }
+//
+//      for item in r.mapItems {
+//        print("\(item.name!)")
+//      }
+//      if (error != nil) {
+//        print("error")
+//      }
+//    }
+//  }
 
 }
-extension SearchLocationController: UISearchBarDelegate {
-  func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-    guard let query = searchBar.text else { return }
 
-    request.naturalLanguageQuery = query
-    search()
+extension SearchLocationController: CLLocationManagerDelegate {
+  func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    guard let location = locations.last else { return }
+    let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+    let region = MKCoordinateRegion(center: center, latitudinalMeters: regionInMeters, longitudinalMeters: regionInMeters)
+    mapView.setRegion(region, animated: true)
   }
   
-  func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-    searchBar.resignFirstResponder()
+  func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+    checkLocationAuthorization()
   }
 }
