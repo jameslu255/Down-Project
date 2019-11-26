@@ -16,8 +16,8 @@ class DecidedEventsTableVC: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         loadEvents()
-        tableView.register(EventCell.self, forCellReuseIdentifier: "down")
-        tableView.register(EventCell.self, forCellReuseIdentifier: "notDown")
+        tableView.register(DownEventCell.self, forCellReuseIdentifier: "down")
+        tableView.register(NotDownEventCell.self, forCellReuseIdentifier: "notDown")
         tableView.reloadData() // See if work without
     }
     
@@ -26,33 +26,72 @@ class DecidedEventsTableVC: UITableViewController {
     }
     
     func loadEvents(){
-        guard let user = Auth.auth().currentUser else {
-            print("Invalid user in DecidedEventsTableVC")
-            return
-        }
-        var downEventIDs: [String] = []
-        var notDownEventIDs: [String] = []
-        ApiEvent.getDownEventIDs(uid: user.uid) { eventIDs in
-            downEventIDs = eventIDs
-        }
-        ApiEvent.getNotDownEventIDs(uid: user.uid) { eventIDs in
-            notDownEventIDs = eventIDs
-        }
-        downEventIDs.forEach { id in
-            ApiEvent.getEventDetails(autoID: id) { event in
-                if let event = event {
-                    self.downEvents.append(event)
-                }
-            }
-        }
-        notDownEventIDs.forEach { id in
-            ApiEvent.getEventDetails(autoID: id) { event in
-                if let event = event {
-                    self.notDownEvents.append(event)
-                }
-            }
-        }
+        downEvents = getDownEvents()
+        notDownEvents = getNotDownEvents()
     }
+    
+    
+    // ------ For testing only -------
+    func getDownEvents() -> [Event] {
+        let dateStart = Date()
+        let dateEnd = dateStart.advanced(by: 3600)
+        let location = EventLocation(latitude: 38.558451, longitude: -121.743431)
+        let event = Event(displayName: "Caleb Bolton", uid: "lgefCO4Io2ffOzETaEaAw1GeKvb2", date: EventDate(startDate: dateStart, endDate: dateEnd), isPublic: false, description: "Having a hell of a time", title: "Building an Iron Man suit", location: location)
+        return [event]
+    }
+    
+    func getNotDownEvents() -> [Event] {
+        let dateStart = Date()
+        let dateEnd = dateStart.advanced(by: 7200)
+        let location = EventLocation(latitude: 38.897810, longitude: -77.036909)
+        let event = Event(displayName: "Donald Trump", uid: "lgefCO4Io2ffOzETaEaAw1GeKvb2", date: EventDate(startDate: dateStart, endDate: dateEnd), isPublic: false, description: "Gee how great am I", title: "Staring at self in mirror", location: location)
+        return [event]
+    }
+    // ------------------------------
+    
+//    func getDownEvents() -> [Event]{
+//        guard let user = Auth.auth().currentUser else {
+//            print("Invalid user in DecidedEventsTableVC")
+//            return []
+//        }
+//        var downEvents: [Event] = []
+//        var downEventIDs: [String] = []
+//        ApiEvent.getDownEventIDs(uid: user.uid) { eventIDs in
+//            downEventIDs = eventIDs
+//        }
+//        downEventIDs.forEach { id in
+//            ApiEvent.getEventDetails(autoID: id) { event in
+//                if let event = event {
+//                    downEvents.append(event)
+//                }
+//            }
+//        }
+//        return downEvents
+//    }
+//
+//    func getNotDownEvents() -> [Event]{
+//        guard let user = Auth.auth().currentUser else {
+//            print("Invalid user in DecidedEventsTableVC")
+//            return []
+//        }
+//
+//        var notDownEvents: [Event] = []
+//        var notDownEventIDs: [String] = []
+//
+//        ApiEvent.getNotDownEventIDs(uid: user.uid) { eventIDs in
+//            notDownEventIDs = eventIDs
+//        }
+//
+//        notDownEventIDs.forEach { id in
+//            ApiEvent.getEventDetails(autoID: id) { event in
+//                if let event = event {
+//                    notDownEvents.append(event)
+//                }
+//            }
+//        }
+//
+//        return notDownEvents
+//    }
     
     // MARK: - Table view data source
 
@@ -75,7 +114,7 @@ class DecidedEventsTableVC: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "down", for: indexPath)
-            if let eventCell = cell as? EventCell {
+            if let eventCell = cell as? DownEventCell {
                 let event = downEvents[indexPath.row]
                 eventCell.eventTitleLabel.text = event.title ?? "No title"
                 eventCell.usernameLabel.text = event.originalPoster
@@ -87,8 +126,8 @@ class DecidedEventsTableVC: UITableViewController {
         }
         else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "notDown", for: indexPath)
-            if let eventCell = cell as? EventCell {
-                let event = downEvents[indexPath.row]
+            if let eventCell = cell as? NotDownEventCell {
+                let event = notDownEvents[indexPath.row]
                 eventCell.eventTitleLabel.text = event.title ?? "No title"
                 eventCell.usernameLabel.text = event.originalPoster
                 eventCell.durationLabel.text = event.stringShortFormat

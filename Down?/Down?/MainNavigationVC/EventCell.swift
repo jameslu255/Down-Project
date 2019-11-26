@@ -19,6 +19,7 @@ class EventCell: UITableViewCell {
     @IBOutlet weak var durationLabel: UILabel!
     @IBOutlet weak var locationTextView: UITextView!
     @IBOutlet weak var CellSpacer: UIView!
+    @IBOutlet weak var nonSpacerArea: UIView!
     
     var view: UIView?
     
@@ -31,6 +32,7 @@ class EventCell: UITableViewCell {
         self.view = view
         self.contentView.addSubview(view)
         self.selectionStyle = .none
+        self.view?.frame = self.contentView.bounds
         setupSubviews()
     }
     

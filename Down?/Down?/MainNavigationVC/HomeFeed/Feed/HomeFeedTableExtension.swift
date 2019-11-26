@@ -12,16 +12,16 @@ import UIKit
 extension HomeViewController: SwipeableEventCellDelegate {
     func swipeRight(cell: EventCell) {
         removeEventCell(cell, withDirection: .right)
-        if let event = cell.event {
-            ApiEvent.addUserDown(event: event) {print("Added down to event")}
-        }
+//        if let event = cell.event {
+//            ApiEvent.addUserDown(event: event) {}
+//        }
     }
     
     func swipeLeft(cell: EventCell) {
         removeEventCell(cell, withDirection: .left)
-                if let event = cell.event {
-            ApiEvent.addUserNotDown(event: event) {print("Added notDown to event")}
-        }
+//        if let event = cell.event {
+//            ApiEvent.addUserNotDown(event: event) {}
+//        }
     }
     
     func tapped(event: Event) {
@@ -37,29 +37,25 @@ extension HomeViewController: SwipeableEventCellDelegate {
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     
     func setUpFeed(){
+        self.Feed.rowHeight = 100
         self.Feed.rowHeight = UITableView.automaticDimension
         self.Feed.estimatedRowHeight = UITableView.automaticDimension
         Feed.register(FeedEventCell.self, forCellReuseIdentifier: "cellId")
         Feed.delegate = self
         Feed.separatorStyle = .none
+        Feed.reloadData()
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        UITableView.automaticDimension
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        events.count
+        return 1
     }
     
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return cellSpacing
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = UIView()
-        headerView.backgroundColor = UIColor.clear
-        return headerView
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return events.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -70,7 +66,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
             return cell
         }
                 
-        let event = events[indexPath.section]
+        let event = events[indexPath.row]
         eventCell.delegate = self
         eventCell.event = event
         eventCell.profilePictureImageView.image = UIImage(named: "Default.ProfilePicture")
@@ -86,10 +82,10 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         guard let indexPath = Feed.indexPath(for: cell) else {
             return
         }
-        events.remove(at: indexPath.section)
+        events.remove(at: indexPath.row)
         
         Feed.beginUpdates()
-        Feed.deleteSections([indexPath.section], with: direction)
+        Feed.deleteRows(at: [indexPath], with: direction)
         Feed.endUpdates()
     }
 }

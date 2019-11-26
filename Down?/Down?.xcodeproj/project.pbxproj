@@ -10,6 +10,7 @@
 		035836BC237F9442000C0D30 /* SwipeableEventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035836BA237F9442000C0D30 /* SwipeableEventCell.swift */; };
 		035AD4FA238A7DC2005B073A /* HomeFeedFilterExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035AD4F9238A7DC2005B073A /* HomeFeedFilterExtension.swift */; };
 		035AD4FC238A7E24005B073A /* HomeFeedTableExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035AD4FB238A7E24005B073A /* HomeFeedTableExtension.swift */; };
+		0368BDA2238CFA6A00482CA1 /* DownNotDownEventCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0368BDA1238CFA6A00482CA1 /* DownNotDownEventCells.swift */; };
 		03759DE1238231A8009ACE37 /* SwipeableEventCellConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03759DE0238231A8009ACE37 /* SwipeableEventCellConstraints.swift */; };
 		03759DE5238243AA009ACE37 /* DownClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03759DE4238243AA009ACE37 /* DownClasses.swift */; };
 		03759DE72383D221009ACE37 /* EventDetailsPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03759DE62383D221009ACE37 /* EventDetailsPopupViewController.swift */; };
@@ -39,7 +40,6 @@
 		846C10BA237B96D9001A4BDD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 846C10B9237B96D9001A4BDD /* GoogleService-Info.plist */; };
 		8486A9C42376269200ABB50B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8486A9C32376269200ABB50B /* AppDelegate.swift */; };
 		8486A9C62376269200ABB50B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8486A9C52376269200ABB50B /* SceneDelegate.swift */; };
-		8486A9C82376269200ABB50B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8486A9C72376269200ABB50B /* ViewController.swift */; };
 		8486A9CB2376269200ABB50B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8486A9C92376269200ABB50B /* Main.storyboard */; };
 		8486A9CD2376269400ABB50B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8486A9CC2376269400ABB50B /* Assets.xcassets */; };
 		8486A9D02376269400ABB50B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8486A9CE2376269400ABB50B /* LaunchScreen.storyboard */; };
@@ -50,6 +50,7 @@
 		035836BA237F9442000C0D30 /* SwipeableEventCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeableEventCell.swift; sourceTree = "<group>"; };
 		035AD4F9238A7DC2005B073A /* HomeFeedFilterExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedFilterExtension.swift; sourceTree = "<group>"; };
 		035AD4FB238A7E24005B073A /* HomeFeedTableExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedTableExtension.swift; sourceTree = "<group>"; };
+		0368BDA1238CFA6A00482CA1 /* DownNotDownEventCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownNotDownEventCells.swift; sourceTree = "<group>"; };
 		03759DE0238231A8009ACE37 /* SwipeableEventCellConstraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeableEventCellConstraints.swift; sourceTree = "<group>"; };
 		03759DE4238243AA009ACE37 /* DownClasses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownClasses.swift; sourceTree = "<group>"; };
 		03759DE62383D221009ACE37 /* EventDetailsPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailsPopupViewController.swift; sourceTree = "<group>"; };
@@ -82,7 +83,6 @@
 		8486A9C02376269200ABB50B /* Down?.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Down?.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8486A9C32376269200ABB50B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8486A9C52376269200ABB50B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		8486A9C72376269200ABB50B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		8486A9CA2376269200ABB50B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8486A9CC2376269400ABB50B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8486A9CF2376269400ABB50B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -125,15 +125,25 @@
 			path = Feed;
 			sourceTree = "<group>";
 		};
+		0368BDA0238CFA2D00482CA1 /* DecidedEventsTable */ = {
+			isa = PBXGroup;
+			children = (
+				0380C121238BAEB30038558A /* DecidedEventsTableVC.swift */,
+				0368BDA1238CFA6A00482CA1 /* DownNotDownEventCells.swift */,
+			);
+			path = DecidedEventsTable;
+			sourceTree = "<group>";
+		};
 		037A3051238BEA830058FC19 /* MainNavigationVC */ = {
 			isa = PBXGroup;
 			children = (
+				845F4A85237E61E30054BC18 /* HomeFeed */,
 				0380C11F238BA23D0038558A /* MainNavigationViewController.swift */,
 				0380C124238BB7020038558A /* EventCell.swift */,
 				03F06B4A238BD43900B6E78D /* EventCell.xib */,
 				035836BA237F9442000C0D30 /* SwipeableEventCell.swift */,
 				03759DE0238231A8009ACE37 /* SwipeableEventCellConstraints.swift */,
-				0380C121238BAEB30038558A /* DecidedEventsTableVC.swift */,
+				0368BDA0238CFA2D00482CA1 /* DecidedEventsTable */,
 			);
 			path = MainNavigationVC;
 			sourceTree = "<group>";
@@ -194,13 +204,11 @@
 		8486A9C22376269200ABB50B /* Down? */ = {
 			isa = PBXGroup;
 			children = (
-				037A3051238BEA830058FC19 /* MainNavigationVC */,
 				845F4A8D237E62870054BC18 /* CreateEvent */,
 				845F4A8C237E61FC0054BC18 /* Login */,
-				845F4A85237E61E30054BC18 /* HomeFeed */,
+				037A3051238BEA830058FC19 /* MainNavigationVC */,
 				03759DE4238243AA009ACE37 /* DownClasses.swift */,
 				8486A9C52376269200ABB50B /* SceneDelegate.swift */,
-				8486A9C72376269200ABB50B /* ViewController.swift */,
 				8486A9C92376269200ABB50B /* Main.storyboard */,
 				8486A9CC2376269400ABB50B /* Assets.xcassets */,
 				8486A9C32376269200ABB50B /* AppDelegate.swift */,
@@ -353,11 +361,11 @@
 				840BE11723876BED002A6A9F /* SearchLocationController.swift in Sources */,
 				09DD15D1237BF501002BE8C9 /* ResetView.swift in Sources */,
 				03759DE5238243AA009ACE37 /* DownClasses.swift in Sources */,
+				0368BDA2238CFA6A00482CA1 /* DownNotDownEventCells.swift in Sources */,
 				0380C125238BB7020038558A /* EventCell.swift in Sources */,
 				097130D123875FEC00FB7351 /* SortView.swift in Sources */,
 				097130CE23875FEC00FB7351 /* FilterView.swift in Sources */,
 				840BE10B23876B27002A6A9F /* ApiEvent.swift in Sources */,
-				8486A9C82376269200ABB50B /* ViewController.swift in Sources */,
 				035AD4FA238A7DC2005B073A /* HomeFeedFilterExtension.swift in Sources */,
 				8486A9C42376269200ABB50B /* AppDelegate.swift in Sources */,
 				095269A7237A430E00A21F35 /* LoginView.swift in Sources */,
