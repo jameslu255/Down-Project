@@ -55,6 +55,10 @@ class SearchLocationController: UIViewController, MKMapViewDelegate {
     dismiss(animated: true, completion: nil)
   }
   
+  @IBAction func centerScreen(_ sender: Any) {
+    setupMapView()
+  }
+  
   func setupMapView() {
     if let coordinate = locationManager.location?.coordinate {
       let region = MKCoordinateRegion(center: coordinate, latitudinalMeters: regionInMeters, longitudinalMeters: regionInMeters)

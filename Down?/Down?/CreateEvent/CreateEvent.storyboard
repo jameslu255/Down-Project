@@ -347,13 +347,26 @@
                                     <action selector="cancel:" destination="BGx-dK-RNJ" eventType="touchUpInside" id="Jgb-Qm-VEp"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J6v-2O-PvA" customClass="RoundButton" customModule="Down_" customModuleProvider="target">
+                                <rect key="frame" x="314" y="762" width="50" height="50"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="2d1-pd-1SM"/>
+                                    <constraint firstAttribute="width" constant="50" id="fD0-Jf-qiv"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="centerScreen:" destination="BGx-dK-RNJ" eventType="touchUpInside" id="sd9-fU-6yJ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="qnx-ma-p17" firstAttribute="top" secondItem="F2x-ZF-wC3" secondAttribute="top" id="1bA-ta-kMC"/>
+                            <constraint firstItem="VjU-MV-2vq" firstAttribute="bottom" secondItem="J6v-2O-PvA" secondAttribute="bottom" constant="50" id="Efr-6B-efK"/>
                             <constraint firstItem="BH0-cX-nlZ" firstAttribute="leading" secondItem="VjU-MV-2vq" secondAttribute="leading" constant="20" id="FTe-CP-1gu"/>
                             <constraint firstItem="qnx-ma-p17" firstAttribute="leading" secondItem="F2x-ZF-wC3" secondAttribute="leading" id="FXx-Wm-mbd"/>
                             <constraint firstItem="BH0-cX-nlZ" firstAttribute="top" secondItem="VjU-MV-2vq" secondAttribute="top" constant="20" id="Pjt-8U-xHV"/>
+                            <constraint firstItem="VjU-MV-2vq" firstAttribute="trailing" secondItem="J6v-2O-PvA" secondAttribute="trailing" constant="50" id="avY-2y-ZPG"/>
                             <constraint firstAttribute="trailing" secondItem="qnx-ma-p17" secondAttribute="trailing" id="sGk-vL-uiV"/>
                             <constraint firstAttribute="bottom" secondItem="qnx-ma-p17" secondAttribute="bottom" id="wtc-2Z-oiR"/>
                         </constraints>
