@@ -84,6 +84,9 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
             }
             eventCell.locationTextView.text = locationString ?? "No location"
         }
+        else {
+            eventCell.locationTextView.text = "No location"
+        }
         
         return eventCell
     }

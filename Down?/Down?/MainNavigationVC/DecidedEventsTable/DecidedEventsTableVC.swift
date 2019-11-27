@@ -38,16 +38,8 @@ class DecidedEventsTableVC: UITableViewController {
             return []
         }
         var downEvents: [Event] = []
-        var downEventIDs: [String] = []
-        ApiEvent.getDownEventIDs(uid: user.uid) { eventIDs in
-            downEventIDs = eventIDs
-        }
-        downEventIDs.forEach { id in
-            ApiEvent.getEventDetails(autoID: id) { event in
-                if let event = event {
-                    downEvents.append(event)
-                }
-            }
+        ApiEvent.getDownEvents(uid: user.uid) { events in
+            downEvents = events
         }
         return downEvents
     }
