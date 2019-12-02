@@ -14,58 +14,48 @@ class DecidedEventsTableVC: UITableViewController {
     var downEvents: [Event] = []
     var notDownEvents: [Event] = []
     let geoCoder = CLGeocoder()
+    //sync loading of down and not down events
+    let group = DispatchGroup()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         loadEvents()
         tableView.register(DownEventCell.self, forCellReuseIdentifier: "down")
         tableView.register(NotDownEventCell.self, forCellReuseIdentifier: "notDown")
-        tableView.reloadData() // See if work without
+        //all the events have loaded
+        group.notify(queue: .main) {
+            self.tableView.reloadData()
+        }
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        tableView.reloadData()
-    }
     
     func loadEvents(){
-        downEvents = getDownEvents()
-        notDownEvents = getNotDownEvents()
+        getDownEvents()
+        getNotDownEvents()
     }
     
-    func getDownEvents() -> [Event]{
+    func getDownEvents() {
         guard let user = Auth.auth().currentUser else {
             print("Invalid user in DecidedEventsTableVC")
-            return []
+            return
         }
-        var downEvents: [Event] = []
+        group.enter()
         ApiEvent.getDownEvents(uid: user.uid) { events in
-            downEvents = events
+            self.downEvents = events
+            self.group.leave()
         }
-        return downEvents
     }
 
-    func getNotDownEvents() -> [Event]{
+    func getNotDownEvents() {
         guard let user = Auth.auth().currentUser else {
             print("Invalid user in DecidedEventsTableVC")
-            return []
+            return
         }
-
-        var notDownEvents: [Event] = []
-        var notDownEventIDs: [String] = []
-
-        ApiEvent.getNotDownEventIDs(uid: user.uid) { eventIDs in
-            notDownEventIDs = eventIDs
+        group.enter()
+        ApiEvent.getNotDownEvents(uid: user.uid) { events in
+            self.notDownEvents = events
+            self.group.leave()
         }
-
-        notDownEventIDs.forEach { id in
-            ApiEvent.getEventDetails(autoID: id) { event in
-                if let event = event {
-                    notDownEvents.append(event)
-                }
-            }
-        }
-
-        return notDownEvents
     }
     
     // MARK: - Table view data source
