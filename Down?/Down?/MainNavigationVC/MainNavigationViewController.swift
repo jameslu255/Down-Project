@@ -10,12 +10,15 @@ import UIKit
 class MainNavigationViewController: UIViewController {
 
     @IBOutlet var buttons: [UIButton]!
+    @IBOutlet weak var TitleNavItem: UINavigationItem!
     
     @IBOutlet weak var contentView: UIView!
     var homeVC: HomeViewController!
     var decidedEventsVC: UITableViewController!
+    var profileVC: ProfileViewController!
     
     var viewControllers: [UIViewController]!
+    var viewControllersNames: [String] = ["Down?", "Your Events", "Notifications", "Profile"]
     var currentVCIndex: Int = 0
     
     override func viewDidLoad() {
@@ -29,7 +32,8 @@ class MainNavigationViewController: UIViewController {
         let storyboard = UIStoryboard(name: "HomeFeed", bundle: nil)
         homeVC = storyboard.instantiateViewController(identifier: "homeVC")
         decidedEventsVC = storyboard.instantiateViewController(identifier: "decidedEventsVC")
-        viewControllers = [homeVC, decidedEventsVC]
+        profileVC = storyboard.instantiateViewController(identifier: "profileVC")
+        viewControllers = [homeVC, decidedEventsVC, profileVC]
     }
 
     @IBAction func TabButtonPressed(_ sender: UIButton) {
@@ -40,11 +44,19 @@ class MainNavigationViewController: UIViewController {
         prevVC.willMove(toParent: nil)
         prevVC.view.removeFromSuperview()
         prevVC.removeFromParent()
+        
+        TitleNavItem.title = viewControllersNames[currentVCIndex]
         let curVC = viewControllers[currentVCIndex]
         addChild(curVC)
         curVC.view.frame = contentView.bounds
         contentView.addSubview(curVC.view)
         curVC.didMove(toParent: self)
         sender.isSelected = true
+    }
+    
+    @IBAction func CreateEventButtonPressed(_ sender: Any) {
+        let storyboard = UIStoryboard(name: "CreateEvent", bundle: nil)
+        let vc = storyboard.instantiateViewController(identifier: "createEvent")
+        self.present(vc, animated: true, completion: nil)
     }
 }

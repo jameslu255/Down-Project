@@ -12,16 +12,16 @@ import MapKit
 extension HomeViewController: SwipeableEventCellDelegate {
     func swipeRight(cell: EventCell) {
         removeEventCell(cell, withDirection: .right)
-//        if let event = cell.event {
-//            ApiEvent.addUserDown(event: event) {}
-//        }
+        if let event = cell.event {
+            ApiEvent.addUserDown(event: event) {}
+        }
     }
     
     func swipeLeft(cell: EventCell) {
         removeEventCell(cell, withDirection: .left)
-//        if let event = cell.event {
-//            ApiEvent.addUserNotDown(event: event) {}
-//        }
+        if let event = cell.event {
+            ApiEvent.addUserNotDown(event: event) {}
+        }
     }
     
     func tapped(event: Event) {
@@ -37,6 +37,10 @@ extension HomeViewController: SwipeableEventCellDelegate {
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     
     func setUpFeed(){
+        ApiEvent.getUnviewedEvent(uid: user.uid) { apiEvents in
+            self.events = apiEvents
+            self.Feed.reloadData()
+        }
         self.Feed.rowHeight = 100
         self.Feed.rowHeight = UITableView.automaticDimension
         self.Feed.estimatedRowHeight = UITableView.automaticDimension

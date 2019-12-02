@@ -30,11 +30,6 @@ class HomeViewController: UIViewController {
         registerNib()
         Feed.dataSource = self
         self.setUpFeed()
-        
-        ApiEvent.getUnviewedEvent(uid: user.uid) { apiEvents in
-            self.events = apiEvents
-            self.Feed.reloadData()
-        }
     }
     
     func registerNib() {

@@ -11,8 +11,8 @@ import MapKit
 
 class DecidedEventsTableVC: UITableViewController {
 
-    var downEvents: [Event] = []
-    var notDownEvents: [Event] = []
+    var cellContents: [[Event]] = [[], []]
+    var sections: [String] = ["Down", "Not Down"]
     let geoCoder = CLGeocoder()
     
     override func viewDidLoad() {
@@ -28,61 +28,26 @@ class DecidedEventsTableVC: UITableViewController {
     }
     
     func loadEvents(){
-        downEvents = getDownEvents()
-        notDownEvents = getNotDownEvents()
-    }
-    
-    func getDownEvents() -> [Event]{
-        guard let user = Auth.auth().currentUser else {
-            print("Invalid user in DecidedEventsTableVC")
-            return []
-        }
-        var downEvents: [Event] = []
-        ApiEvent.getDownEvents(uid: user.uid) { events in
-            downEvents = events
-        }
-        return downEvents
-    }
-
-    func getNotDownEvents() -> [Event]{
-        guard let user = Auth.auth().currentUser else {
-            print("Invalid user in DecidedEventsTableVC")
-            return []
-        }
-
-        var notDownEvents: [Event] = []
-        var notDownEventIDs: [String] = []
-
-        ApiEvent.getNotDownEventIDs(uid: user.uid) { eventIDs in
-            notDownEventIDs = eventIDs
-        }
-
-        notDownEventIDs.forEach { id in
-            ApiEvent.getEventDetails(autoID: id) { event in
-                if let event = event {
-                    notDownEvents.append(event)
-                }
-            }
-        }
-
-        return notDownEvents
+        let downEventStartDate = Date()
+        let downEventEndDate = downEventStartDate.advanced(by: 3600)
+        let downEvent = Event(displayName: "Sam Harris", uid: "lgefCO4Io2ffOzETaEaAw1GeKvb2", startDate: downEventStartDate, endDate: downEventEndDate, isPublic: true, description: "Just tryna chill with da mindful homies", title: "Meditatin", latitude: 38.540944, longitude: -121.737213, categories: [])
+        cellContents[0] = [downEvent]
+        cellContents[1] = []
     }
     
     // MARK: - Table view data source
 
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        let title = "\(sections[section]) (\(cellContents[section].count))"
+        return title
+    }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // down events section
-        if section == 0 {
-            return downEvents.count
-        }
-        // notDown events section
-        else {
-            return notDownEvents.count
-        }
+        cellContents[section].count
     }
 
     
@@ -90,7 +55,8 @@ class DecidedEventsTableVC: UITableViewController {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "down", for: indexPath)
             if let eventCell = cell as? DownEventCell {
-                let event = downEvents[indexPath.row]
+                let event = cellContents[indexPath.section][indexPath.row]
+                eventCell.delegate = self
                 eventCell.eventTitleLabel.text = event.title ?? "No title"
                 eventCell.usernameLabel.text = event.originalPoster
                 eventCell.durationLabel.text = event.stringShortFormat
@@ -112,7 +78,7 @@ class DecidedEventsTableVC: UITableViewController {
         else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "notDown", for: indexPath)
             if let eventCell = cell as? NotDownEventCell {
-                let event = notDownEvents[indexPath.row]
+                let event = cellContents[indexPath.section][indexPath.row]
                 eventCell.eventTitleLabel.text = event.title ?? "No title"
                 eventCell.usernameLabel.text = event.originalPoster
                 eventCell.durationLabel.text = event.stringShortFormat
@@ -132,51 +98,44 @@ class DecidedEventsTableVC: UITableViewController {
             return cell
         }
     }
+}
+
+extension DecidedEventsTableVC: SwipeableEventCellDelegate {
+    func swipeLeft(cell: EventCell) {
+        
+        removeEventCell(cell, withDirection: .left)
+        guard let event = cell.event, let currentUser = Auth.auth().currentUser, let indexPath = self.tableView.indexPath(for: cell) else { return }
+        let category = indexPath.section == 0 ? "down" : "notDown"
+        ApiEvent.undoEventAction(event: event, uid: currentUser.uid, from: category) { }
+    }
     
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    func swipeRight(cell: EventCell) {
+        removeEventCell(cell, withDirection: .right)
+        guard let event = cell.event, let currentUser = Auth.auth().currentUser, let indexPath = self.tableView.indexPath(for: cell) else { return }
+        let category = indexPath.section == 0 ? "down" : "notDown"
+        ApiEvent.undoEventAction(event: event, uid: currentUser.uid, from: category) { }
+        if category == "down" {
+            ApiEvent.addUserNotDown(event: event, completion: {})
+        }
+        else {
+            ApiEvent.addUserNotDown(event: event, completion: {})
+        }
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+    
+    func tapped(event: Event) {
+        
     }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+    
+    func removeEventCell(_ cell: EventCell, withDirection direction: UITableView.RowAnimation){
+        guard let indexPath = self.tableView.indexPath(for: cell) else {
+            return
+        }
+        
+        cellContents[indexPath.section].remove(at: indexPath.row)
+        
+        self.tableView.beginUpdates()
+        self.tableView.deleteRows(at: [indexPath], with: direction)
+        self.tableView.reloadSections([indexPath.section], with: .fade)
+        self.tableView.endUpdates()
     }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
