@@ -143,8 +143,8 @@ public struct Event {
 
     */
     init(dict: [String: Any], autoID: String) {
-        let startTimeStamp = dict["startDate"] as? Timestamp
-        let endTimeStamp = dict["endDate"] as? Timestamp
+        let startTimeStamp = dict["startTime"] as? Timestamp
+        let endTimeStamp = dict["endTime"] as? Timestamp
         let geoPoint = dict["location"] as? GeoPoint
         
         
@@ -184,8 +184,8 @@ public class ApiEvent {
                 let downEventID = document.documentID
                 downEventIDs.append(downEventID)
             }
+            completion(downEventIDs)
         }
-        completion(downEventIDs)
     }
     
     /**
@@ -198,17 +198,24 @@ public class ApiEvent {
     */
     public static func getDownEvents(uid: String, completion: @escaping ([Event]) -> Void) {
         var downEvents = [Event]()
+        //synchronize event lookup
+        let group = DispatchGroup()
 
         db.collection("user_events").document(uid).collection("down").getDocuments() { snapshot, error in
             if error != nil { return }
             guard let documents = snapshot?.documents else { return }
             for document in documents {
+                group.enter()
                 let downEventID = document.documentID
-                let event = Event(dict: document.data(), autoID: downEventID)
-                downEvents.append(event)
+                self.getEventDetails(autoID: downEventID) { event in
+                    downEvents.append(event)
+                    group.leave()
+                }
+            }
+            group.notify(queue: .main) {
+                completion(downEvents)
             }
         }
-        completion(downEvents)
     }
     
     /**
@@ -221,17 +228,23 @@ public class ApiEvent {
     */
     public static func getNotDownEvents(uid: String, completion: @escaping ([Event]) -> Void) {
         var notDownEvents = [Event]()
-
+        //synchronize event lookup
+        let group = DispatchGroup()
         db.collection("user_events").document(uid).collection("not_down").getDocuments() { snapshot, error in
             if error != nil { return }
             guard let documents = snapshot?.documents else { return }
             for document in documents {
-                let downEventID = document.documentID
-                let event = Event(dict: document.data(), autoID: downEventID)
-                notDownEvents.append(event)
+                group.enter()
+                let notDownEventID = document.documentID
+                self.getEventDetails(autoID: notDownEventID) { event in
+                    notDownEvents.append(event)
+                    group.leave()
+                }
+            }
+            group.notify(queue: .main) {
+                completion(notDownEvents)
             }
         }
-        completion(notDownEvents)
     }
     
     /**
@@ -252,8 +265,8 @@ public class ApiEvent {
                 let notDownEventID = document.documentID
                 notDownEventIDs.append(notDownEventID)
             }
+            completion(notDownEventIDs)
         }
-        completion(notDownEventIDs)
     }
     
     /**
@@ -423,7 +436,7 @@ public class ApiEvent {
      - returns: Void
 
     */
-    public static func getEventDetails(autoID: String, completion: @escaping (Event?) -> Void) {
+    public static func getEventDetails(autoID: String, completion: @escaping (Event) -> Void) {
         db.collection("events").document(autoID).getDocument() { (document, error) in
             if error != nil { return }
             
@@ -442,16 +455,16 @@ public class ApiEvent {
      The event ID document is a reference to the `events` table. In addition, the document will contain
       a key called `date`, which is a timestamp of when the user pressed down
 
-     - parameter event: The event object to be added
+     - parameter eventID: The event ID to be added
+     - parameter uid: The ID of the user who pressed down
      - parameter completion: Closure whose callback will contain the list of the event objects
      - returns: Void
 
     */
-    public static func addUserDown(event: Event, completion: @escaping () -> Void) {
-        guard let eventID = event.autoID else { return }
-        
+    public static func addUserDown(eventID: String, uid: String, completion: @escaping () -> Void) {
+      
         db.collection("user_events")
-            .document(event.uid)
+            .document(uid)
             .collection("down")
             .document(eventID)
             .setData(["date": Timestamp(date: Date())]) { error in
@@ -468,16 +481,15 @@ public class ApiEvent {
      The event ID document is a reference to the `events` table. In addition, the document will contain
       a key called `date`, which is a timestamp of when the user pressed down
 
-     - parameter event: The event object to be added
+     - parameter eventID: The event ID to be added
+     - parameter uid: The ID of the user who pressed not down
      - parameter completion: Closure whose callback will contain the list of the event objects
      - returns: Void
 
     */
-    public static func addUserNotDown(event: Event, completion: @escaping () -> Void) {
-        guard let eventID = event.autoID else { return }
-
+    public static func addUserNotDown(eventID: String, uid: String, completion: @escaping () -> Void) {
         db.collection("user_events")
-            .document(event.uid)
+            .document(uid)
             .collection("not_down")
             .document(eventID)
             .setData(["date": Timestamp(date: Date())]) { error in
@@ -489,7 +501,7 @@ public class ApiEvent {
     /***
     Updates the event information on Firestore on the `events` collection
 
-      - parameter event: The event object to be added to Firestore
+      - parameter eventID: The event ID to be added to Firestore
       - returns: AutoID of newly added event if added to events on Firestore
 
      */
@@ -525,16 +537,15 @@ public class ApiEvent {
     /**
      Undo the user's action on the event
 
-     - parameter event: The event object
+     - parameter eventID: The event ID
      - parameter uid: The user's event
      - parameter from: Undo action from either `down` or `not_down`
      - parameter completion: Closure whose callback will contain the list of the event objects
      - returns: Void
 
     */
-    public static func undoEventAction(event: Event, uid: String, from: String, completion: @escaping () -> Void) {
+    public static func undoEventAction(eventID: String, uid: String, from: String, completion: @escaping () -> Void) {
         if (from != "down" || from != "not_down") { return }
-        guard let eventID = event.autoID else { return }
         db.collection("user_events").document(uid).collection(from).document(eventID).delete() { error in
             if let error = error {
                 print(error)
@@ -551,13 +562,12 @@ public class ApiEvent {
      This only removes the event object from `event`, but it doesn't remove the references from
      the `user_events` tables
 
-     - parameter event: The event object
+     - parameter eventID: The event ID
      - parameter completion: Closure whose callback will contain the list of the event objects
      - returns: Void
 
     */
-    public static func deleteEvent(event: Event, completion: @escaping () -> Void) {
-        guard let eventID = event.autoID else { return }
+    public static func deleteEvent(eventID: String, completion: @escaping () -> Void) {
         db.collection("events").document(eventID).delete() { error in
             if let error = error {
                 print(error)

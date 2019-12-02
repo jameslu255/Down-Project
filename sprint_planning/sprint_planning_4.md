@@ -35,10 +35,9 @@ Jonathan:
 
 Caleb:
 * Refactored feed table and event cells
-* Added downNotDown List View controller
-* Made custom tab bar view controller
+* Added [downNotDown List View controller](https://github.com/ECS189E/project-f19-down/tree/Feed/Down%3F/Down%3F/MainNavigationVC/DecidedEventsTable)
+* Made [custom tab bar view controller](https://github.com/ECS189E/project-f19-down/blob/Feed/Down%3F/Down%3F/MainNavigationVC/MainNavigationViewController.swift)
 * Hooked up tables to API
-https://github.com/ECS189E/project-f19-down/tree/HomeFeed
 
 Maxim:
 * Added map and pin dropping feature for selecting event location
@@ -54,3 +53,4 @@ https://github.com/ECS189E/project-f19-down/tree/create-event
 
 ## Any Issues ##
 * We have to cut a lot of functionality due to time constraints.
+* Some of the finish features depend on API calls that haven't been implemented yet.
