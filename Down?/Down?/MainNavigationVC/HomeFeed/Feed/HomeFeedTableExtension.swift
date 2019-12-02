@@ -8,19 +8,20 @@
 import Foundation
 import UIKit
 import MapKit
+import Firebase
 
 extension HomeViewController: SwipeableEventCellDelegate {
     func swipeRight(cell: EventCell) {
         removeEventCell(cell, withDirection: .right)
-        if let event = cell.event {
-            ApiEvent.addUserDown(event: event) {}
+        if let eventID = cell.event?.autoID, let uid = Auth.auth().currentUser?.uid {
+            ApiEvent.addUserDown(eventID: eventID, uid: uid) {}
         }
     }
     
     func swipeLeft(cell: EventCell) {
         removeEventCell(cell, withDirection: .left)
-        if let event = cell.event {
-            ApiEvent.addUserNotDown(event: event) {}
+        if let eventID = cell.event?.autoID, let uid = Auth.auth().currentUser?.uid {
+            ApiEvent.addUserNotDown(eventID: eventID, uid: uid) {}
         }
     }
     

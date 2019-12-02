@@ -28,11 +28,22 @@ class DecidedEventsTableVC: UITableViewController {
     }
     
     func loadEvents(){
-        let downEventStartDate = Date()
-        let downEventEndDate = downEventStartDate.advanced(by: 3600)
-        let downEvent = Event(displayName: "Sam Harris", uid: "lgefCO4Io2ffOzETaEaAw1GeKvb2", startDate: downEventStartDate, endDate: downEventEndDate, isPublic: true, description: "Just tryna chill with da mindful homies", title: "Meditatin", latitude: 38.540944, longitude: -121.737213, categories: [])
-        cellContents[0] = [downEvent]
-        cellContents[1] = []
+//        let downEventStartDate = Date()
+//        let downEventEndDate = downEventStartDate.advanced(by: 3600)
+//        let downEvent = Event(displayName: "Sam Harris", uid: "lgefCO4Io2ffOzETaEaAw1GeKvb2", startDate: downEventStartDate, endDate: downEventEndDate, isPublic: true, description: "Just tryna chill with da mindful homies", title: "Meditatin", latitude: 38.540944, longitude: -121.737213, categories: [])
+//        cellContents[0] = [downEvent]
+//        cellContents[1] = []
+        if let uid = Auth.auth().currentUser?.uid {
+            ApiEvent.getDownEvents(uid: uid) { events in
+                print(events.count)
+                self.cellContents[0] = events
+                self.tableView.reloadData()
+            }
+            ApiEvent.getNotDownEvents(uid: uid) { events in
+                self.cellContents[1] = events
+                self.tableView.reloadData()
+            }
+        }
     }
     
     // MARK: - Table view data source
@@ -106,19 +117,24 @@ extension DecidedEventsTableVC: SwipeableEventCellDelegate {
         removeEventCell(cell, withDirection: .left)
         guard let event = cell.event, let currentUser = Auth.auth().currentUser, let indexPath = self.tableView.indexPath(for: cell) else { return }
         let category = indexPath.section == 0 ? "down" : "notDown"
-        ApiEvent.undoEventAction(event: event, uid: currentUser.uid, from: category) { }
+        if let eventID = event.autoID {
+            ApiEvent.undoEventAction(eventID: eventID, uid: currentUser.uid, from: category) { }
+        }
     }
     
     func swipeRight(cell: EventCell) {
         removeEventCell(cell, withDirection: .right)
         guard let event = cell.event, let currentUser = Auth.auth().currentUser, let indexPath = self.tableView.indexPath(for: cell) else { return }
         let category = indexPath.section == 0 ? "down" : "notDown"
-        ApiEvent.undoEventAction(event: event, uid: currentUser.uid, from: category) { }
-        if category == "down" {
-            ApiEvent.addUserNotDown(event: event, completion: {})
-        }
-        else {
-            ApiEvent.addUserNotDown(event: event, completion: {})
+        
+        if let eventID = event.autoID {
+            ApiEvent.undoEventAction(eventID: eventID, uid: currentUser.uid, from: category) { }
+            if category == "down" {
+                ApiEvent.addUserNotDown(eventID: eventID, uid: currentUser.uid, completion: {})
+            }
+            else {
+                ApiEvent.addUserNotDown(eventID: eventID, uid: currentUser.uid, completion: {})
+            }
         }
     }
     
@@ -135,7 +151,11 @@ extension DecidedEventsTableVC: SwipeableEventCellDelegate {
         
         self.tableView.beginUpdates()
         self.tableView.deleteRows(at: [indexPath], with: direction)
-        self.tableView.reloadSections([indexPath.section], with: .fade)
+        let header = self.tableView.headerView(forSection: indexPath.section)
+        let eventCount = self.cellContents[indexPath.section].count
+        let sectionName = self.sections[indexPath.section]
+        let headerTitle = "\(sectionName) (\(eventCount))"
+        header?.textLabel?.text = headerTitle
         self.tableView.endUpdates()
     }
 }
