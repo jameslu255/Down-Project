@@ -47,6 +47,7 @@ class DecidedEventsTableVC: UITableViewController {
         getDownEvents()
         getNotDownEvents()
     }
+    }
     
     func getDownEvents() {
         guard let user = Auth.auth().currentUser else {
@@ -55,7 +56,7 @@ class DecidedEventsTableVC: UITableViewController {
         }
         group.enter()
         ApiEvent.getDownEvents(uid: user.uid) { events in
-            self.downEvents = events
+            self.cellContents[0] = events
             self.group.leave()
         }
     }
@@ -67,7 +68,7 @@ class DecidedEventsTableVC: UITableViewController {
         }
         group.enter()
         ApiEvent.getNotDownEvents(uid: user.uid) { events in
-            self.notDownEvents = events
+            self.cellContents[1] = events
             self.group.leave()
         }
     }
