@@ -11,6 +11,7 @@ import MapKit
 
 class HomeViewController: UIViewController {
 
+    let locationManager = CLLocationManager()
     let geoCoder = CLGeocoder()
     
     @IBOutlet weak var Feed: UITableView!
@@ -26,12 +27,64 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         registerFilterNib()
+        checkLocationServices()
         self.setUpFeed()
     }
 }
 
 
-
+extension HomeViewController: CLLocationManagerDelegate {
+  func checkLocationServices() {
+    if (CLLocationManager.locationServicesEnabled()){
+      setUpLocationManager()
+      checkLocationAuthorization()
+    }
+    else {
+      // tell to turn it on.
+    }
+  }
+  
+  func setUpLocationManager() {
+    locationManager.delegate = self
+    locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+    locationManager.requestWhenInUseAuthorization()
+  }
+  
+  func checkLocationAuthorization() {
+    switch CLLocationManager.authorizationStatus() {
+    case .authorizedWhenInUse:
+      // Do something
+      locationManager.startUpdatingLocation()
+      break
+    case .denied:
+      // Tell user to enable
+      break
+    case .notDetermined:
+      // Prompt a request
+      locationManager.requestWhenInUseAuthorization()
+      break
+    case .restricted:
+      // Show alert letting them know what's up
+      break
+    case .authorizedAlways:
+      // I guess we do stuff here too
+      break
+    default:
+      print("shit")
+      break
+    }
+  }
+  
+  func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+    checkLocationAuthorization()
+  }
+  
+//  func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+//    if let loc = locationManager.location?.coordinate.latitude {
+//      print(loc)
+//    }
+//  }
+}
 
 
 // Found in "Let's Build That App" YouTube channel.
