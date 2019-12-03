@@ -18,7 +18,7 @@ class MainNavigationViewController: UIViewController {
     var profileVC: ProfileViewController!
     
     var viewControllers: [UIViewController]!
-    var viewControllersNames: [String] = ["Down?", "Your Events", "Notifications", "Profile"]
+    var viewControllersNames: [String] = ["Down?", "Your Events", "Map", "Profile"]
     var currentVCIndex: Int = 0
     
     override func viewDidLoad() {
@@ -33,7 +33,7 @@ class MainNavigationViewController: UIViewController {
         homeVC = storyboard.instantiateViewController(identifier: "homeVC")
         decidedEventsVC = storyboard.instantiateViewController(identifier: "decidedEventsVC")
         profileVC = storyboard.instantiateViewController(identifier: "profileVC")
-        viewControllers = [homeVC, decidedEventsVC, profileVC]
+        viewControllers = [homeVC, decidedEventsVC, profileVC, profileVC]
     }
 
     @IBAction func TabButtonPressed(_ sender: UIButton) {

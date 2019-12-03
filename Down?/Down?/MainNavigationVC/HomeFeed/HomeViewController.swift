@@ -16,8 +16,6 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var Feed: UITableView!
     @IBOutlet weak var collectionView: UICollectionView!
     
-    // USING BANG HERE, NEED TO FIGURE OUT WAY TO DEAL WITH THIS
-    var user: User = Auth.auth().currentUser!
     var buttons = ["Filter", "Sort", "Search", "Location", "Some", "Other", "Buttons", "That", "I", "Put", "In", "Here", "To", "Test", "Functionality"]
     
     let cellSpacing: CGFloat = 5.0
@@ -27,17 +25,8 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        registerNib()
-        Feed.dataSource = self
+        registerFilterNib()
         self.setUpFeed()
-    }
-    
-    func registerNib() {
-        let nib = UINib(nibName: CollectionViewCell.nibName, bundle: nil)
-        collectionView?.register(nib, forCellWithReuseIdentifier: CollectionViewCell.reuseIdentifier)
-        if let flowLayout = self.collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
-            flowLayout.estimatedItemSize = CGSize(width: 1, height: 1)
-        }
     }
 }
 

@@ -19,7 +19,7 @@ class DecidedEventsTableVC: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadEvents()
+        reloadModelData()
         tableView.register(DownEventCell.self, forCellReuseIdentifier: "down")
         tableView.register(NotDownEventCell.self, forCellReuseIdentifier: "notDown")
         //all the events have loaded
@@ -28,25 +28,15 @@ class DecidedEventsTableVC: UITableViewController {
         }
     }
     
-    func loadEvents(){
+    func reloadModelData(){
 //        let downEventStartDate = Date()
 //        let downEventEndDate = downEventStartDate.advanced(by: 3600)
 //        let downEvent = Event(displayName: "Sam Harris", uid: "lgefCO4Io2ffOzETaEaAw1GeKvb2", startDate: downEventStartDate, endDate: downEventEndDate, isPublic: true, description: "Just tryna chill with da mindful homies", title: "Meditatin", latitude: 38.540944, longitude: -121.737213, categories: [])
 //        cellContents[0] = [downEvent]
 //        cellContents[1] = []
-        if let uid = Auth.auth().currentUser?.uid {
-            ApiEvent.getDownEvents(uid: uid) { events in
-                print(events.count)
-                self.cellContents[0] = events
-                self.tableView.reloadData()
-            }
-            ApiEvent.getNotDownEvents(uid: uid) { events in
-                self.cellContents[1] = events
-                self.tableView.reloadData()
-            }
+
         getDownEvents()
         getNotDownEvents()
-    }
     }
     
     func getDownEvents() {
@@ -57,6 +47,7 @@ class DecidedEventsTableVC: UITableViewController {
         group.enter()
         ApiEvent.getDownEvents(uid: user.uid) { events in
             self.cellContents[0] = events
+            if events.count == 0 {print("No down events")}
             self.group.leave()
         }
     }
@@ -69,6 +60,7 @@ class DecidedEventsTableVC: UITableViewController {
         group.enter()
         ApiEvent.getNotDownEvents(uid: user.uid) { events in
             self.cellContents[1] = events
+            if events.count == 0 {print("No not down events")}
             self.group.leave()
         }
     }

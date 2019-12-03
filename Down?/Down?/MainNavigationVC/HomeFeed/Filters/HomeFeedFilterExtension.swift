@@ -8,6 +8,16 @@
 import Foundation
 import UIKit
 
+extension HomeViewController {
+    func registerFilterNib() {
+        let nib = UINib(nibName: CollectionViewCell.nibName, bundle: nil)
+        collectionView?.register(nib, forCellWithReuseIdentifier: CollectionViewCell.reuseIdentifier)
+        if let flowLayout = self.collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
+            flowLayout.estimatedItemSize = CGSize(width: 1, height: 1)
+        }
+    }
+}
+
 extension HomeViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
             return buttons.count

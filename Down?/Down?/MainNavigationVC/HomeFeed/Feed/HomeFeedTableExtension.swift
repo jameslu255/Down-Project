@@ -10,6 +10,38 @@ import UIKit
 import MapKit
 import Firebase
 
+// General feed functions
+extension HomeViewController {
+    func setUpFeed(){
+        if let user = Auth.auth().currentUser {
+            ApiEvent.getUnviewedEvent(uid: user.uid) { apiEvents in
+                self.events = apiEvents
+                self.Feed.reloadData()
+            }
+        }
+        self.Feed.rowHeight = 100
+        self.Feed.rowHeight = UITableView.automaticDimension
+        self.Feed.estimatedRowHeight = UITableView.automaticDimension
+        Feed.register(FeedEventCell.self, forCellReuseIdentifier: "cellId")
+        Feed.delegate = self
+        Feed.dataSource = self
+        Feed.separatorStyle = .none
+        Feed.reloadData()
+    }
+    
+    func removeEventCell(_ cell: EventCell, withDirection direction: UITableView.RowAnimation){
+        guard let indexPath = Feed.indexPath(for: cell) else {
+            return
+        }
+        events.remove(at: indexPath.row)
+        
+        Feed.beginUpdates()
+        Feed.deleteRows(at: [indexPath], with: direction)
+        Feed.endUpdates()
+    }
+}
+
+// Swiping functionality
 extension HomeViewController: SwipeableEventCellDelegate {
     func swipeRight(cell: EventCell) {
         removeEventCell(cell, withDirection: .right)
@@ -35,21 +67,8 @@ extension HomeViewController: SwipeableEventCellDelegate {
     }
 }
 
+// Datasource and Delegate functions
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
-    
-    func setUpFeed(){
-        ApiEvent.getUnviewedEvent(uid: user.uid) { apiEvents in
-            self.events = apiEvents
-            self.Feed.reloadData()
-        }
-        self.Feed.rowHeight = 100
-        self.Feed.rowHeight = UITableView.automaticDimension
-        self.Feed.estimatedRowHeight = UITableView.automaticDimension
-        Feed.register(FeedEventCell.self, forCellReuseIdentifier: "cellId")
-        Feed.delegate = self
-        Feed.separatorStyle = .none
-        Feed.reloadData()
-    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         UITableView.automaticDimension
@@ -94,16 +113,5 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         }
         
         return eventCell
-    }
-    
-    func removeEventCell(_ cell: EventCell, withDirection direction: UITableView.RowAnimation){
-        guard let indexPath = Feed.indexPath(for: cell) else {
-            return
-        }
-        events.remove(at: indexPath.row)
-        
-        Feed.beginUpdates()
-        Feed.deleteRows(at: [indexPath], with: direction)
-        Feed.endUpdates()
     }
 }

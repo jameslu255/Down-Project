@@ -21,11 +21,18 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
+        reloadModelData()
     }
     
     func setupViews() {
         profilePictureButton.layer.cornerRadius = 5
         userNameLabel.layer.cornerRadius = 5
+    }
+    
+    func reloadModelData() {
+        if let displayName = Auth.auth().currentUser?.displayName {
+            userNameLabel.text = displayName
+        }
     }
     
     func userNameEnabled(){
