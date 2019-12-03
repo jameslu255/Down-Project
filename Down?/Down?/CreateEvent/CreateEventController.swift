@@ -62,6 +62,8 @@ class CreateEventController: UITableViewController {
     
     setTimeDefaults()
     
+    locationField.textColor = .lightGray
+    
     let tap = UITapGestureRecognizer()
     tap.delegate = self
     view.addGestureRecognizer(tap)
@@ -92,7 +94,6 @@ class CreateEventController: UITableViewController {
     endDate = sender.date
   }
   @IBAction func createEvent() {
-    
     // Api call to store the data
     guard let displayName = user?.displayName, let uid = user?.uid, let eventName = eventNameField.text, let startDate = startDate, let endDate = endDate, let lat = location?.location?.coordinate.latitude, let long = location?.location?.coordinate.longitude else { return }
 
@@ -282,10 +283,11 @@ extension CreateEventController: CLLocationManagerDelegate {
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
     guard let location = locations.first else { return }
     geoCoder.reverseGeocodeLocation(location) { placemarks, error in
-      guard let name = placemarks?[0].name else { return }
-      //let location = "\(name.street), \(name.city), \(name.state)"
+      guard let place = placemarks?[0], let name = place.name else { return }
+      self.location = place
       guard let locationText = self.locationField.text else { return }
       if (locationText == "Location not found") {
+        self.locationField.textColor = .label
         self.locationField.text = name
       }
  
