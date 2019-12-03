@@ -14,17 +14,18 @@ class DecidedEventsTableVC: UITableViewController {
     var cellContents: [[Event]] = [[], []]
     var sections: [String] = ["Down", "Not Down"]
     let geoCoder = CLGeocoder()
+    //sync loading of down and not down events
+    let group = DispatchGroup()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         loadEvents()
         tableView.register(DownEventCell.self, forCellReuseIdentifier: "down")
         tableView.register(NotDownEventCell.self, forCellReuseIdentifier: "notDown")
-        tableView.reloadData() // See if work without
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        tableView.reloadData()
+        //all the events have loaded
+        group.notify(queue: .main) {
+            self.tableView.reloadData()
+        }
     }
     
     func loadEvents(){
@@ -43,6 +44,31 @@ class DecidedEventsTableVC: UITableViewController {
                 self.cellContents[1] = events
                 self.tableView.reloadData()
             }
+        getDownEvents()
+        getNotDownEvents()
+    }
+    
+    func getDownEvents() {
+        guard let user = Auth.auth().currentUser else {
+            print("Invalid user in DecidedEventsTableVC")
+            return
+        }
+        group.enter()
+        ApiEvent.getDownEvents(uid: user.uid) { events in
+            self.downEvents = events
+            self.group.leave()
+        }
+    }
+
+    func getNotDownEvents() {
+        guard let user = Auth.auth().currentUser else {
+            print("Invalid user in DecidedEventsTableVC")
+            return
+        }
+        group.enter()
+        ApiEvent.getNotDownEvents(uid: user.uid) { events in
+            self.notDownEvents = events
+            self.group.leave()
         }
     }
     
