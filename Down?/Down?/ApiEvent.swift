@@ -208,7 +208,9 @@ public class ApiEvent {
                 group.enter()
                 let downEventID = document.documentID
                 self.getEventDetails(autoID: downEventID) { event in
-                    downEvents.append(event)
+                    if let event = event {
+                        downEvents.append(event)
+                    }
                     group.leave()
                 }
             }
@@ -237,7 +239,9 @@ public class ApiEvent {
                 group.enter()
                 let notDownEventID = document.documentID
                 self.getEventDetails(autoID: notDownEventID) { event in
-                    notDownEvents.append(event)
+                    if let event = event {
+                        notDownEvents.append(event)
+                    }
                     group.leave()
                 }
             }
@@ -436,14 +440,22 @@ public class ApiEvent {
      - returns: Void
 
     */
-    public static func getEventDetails(autoID: String, completion: @escaping (Event) -> Void) {
+    public static func getEventDetails(autoID: String, completion: @escaping (Event?) -> Void) {
         db.collection("events").document(autoID).getDocument() { (document, error) in
-            if error != nil { return }
+            if error != nil {
+                completion(nil)
+                return
+            }
             
             if let responseDocument = document, responseDocument.exists {
-                guard let data = responseDocument.data() else { return }
+                guard let data = responseDocument.data() else {
+                    completion(nil)
+                    return
+                }
                 let event = Event(dict: data, autoID: autoID)
                 completion(event)
+            } else {
+                completion(nil)
             }
         }
     }
@@ -545,7 +557,7 @@ public class ApiEvent {
 
     */
     public static func undoEventAction(eventID: String, uid: String, from: String, completion: @escaping () -> Void) {
-        if (from != "down" || from != "not_down") { return }
+        if (from != "down" && from != "not_down") { return }
         db.collection("user_events").document(uid).collection(from).document(eventID).delete() { error in
             if let error = error {
                 print(error)
@@ -578,3 +590,20 @@ public class ApiEvent {
     }
 }
 
+
+// Display functionality
+extension Event {
+    var stringShortFormat: String {
+        get{
+            var result: String = ""
+            let formatter = DateFormatter()
+            formatter.dateStyle = .none
+            formatter.timeStyle = .short
+            let start = formatter.string(from: self.dates.startDate)
+            let end = formatter.string(from: self.dates.endDate)
+            result = "\(start) - \(end)"
+            result = result.replacingOccurrences(of: ":00", with: "")
+            return result
+        }
+    }
+}

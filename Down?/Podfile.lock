@@ -5,7 +5,6 @@ PODS:
   - BoringSSL-GRPC/Implementation (0.0.3):
     - BoringSSL-GRPC/Interface (= 0.0.3)
   - BoringSSL-GRPC/Interface (0.0.3)
-  - DateTimePicker (2.2.0)
   - Firebase/Analytics (6.9.0):
     - Firebase/Core
   - Firebase/Auth (6.9.0):
@@ -119,16 +118,14 @@ PODS:
   - Protobuf (3.10.0)
 
 DEPENDENCIES:
-  - DateTimePicker
   - Firebase/Analytics
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Firestore
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  trunk:
     - BoringSSL-GRPC
-    - DateTimePicker
     - Firebase
     - FirebaseAnalytics
     - FirebaseAuth
@@ -151,7 +148,6 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
-  DateTimePicker: f65c0ae594e85dcf39d2aaf6a8ce06dee7d15aa7
   Firebase: 2d750c54cda57d5a6ae31212cfe5cc813c6be7e4
   FirebaseAnalytics: 5d9ccbf46ed25d3ec9304d263f85bddf1e93e2d2
   FirebaseAuth: e7f86c2dfc57281cd01f7da5e4b40e01e4510a4a
@@ -172,6 +168,6 @@ SPEC CHECKSUMS:
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   Protobuf: a4dc852ad69c027ca2166ed287b856697814375b
 
-PODFILE CHECKSUM: 85e3139fc41e84cf31fa6835e9f5020009e4a56a
+PODFILE CHECKSUM: dfed11cff8dca2951fb41dd3d2ff64f03f874ee7
 
-COCOAPODS: 1.7.5
+COCOAPODS: 1.8.4

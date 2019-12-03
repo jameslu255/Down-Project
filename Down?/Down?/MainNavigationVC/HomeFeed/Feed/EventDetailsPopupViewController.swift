@@ -6,10 +6,12 @@
 //
 
 import UIKit
+import MapKit
 
 class EventDetailsPopupViewController: UIViewController {
 
-    var event: OldEvent? = nil
+    var event: Event? = nil
+    let geoCoder = CLGeocoder()
     
     @IBOutlet weak var Container: UIView!
     @IBOutlet weak var ProfilePicture: UIImageView!
@@ -37,12 +39,31 @@ class EventDetailsPopupViewController: UIViewController {
     }
     
     func loadEventToViews(){
-        self.ProfilePicture.image = event?.user.profilePicture
-        self.Username.text = event?.user.name
-        self.EventTitle.text = event?.title
-        self.Duration.text = event?.duration.stringFormat
-        self.Location.text = event?.location
-        self.Description.text = event?.description
+        self.ProfilePicture.image = UIImage(named: "Default.ProfilePicture")
+        self.Username.text = event?.originalPoster ?? "Error"
+        if let title = event?.title {
+            self.EventTitle.text = title.isEmpty ? "No title" : title
+        }
+        else {
+            self.EventTitle.text = "Error"
+        }
+        self.Duration.text = event?.stringShortFormat ?? "Error"
+        if let lat = event?.location?.latitude, let long = event?.location?.longitude {
+            let location = CLLocation(latitude: lat, longitude: long)
+            var locationString: String?
+            geoCoder.reverseGeocodeLocation(location) { placemarks, error in
+                if error != nil {return}
+                if let placemark = placemarks?[0] {
+                    locationString = placemark.name
+                }
+            }
+            self.Location.text = locationString ?? "No location"
+        }
+        else {
+            self.Location.text = "No location"
+        }
+        	
+        self.Description.text = event?.description ?? "Error"
         if self.Description.text.isEmpty {
             self.Description.removeFromSuperview()
         }
