@@ -143,8 +143,8 @@ public struct Event {
 
     */
     init(dict: [String: Any], autoID: String) {
-        let startTimeStamp = dict["startDate"] as? Timestamp
-        let endTimeStamp = dict["endDate"] as? Timestamp
+        let startTimeStamp = dict["startTime"] as? Timestamp
+        let endTimeStamp = dict["endTime"] as? Timestamp
         let geoPoint = dict["location"] as? GeoPoint
         
         
@@ -184,8 +184,8 @@ public class ApiEvent {
                 let downEventID = document.documentID
                 downEventIDs.append(downEventID)
             }
+            completion(downEventIDs)
         }
-        completion(downEventIDs)
     }
     
     /**
@@ -198,17 +198,24 @@ public class ApiEvent {
     */
     public static func getDownEvents(uid: String, completion: @escaping ([Event]) -> Void) {
         var downEvents = [Event]()
+        //synchronize event lookup
+        let group = DispatchGroup()
 
         db.collection("user_events").document(uid).collection("down").getDocuments() { snapshot, error in
             if error != nil { return }
             guard let documents = snapshot?.documents else { return }
             for document in documents {
+                group.enter()
                 let downEventID = document.documentID
-                let event = Event(dict: document.data(), autoID: downEventID)
-                downEvents.append(event)
+                self.getEventDetails(autoID: downEventID) { event in
+                    downEvents.append(event)
+                    group.leave()
+                }
+            }
+            group.notify(queue: .main) {
+                completion(downEvents)
             }
         }
-        completion(downEvents)
     }
     
     /**
@@ -221,17 +228,23 @@ public class ApiEvent {
     */
     public static func getNotDownEvents(uid: String, completion: @escaping ([Event]) -> Void) {
         var notDownEvents = [Event]()
-
+        //synchronize event lookup
+        let group = DispatchGroup()
         db.collection("user_events").document(uid).collection("not_down").getDocuments() { snapshot, error in
             if error != nil { return }
             guard let documents = snapshot?.documents else { return }
             for document in documents {
-                let downEventID = document.documentID
-                let event = Event(dict: document.data(), autoID: downEventID)
-                notDownEvents.append(event)
+                group.enter()
+                let notDownEventID = document.documentID
+                self.getEventDetails(autoID: notDownEventID) { event in
+                    notDownEvents.append(event)
+                    group.leave()
+                }
+            }
+            group.notify(queue: .main) {
+                completion(notDownEvents)
             }
         }
-        completion(notDownEvents)
     }
     
     /**
@@ -252,8 +265,8 @@ public class ApiEvent {
                 let notDownEventID = document.documentID
                 notDownEventIDs.append(notDownEventID)
             }
+            completion(notDownEventIDs)
         }
-        completion(notDownEventIDs)
     }
     
     /**
@@ -287,7 +300,65 @@ public class ApiEvent {
     */
     public static func getUnviewedEvent(uid: String, completion: @escaping ([Event]) -> Void) {
         getViewedEventIDs(uid: uid) { viewedEventIDs in
-            db.collection("events").getDocuments() { (snapshot, error) in
+            db.collection("events")
+                .whereField("endTime", isLessThanOrEqualTo: Timestamp(date: Date()))
+                .getDocuments() { (snapshot, error) in
+                    var unviewedEvents = [Event]()
+                    if error != nil { return }
+                    guard let documents = snapshot?.documents else { return }
+                    for document in documents {
+                        let eventID = document.documentID
+                        if !viewedEventIDs.contains(eventID) {
+                            let event = Event(dict: document.data(), autoID: eventID)
+                            unviewedEvents.append(event)
+                        }
+                    }
+                    completion(unviewedEvents)
+            }
+        }
+    }
+    
+    /**
+        Fetches a list of event objects that the user did not respond to by optional filters.
+        
+        # Notes: #
+         This makes three separate API calls to get the down event IDs, not down event IDs, and the event IDs that
+          are not present in the those two former lists.
+
+        - parameter uid: The user ID
+        - parameter categories: The list of categories
+        - parameter distance: The distance from the current location
+        - parameter currentLocation: The user's current location
+        - parameter completion: Closure whose callback will contain the list of the event objects
+        - returns: Void
+
+       */
+    public static func getUnviewedEventFilter(uid: String, categories: [String]?, distance: Double?, currentLocation: EventLocation?, completion: @escaping ([Event]) -> Void) {
+        getViewedEventIDs(uid: uid) { viewedEventIDs in
+            var ref = db.collection("events")
+                .whereField("endTime", isLessThanOrEqualTo: Timestamp(date: Date()))
+            if let categories = categories {
+                ref = ref.whereField("categories", arrayContains: categories)
+            }
+            if let distance = distance, let currentLocation = currentLocation {
+                // ~1 mile of lat and lon in degrees
+                let lat = 0.0144927536231884
+                let lon = 0.0181818181818182
+
+                let lowerLat = currentLocation.latitude - (lat * distance)
+                let lowerLon = currentLocation.longitude - (lon * distance)
+
+                let greaterLat = currentLocation.latitude + (lat * distance)
+                let greaterLon = currentLocation.longitude + (lon * distance)
+
+                let lesserGeopoint = GeoPoint(latitude: lowerLat, longitude: lowerLon)
+                let greaterGeopoint = GeoPoint(latitude: greaterLat, longitude: greaterLon)
+                
+                ref = ref.whereField("location", isGreaterThan: lesserGeopoint)
+                        .whereField("location", isLessThan: greaterGeopoint)
+            }
+            
+            ref.getDocuments() { (snapshot, error) in
                 var unviewedEvents = [Event]()
                 if error != nil { return }
                 guard let documents = snapshot?.documents else { return }
@@ -326,7 +397,7 @@ public class ApiEvent {
         //we can't hae null doubles, so this is a workaround
         if let location = event.location {
             eventDict["location"] = GeoPoint(latitude: location.latitude,
-                                                   longitude: location.longitude)
+                                            longitude: location.longitude)
         }
         
         //add to the events collection
@@ -342,7 +413,11 @@ public class ApiEvent {
         let autoID = ref.documentID
         
         //add to user events table
-        db.collection("user_events").document(event.uid).collection("created").document(autoID).setData(["date": Timestamp(date: Date())]) { error in
+        db.collection("user_events")
+            .document(event.uid)
+            .collection("created")
+            .document(autoID)
+            .setData(["date": Timestamp(date: Date())]) { error in
             if let error = error {
                 responseError = error
             }
@@ -361,7 +436,7 @@ public class ApiEvent {
      - returns: Void
 
     */
-    public static func getEventDetails(autoID: String, completion: @escaping (Event?) -> Void) {
+    public static func getEventDetails(autoID: String, completion: @escaping (Event) -> Void) {
         db.collection("events").document(autoID).getDocument() { (document, error) in
             if error != nil { return }
             
@@ -380,18 +455,22 @@ public class ApiEvent {
      The event ID document is a reference to the `events` table. In addition, the document will contain
       a key called `date`, which is a timestamp of when the user pressed down
 
-     - parameter event: The event object to be added
+     - parameter eventID: The event ID to be added
+     - parameter uid: The ID of the user who pressed down
      - parameter completion: Closure whose callback will contain the list of the event objects
      - returns: Void
 
     */
-    public static func addUserDown(event: Event, completion: @escaping () -> Void) {
-        guard let eventID = event.autoID else { return }
-        
-        db.collection("user_events").document(event.uid).collection("down").document(eventID).setData(["date": Timestamp(date: Date())]) { error in
-            if error != nil { return }
-            db.collection("events").document(eventID).updateData(["numDown": FieldValue.increment(Int64(1))])
-            completion()
+    public static func addUserDown(eventID: String, uid: String, completion: @escaping () -> Void) {
+      
+        db.collection("user_events")
+            .document(uid)
+            .collection("down")
+            .document(eventID)
+            .setData(["date": Timestamp(date: Date())]) { error in
+                if error != nil { return }
+                db.collection("events").document(eventID).updateData(["numDown": FieldValue.increment(Int64(1))])
+                completion()
         }
     }
     
@@ -402,17 +481,99 @@ public class ApiEvent {
      The event ID document is a reference to the `events` table. In addition, the document will contain
       a key called `date`, which is a timestamp of when the user pressed down
 
-     - parameter event: The event object to be added
+     - parameter eventID: The event ID to be added
+     - parameter uid: The ID of the user who pressed not down
      - parameter completion: Closure whose callback will contain the list of the event objects
      - returns: Void
 
     */
-    public static func addUserNotDown(event: Event, completion: @escaping () -> Void) {
-        guard let eventID = event.autoID else { return }
+    public static func addUserNotDown(eventID: String, uid: String, completion: @escaping () -> Void) {
+        db.collection("user_events")
+            .document(uid)
+            .collection("not_down")
+            .document(eventID)
+            .setData(["date": Timestamp(date: Date())]) { error in
+                if error != nil { return }
+                completion()
+        }
+    }
+    
+    /***
+    Updates the event information on Firestore on the `events` collection
 
-        db.collection("user_events").document(event.uid).collection("not_down").document(eventID).setData(["date": Timestamp(date: Date())]) { error in
-            if error != nil { return }
-            completion()
+      - parameter eventID: The event ID to be added to Firestore
+      - returns: AutoID of newly added event if added to events on Firestore
+
+     */
+    public static func updateEvent(event: Event, completion: @escaping () -> Void) {
+        guard let eventID = event.autoID else { return }
+        var eventDict = [
+            "title": event.title ?? "",
+            "description": event.description ?? "",
+            "uid": eventID,
+            "displayName": event.originalPoster,
+            "startTime": Timestamp(date: event.dates.startDate),
+            "endTime": Timestamp(date: event.dates.endDate),
+            "numDown": event.numDown,
+            "isPublic": event.isPublic,
+            "categories": event.categories ?? []
+            ] as [String : Any]
+        //we can't hae null doubles, so this is a workaround
+        if let location = event.location {
+            eventDict["location"] = GeoPoint(latitude: location.latitude,
+                                             longitude: location.longitude)
+        }
+        
+        //add to the events collection
+        db.collection("events").document(eventID).setData(eventDict) { error in
+            if let error = error {
+                print(error)
+            } else {
+                completion()
+            }
+        }
+    }
+    
+    /**
+     Undo the user's action on the event
+
+     - parameter eventID: The event ID
+     - parameter uid: The user's event
+     - parameter from: Undo action from either `down` or `not_down`
+     - parameter completion: Closure whose callback will contain the list of the event objects
+     - returns: Void
+
+    */
+    public static func undoEventAction(eventID: String, uid: String, from: String, completion: @escaping () -> Void) {
+        if (from != "down" || from != "not_down") { return }
+        db.collection("user_events").document(uid).collection(from).document(eventID).delete() { error in
+            if let error = error {
+                print(error)
+            } else {
+                completion()
+            }
+        }
+    }
+    
+    /**
+     Removes the event from the `event` collection
+     
+     # Note: #
+     This only removes the event object from `event`, but it doesn't remove the references from
+     the `user_events` tables
+
+     - parameter eventID: The event ID
+     - parameter completion: Closure whose callback will contain the list of the event objects
+     - returns: Void
+
+    */
+    public static func deleteEvent(eventID: String, completion: @escaping () -> Void) {
+        db.collection("events").document(eventID).delete() { error in
+            if let error = error {
+                print(error)
+            } else {
+                completion()
+            }
         }
     }
 }
