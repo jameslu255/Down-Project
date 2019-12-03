@@ -86,6 +86,7 @@ class DecidedEventsTableVC: UITableViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: "down", for: indexPath)
             if let eventCell = cell as? DownEventCell {
                 let event = cellContents[indexPath.section][indexPath.row]
+                eventCell.event = event
                 eventCell.delegate = self
                 eventCell.eventTitleLabel.text = event.title ?? "No title"
                 eventCell.usernameLabel.text = event.originalPoster
@@ -109,6 +110,7 @@ class DecidedEventsTableVC: UITableViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: "notDown", for: indexPath)
             if let eventCell = cell as? NotDownEventCell {
                 let event = cellContents[indexPath.section][indexPath.row]
+                eventCell.event = event
                 eventCell.eventTitleLabel.text = event.title ?? "No title"
                 eventCell.usernameLabel.text = event.originalPoster
                 eventCell.durationLabel.text = event.stringShortFormat
@@ -133,16 +135,16 @@ class DecidedEventsTableVC: UITableViewController {
 extension DecidedEventsTableVC: SwipeableEventCellDelegate {
     func swipeLeft(cell: EventCell) {
         
-        removeEventCell(cell, withDirection: .left)
-        guard let event = cell.event, let currentUser = Auth.auth().currentUser, let indexPath = self.tableView.indexPath(for: cell) else { return }
+        guard let event = cell.event, let currentUser = Auth.auth().currentUser, let indexPath = self.tableView.indexPath(for: cell) else {
+            return }
         let category = indexPath.section == 0 ? "down" : "notDown"
         if let eventID = event.autoID {
             ApiEvent.undoEventAction(eventID: eventID, uid: currentUser.uid, from: category) { }
         }
+        removeEventCell(cell, withDirection: .left)
     }
     
     func swipeRight(cell: EventCell) {
-        removeEventCell(cell, withDirection: .right)
         guard let event = cell.event, let currentUser = Auth.auth().currentUser, let indexPath = self.tableView.indexPath(for: cell) else { return }
         let category = indexPath.section == 0 ? "down" : "notDown"
         
@@ -155,6 +157,7 @@ extension DecidedEventsTableVC: SwipeableEventCellDelegate {
                 ApiEvent.addUserNotDown(eventID: eventID, uid: currentUser.uid, completion: {})
             }
         }
+        removeEventCell(cell, withDirection: .right)
     }
     
     func tapped(event: Event) {
