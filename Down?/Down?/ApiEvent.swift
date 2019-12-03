@@ -208,7 +208,9 @@ public class ApiEvent {
                 group.enter()
                 let downEventID = document.documentID
                 self.getEventDetails(autoID: downEventID) { event in
-                    downEvents.append(event)
+                    if let event = event {
+                        downEvents.append(event)
+                    }
                     group.leave()
                 }
             }
@@ -237,7 +239,9 @@ public class ApiEvent {
                 group.enter()
                 let notDownEventID = document.documentID
                 self.getEventDetails(autoID: notDownEventID) { event in
-                    notDownEvents.append(event)
+                    if let event = event {
+                        notDownEvents.append(event)
+                    }
                     group.leave()
                 }
             }
@@ -436,14 +440,22 @@ public class ApiEvent {
      - returns: Void
 
     */
-    public static func getEventDetails(autoID: String, completion: @escaping (Event) -> Void) {
+    public static func getEventDetails(autoID: String, completion: @escaping (Event?) -> Void) {
         db.collection("events").document(autoID).getDocument() { (document, error) in
-            if error != nil { return }
+            if error != nil {
+                completion(nil)
+                return
+            }
             
             if let responseDocument = document, responseDocument.exists {
-                guard let data = responseDocument.data() else { return }
+                guard let data = responseDocument.data() else {
+                    completion(nil)
+                    return
+                }
                 let event = Event(dict: data, autoID: autoID)
                 completion(event)
+            } else {
+                completion(nil)
             }
         }
     }
