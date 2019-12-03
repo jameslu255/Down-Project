@@ -25,7 +25,7 @@ class CreateEventController: UITableViewController {
   @IBOutlet weak var endTimeLabel: UILabel!
   @IBOutlet weak var descriptionLabel: UILabel!
   @IBOutlet weak var eventDescription: UITextView!
-  @IBOutlet weak var locationField: UITextField!
+  @IBOutlet weak var locationField: UILabel!
   @IBOutlet weak var eventType: UISegmentedControl!
   @IBOutlet weak var categories: UICollectionView!
   @IBOutlet weak var createButton: UIButton!
@@ -62,23 +62,25 @@ class CreateEventController: UITableViewController {
     
     setTimeDefaults()
     
+    locationField.textColor = .lightGray
+    
     let tap = UITapGestureRecognizer()
     tap.delegate = self
     view.addGestureRecognizer(tap)
   }
   
-    override func viewWillAppear(_ animated: Bool) {
-        handle = Auth.auth().addStateDidChangeListener { (auth, user) in
-            self.user = user
-        }
-    }
-      
-    override func viewWillDisappear(_ animated: Bool) {
-      super.viewWillDisappear(animated)
-      // [START remove_auth_listener]
-      Auth.auth().removeStateDidChangeListener(handle!)
-      // [END remove_auth_listener]
-    }
+  override func viewWillAppear(_ animated: Bool) {
+      handle = Auth.auth().addStateDidChangeListener { (auth, user) in
+          self.user = user
+      }
+  }
+    
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    // [START remove_auth_listener]
+    Auth.auth().removeStateDidChangeListener(handle!)
+    // [END remove_auth_listener]
+  }
     
   // MARK: IBActions
   
@@ -92,21 +94,19 @@ class CreateEventController: UITableViewController {
     endDate = sender.date
   }
   @IBAction func createEvent() {
-    print("pressed")
-    
     // Api call to store the data
-    guard let displayName = user?.displayName, let uid = user?.uid, let eventName = eventNameField.text, let startDate = startDate, let endDate = endDate else { return }
+    guard let displayName = user?.displayName, let uid = user?.uid, let eventName = eventNameField.text, let startDate = startDate, let endDate = endDate, let lat = location?.location?.coordinate.latitude, let long = location?.location?.coordinate.longitude else { return }
 
-    var cats:[String] = []
-    categoriesData.forEach {
+    let selectedCategories:[String] = categoriesData.compactMap({
       if ($0.isSelected) {
-        cats.append($0.name)
+        return $0.name
       }
-    }
+      return nil
+    })
     
     let eventSegment = eventType.titleForSegment(at: eventType.selectedSegmentIndex)
     let isPublic = eventSegment == "Everyone"
-    let event = Event(displayName: displayName, uid: uid, startDate: startDate,endDate: endDate, isPublic: isPublic, description: eventDescription.text, title: eventName, latitude: nil, longitude: nil, categories: cats)
+    let event = Event(displayName: displayName, uid: uid, startDate: startDate,endDate: endDate, isPublic: isPublic, description: eventDescription.text, title: eventName, latitude: lat, longitude: long, categories: selectedCategories)
     
     guard let id = ApiEvent.addEvent(event: event) else { return }
     print(id)
@@ -212,6 +212,12 @@ class CreateEventController: UITableViewController {
     if (indexPath.row == 4 && endTimePicker.isHidden) {
       return 0
     }
+    
+    // Hiding segment control FOR NOW
+    if (indexPath.row == 7) {
+     return 0
+    }
+    
     return super.tableView(tableView, heightForRowAt: indexPath)
   }
   
@@ -251,9 +257,9 @@ class CreateEventController: UITableViewController {
 
 extension CreateEventController: UIGestureRecognizerDelegate {
   func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-    let areFirstResponders = eventNameField.isFirstResponder || eventDescription.isFirstResponder || locationField.isFirstResponder
+    let areFirstResponders = eventNameField.isFirstResponder || eventDescription.isFirstResponder
     let isTouchingTable = touch.view?.isDescendant(of: tableView) ?? true
-    let isTouchingField = touch.view?.isDescendant(of: eventNameField) ?? true || touch.view?.isDescendant(of: locationField) ?? true || touch.view?.isDescendant(of: eventDescription) ?? true
+    let isTouchingField = touch.view?.isDescendant(of: eventNameField) ?? true || touch.view?.isDescendant(of: eventDescription) ?? true
     
     // If tapping over the table and no first responders
     if (isTouchingTable && !areFirstResponders){
@@ -277,10 +283,11 @@ extension CreateEventController: CLLocationManagerDelegate {
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
     guard let location = locations.first else { return }
     geoCoder.reverseGeocodeLocation(location) { placemarks, error in
-      guard let name = placemarks?[0].name else { return }
-      //let location = "\(name.street), \(name.city), \(name.state)"
+      guard let place = placemarks?[0], let name = place.name else { return }
+      self.location = place
       guard let locationText = self.locationField.text else { return }
-      if (locationText.isEmpty) {
+      if (locationText == "Location not found") {
+        self.locationField.textColor = .label
         self.locationField.text = name
       }
  
@@ -319,7 +326,7 @@ extension CreateEventController: UITextViewDelegate {
 extension CreateEventController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
     // Some arbitrary, made up numbers for height and width, honestly I just kinda eye-balled these
-    return CGSize(width: (collectionView.frame.width/4), height: collectionView.frame.height * 0.85)
+    return CGSize(width: (collectionView.frame.width/4), height: collectionView.frame.height * 0.7)
   }
   
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

@@ -557,7 +557,7 @@ public class ApiEvent {
 
     */
     public static func undoEventAction(eventID: String, uid: String, from: String, completion: @escaping () -> Void) {
-        if (from != "down" || from != "not_down") { return }
+        if (from != "down" && from != "not_down") { return }
         db.collection("user_events").document(uid).collection(from).document(eventID).delete() { error in
             if let error = error {
                 print(error)
