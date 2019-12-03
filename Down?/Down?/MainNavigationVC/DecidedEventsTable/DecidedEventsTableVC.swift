@@ -22,7 +22,7 @@ class DecidedEventsTableVC: UITableViewController {
         reloadModelData()
         tableView.register(DownEventCell.self, forCellReuseIdentifier: "down")
         tableView.register(NotDownEventCell.self, forCellReuseIdentifier: "notDown")
-        //all the events have loaded
+        	
         group.notify(queue: .main) {
             self.tableView.reloadData()
         }

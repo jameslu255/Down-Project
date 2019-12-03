@@ -59,6 +59,10 @@ class EventDetailsPopupViewController: UIViewController {
             }
             self.Location.text = locationString ?? "No location"
         }
+        else {
+            self.Location.text = "No location"
+        }
+        	
         self.Description.text = event?.description ?? "Error"
         if self.Description.text.isEmpty {
             self.Description.removeFromSuperview()
