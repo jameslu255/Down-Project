@@ -6,11 +6,20 @@
 //
 
 import UIKit
+import Firebase
 
 
 var finalChecked = [0, 0, 0, 0, 0]
-var distanceCheck = [1, 0, 0, 0, 0]
 var finalDistanceCheck = [1, 0, 0, 0, 0]
+var distanceCheck = [1, 0, 0, 0, 0]
+var checked = [0, 0, 0, 0, 0]
+
+var categories = ["Studying", "Sports", "Gaming", "Eating", "Other"]
+var categoryFilters = [String]()
+
+var distance = [nil, 0.3, 1.0, 5.0, 20.0]
+var distanceFilter: Double?
+
 class FilterView: UIViewController {
     @IBOutlet weak var studyingButton: UIButton!
     @IBOutlet weak var sportsButton: UIButton!
@@ -24,7 +33,8 @@ class FilterView: UIViewController {
     @IBOutlet weak var fiveMilesButton: UIButton!
     @IBOutlet weak var twentyMilesButton: UIButton!
     
-    var checked = [0, 0, 0, 0, 0]
+    var user: User = Auth.auth().currentUser!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         let checkSize = UIImage.SymbolConfiguration(pointSize: 18.25, weight: .bold, scale: .large)
@@ -71,8 +81,8 @@ class FilterView: UIViewController {
         gamingButton.setImage(UIImage(systemName: "stop", withConfiguration: checkSize), for: .normal)
         eatingButton.setImage(UIImage(systemName: "stop", withConfiguration: checkSize), for: .normal)
         otherButton.setImage(UIImage(systemName: "stop", withConfiguration: checkSize), for: .normal)
-        for n in 0...distanceCheck.count-1{
-            distanceCheck[n] = 0
+        for n in 0...checked.count-1{
+            checked[n] = 0
         }
         resetAllButtons()
         anyDistanceButton.setImage(UIImage(systemName: "largecircle.fill.circle"), for: .normal)
@@ -198,6 +208,7 @@ class FilterView: UIViewController {
         for n in 0...checked.count-1{
             if (checked[n] == 1){
                 finalChecked[n] = 1
+                categoryFilters.append(categories[n])
             }
             else{
                 finalChecked[n] = 0
@@ -206,14 +217,27 @@ class FilterView: UIViewController {
         for n in 0...distanceCheck.count-1{
             if (distanceCheck[n] == 1){
                 finalDistanceCheck[n] = 1
+                distanceFilter = distance[n]
             }
             else{
                 finalDistanceCheck[n] = 0
             }
         }
-        /*ApiEvent.getUnviewedEventFilter(uid: String, categories: [String]?, distance: Double?, currentLocation: EventLocation?, completion: ([Event]) -> Void) {
-        }*/
-        dismiss(animated: true, completion: nil)
+        weak var vc = presentingViewController as? HomeViewController
+        checked = finalChecked
+        distanceCheck = finalDistanceCheck
+        if let latitude = vc?.locationManager.location?.coordinate.latitude, let longitude = vc?.locationManager.location?.coordinate.longitude {
+            let location = EventLocation(latitude: latitude, longitude: longitude)
+            ApiEvent.getUnviewedEventFilter(uid: user.uid, categories: categoryFilters, distance: distanceFilter, currentLocation: location) { events in
+                vc?.events = events
+                vc?.Feed.reloadData()
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
+        else {
+            print("sumting wong")
+        }
+        
     }
     
     
