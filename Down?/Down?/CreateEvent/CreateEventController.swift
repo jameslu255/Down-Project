@@ -47,6 +47,7 @@ class CreateEventController: UITableViewController {
   var startDate: Date?
   var endDate: Date?
   var location: CLPlacemark?
+  var currentUser: User = Auth.auth().currentUser!
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -110,6 +111,11 @@ class CreateEventController: UITableViewController {
     
     guard let id = ApiEvent.addEvent(event: event) else { return }
     print(id)
+    ApiEvent.getUnviewedEvent(uid: currentUser.uid) { newEvents in
+        events = newEvents
+      DataManager.shared.firstVC.Feed.reloadData()
+    }
+    
     dismiss(animated: true, completion: nil)
   }
   

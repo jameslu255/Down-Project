@@ -15,8 +15,7 @@ extension HomeViewController {
     func setUpFeed(){
         if let user = Auth.auth().currentUser {
             ApiEvent.getUnviewedEvent(uid: user.uid) { apiEvents in
-                print(apiEvents.count)
-                self.events = apiEvents
+                events = apiEvents
                 self.Feed.reloadData()
             }
         }
@@ -102,19 +101,23 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         eventCell.durationLabel.text = event.stringShortFormat
         if let lat = event.location?.latitude, let long = event.location?.longitude {
             let location = CLLocation(latitude: lat, longitude: long)
-            var locationString: String?
-            geoCoder.reverseGeocodeLocation(location) { placemarks, error in
-                if error != nil {return}
-                if let placemark = placemarks?[0] {
-                    locationString = placemark.name
-                }
+            CLGeocoder().reverseGeocodeLocation(location) { placemarks, error in
+                if error != nil {
+                  eventCell.locationTextView.text = "No location"
+                  return
+                  
+              }
+              if let name = placemarks?[0].name {
+                eventCell.locationTextView.text = name
+              }
+              else {
+                eventCell.locationTextView.text = "No location"
+              }
             }
-            eventCell.locationTextView.text = locationString ?? "No location"
         }
         else {
             eventCell.locationTextView.text = "No location"
         }
-        
         return eventCell
     }
 }

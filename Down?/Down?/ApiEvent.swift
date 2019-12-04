@@ -146,7 +146,7 @@ public struct Event {
         let startTimeStamp = dict["startTime"] as? Timestamp
         let endTimeStamp = dict["endTime"] as? Timestamp
         let geoPoint = dict["location"] as? GeoPoint
-        
+        let categories = dict["categories"] as? [String:Bool] ?? [:]
         
         self.numDown = dict["numDown"] as? Int ?? 0
         self.autoID = autoID
@@ -158,7 +158,7 @@ public struct Event {
         self.isPublic = dict["isPublic"] as? Bool ?? false
         self.description = dict["description"] as? String
         self.title = dict["title"] as? String
-        self.categories = dict["categories"] as? [String]
+        self.categories = Array(categories.keys)
         }
     
 }
@@ -336,7 +336,7 @@ public class ApiEvent {
     public static func getUnviewedEvent(uid: String, completion: @escaping ([Event]) -> Void) {
         getViewedEventIDs(uid: uid) { viewedEventIDs in
             db.collection("events")
-                .whereField("endTime", isLessThanOrEqualTo: Timestamp(date: Date()))
+                .whereField("endTime", isGreaterThanOrEqualTo: Timestamp(date: Date()))
                 .getDocuments() { (snapshot, error) in
                     var unviewedEvents = [Event]()
                     if error != nil { return }
@@ -371,10 +371,14 @@ public class ApiEvent {
     public static func getUnviewedEventFilter(uid: String, categories: [String]?, distance: Double?, currentLocation: EventLocation?, completion: @escaping ([Event]) -> Void) {
         getViewedEventIDs(uid: uid) { viewedEventIDs in
             var ref = db.collection("events")
-                .whereField("endTime", isLessThanOrEqualTo: Timestamp(date: Date()))
+                .whereField("endTime", isGreaterThanOrEqualTo: Timestamp(date: Date()))
             if let categories = categories {
-                ref = ref.whereField("categories", arrayContains: categories)
+                //ref = ref.whereField("categories", arrayContains: categories)
+                for category in categories {
+                    ref = ref.whereField(category, isEqualTo: true)
+                }
             }
+            
             if let distance = distance, let currentLocation = currentLocation {
                 // ~1 mile of lat and lon in degrees
                 let lat = 0.0144927536231884
@@ -427,8 +431,15 @@ public class ApiEvent {
             "endTime": Timestamp(date: event.dates.endDate),
             "numDown": event.numDown,
             "isPublic": event.isPublic,
-            "categories": event.categories ?? []
             ] as [String : Any]
+        if let categories = event.categories {
+            var categoryDict = [String:Bool]()
+            for category in categories {
+                categoryDict[category] = true
+            }
+            eventDict["category"] = categoryDict
+        }
+        
         //we can't hae null doubles, so this is a workaround
         if let location = event.location {
             eventDict["location"] = GeoPoint(latitude: location.latitude,
