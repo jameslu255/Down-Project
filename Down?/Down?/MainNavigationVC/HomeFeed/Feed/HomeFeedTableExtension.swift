@@ -99,14 +99,15 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         eventCell.durationLabel.text = event.stringShortFormat
         if let lat = event.location?.latitude, let long = event.location?.longitude {
             let location = CLLocation(latitude: lat, longitude: long)
-            var locationString: String?
+            //var locationString: String?
             geoCoder.reverseGeocodeLocation(location) { placemarks, error in
-                if error != nil {return}
-                if let placemark = placemarks?[0] {
-                    locationString = placemark.name
+                if error != nil { return }
+              if let name = placemarks?[0].name {
+                    //locationString = placemark
+                  print(name)
+                  eventCell.locationTextView.text = name
                 }
             }
-            eventCell.locationTextView.text = locationString ?? "No location"
         }
         else {
             eventCell.locationTextView.text = "No location"

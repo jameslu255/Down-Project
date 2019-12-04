@@ -28,8 +28,8 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     map.delegate = self
     map.showsUserLocation = true
     map.isRotateEnabled = false
-    map.isZoomEnabled = false
-    map.isScrollEnabled = false
+    map.isZoomEnabled = true
+    map.isScrollEnabled = true
     
     if let coordinate = locationManager.location?.coordinate {
       let region = MKCoordinateRegion(center: coordinate, latitudinalMeters: regionInMeters, longitudinalMeters: regionInMeters)
@@ -46,7 +46,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
       let annotation = EventPin(event: $0, coordinate: coordinate)
       return annotation
     })
-    map.removeAnnotations(map.annotations)
+    map.removeAnnotations(self.map.annotations)
     map.addAnnotations(annotations)
   }
   
@@ -54,12 +54,24 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     if (annotation is MKUserLocation) {
       return nil
     }
-    let annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: "eventAnno")
+    
+    let annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "eventAnno")
+    annotationView.canShowCallout = true
+    let storyboard = UIStoryboard(name: "HomeFeed", bundle: nil)
+    if let eventDetails = storyboard.instantiateViewController(identifier: "eventDetailsPopup") as? EventDetailsPopupViewController, let anno = annotation as? EventPin {
+      eventDetails.event = anno.event
+      annotationView.detailCalloutAccessoryView = eventDetails.view
+    }
+    //annotationView.detailCalloutAccessoryView
     
     return annotationView
   }
   
   func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-    // Display event info
+    // Do Something
+  }
+  
+  func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
+    // Code
   }
 }

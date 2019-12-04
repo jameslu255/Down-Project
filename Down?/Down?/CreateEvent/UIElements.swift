@@ -120,6 +120,7 @@ class EventPin: NSObject, MKAnnotation {
   
   init(event: Event, coordinate: CLLocationCoordinate2D) {
     self.event = event
+    //self.title = event.title
     self.coordinate = coordinate
   }
 }
