@@ -9,45 +9,74 @@ import UIKit
 
 
 var finalChecked = [0, 0, 0, 0, 0]
+var distanceCheck = [1, 0, 0, 0, 0]
+var finalDistanceCheck = [1, 0, 0, 0, 0]
 class FilterView: UIViewController {
-    @IBOutlet weak var StudyingButton: UIButton!
-    @IBOutlet weak var SportsButton: UIButton!
-    @IBOutlet weak var GamingButton: UIButton!
-    @IBOutlet weak var EatingButton: UIButton!
-    @IBOutlet weak var OtherButton: UIButton!
+    @IBOutlet weak var studyingButton: UIButton!
+    @IBOutlet weak var sportsButton: UIButton!
+    @IBOutlet weak var gamingButton: UIButton!
+    @IBOutlet weak var eatingButton: UIButton!
+    @IBOutlet weak var otherButton: UIButton!
+    
+    @IBOutlet weak var anyDistanceButton: UIButton!
+    @IBOutlet weak var thirdMilesButton: UIButton!
+    @IBOutlet weak var oneMileButton: UIButton!
+    @IBOutlet weak var fiveMilesButton: UIButton!
+    @IBOutlet weak var twentyMilesButton: UIButton!
     
     var checked = [0, 0, 0, 0, 0]
     override func viewDidLoad() {
         super.viewDidLoad()
         let checkSize = UIImage.SymbolConfiguration(pointSize: 18.25, weight: .bold, scale: .large)
+        for n in 0...finalDistanceCheck.count-1{
+            if (n == 0 && finalDistanceCheck[n] == 1)
+            {
+                anyDistanceButton.setImage(UIImage(systemName: "largecircle.fill.circle"), for: .normal)
+            }
+            if (n == 1 && finalDistanceCheck[n] == 1){
+                thirdMilesButton.setImage(UIImage(systemName: "largecircle.fill.circle"), for: .normal)
+            }
+            if (n == 2 && finalDistanceCheck[n] == 1){
+                oneMileButton.setImage(UIImage(systemName: "largecircle.fill.circle"), for: .normal)
+            }
+            if (n == 3 && finalDistanceCheck[n] == 1){
+                fiveMilesButton.setImage(UIImage(systemName: "largecircle.fill.circle"), for: .normal)
+            }
+            if (n == 4 && finalDistanceCheck[n] == 1){
+                twentyMilesButton.setImage(UIImage(systemName: "largecircle.fill.circle"), for: .normal)
+            }
+        }
         for n in 0...finalChecked.count-1{
             if (n == 0 && finalChecked[n] == 1){
-                StudyingButton.setImage(UIImage(systemName: "checkmark.square.fill", withConfiguration: checkSize), for: .normal)
+                studyingButton.setImage(UIImage(systemName: "checkmark.square.fill", withConfiguration: checkSize), for: .normal)
             }
             if (n == 1 && finalChecked[n] == 1){
-                SportsButton.setImage(UIImage(systemName: "checkmark.square.fill", withConfiguration: checkSize), for: .normal)
+                sportsButton.setImage(UIImage(systemName: "checkmark.square.fill", withConfiguration: checkSize), for: .normal)
             }
             if (n == 2 && finalChecked[n] == 1){
-                GamingButton.setImage(UIImage(systemName: "checkmark.square.fill", withConfiguration: checkSize), for: .normal)
+                gamingButton.setImage(UIImage(systemName: "checkmark.square.fill", withConfiguration: checkSize), for: .normal)
             }
             if (n == 3 && finalChecked[n] == 1){
-                EatingButton.setImage(UIImage(systemName: "checkmark.square.fill", withConfiguration: checkSize), for: .normal)
+                eatingButton.setImage(UIImage(systemName: "checkmark.square.fill", withConfiguration: checkSize), for: .normal)
             }
             if (n == 4 && finalChecked[n] == 1){
-                OtherButton.setImage(UIImage(systemName: "checkmark.square.fill", withConfiguration: checkSize), for: .normal)
+                otherButton.setImage(UIImage(systemName: "checkmark.square.fill", withConfiguration: checkSize), for: .normal)
             }
         }
     }
     @IBAction func ResetPressed(_ sender: Any) {
         let checkSize = UIImage.SymbolConfiguration(pointSize: 20, weight: .bold, scale: .large)
-        StudyingButton.setImage(UIImage(systemName: "stop", withConfiguration: checkSize), for: .normal)
-        SportsButton.setImage(UIImage(systemName: "stop", withConfiguration: checkSize), for: .normal)
-        GamingButton.setImage(UIImage(systemName: "stop", withConfiguration: checkSize), for: .normal)
-        EatingButton.setImage(UIImage(systemName: "stop", withConfiguration: checkSize), for: .normal)
-        OtherButton.setImage(UIImage(systemName: "stop", withConfiguration: checkSize), for: .normal)
-        for n in 0...checked.count-1{
-            checked[n] = 0
+        studyingButton.setImage(UIImage(systemName: "stop", withConfiguration: checkSize), for: .normal)
+        sportsButton.setImage(UIImage(systemName: "stop", withConfiguration: checkSize), for: .normal)
+        gamingButton.setImage(UIImage(systemName: "stop", withConfiguration: checkSize), for: .normal)
+        eatingButton.setImage(UIImage(systemName: "stop", withConfiguration: checkSize), for: .normal)
+        otherButton.setImage(UIImage(systemName: "stop", withConfiguration: checkSize), for: .normal)
+        for n in 0...distanceCheck.count-1{
+            distanceCheck[n] = 0
         }
+        resetAllButtons()
+        anyDistanceButton.setImage(UIImage(systemName: "largecircle.fill.circle"), for: .normal)
+        distanceCheck[0] = 1
     }
     
     @IBAction func cancelPressed(_ sender: Any) {
@@ -58,13 +87,13 @@ class FilterView: UIViewController {
         if (checked[0] == 0)
         {
             let checkSize = UIImage.SymbolConfiguration(pointSize: 18.25, weight: .bold, scale: .large)
-            StudyingButton.setImage(UIImage(systemName: "checkmark.square.fill", withConfiguration: checkSize), for: .normal)
+            studyingButton.setImage(UIImage(systemName: "checkmark.square.fill", withConfiguration: checkSize), for: .normal)
             checked[0] = 1
         }
         else
         {
             let checkSize = UIImage.SymbolConfiguration(pointSize: 20, weight: .bold, scale: .large)
-            StudyingButton.setImage(UIImage(systemName: "stop", withConfiguration: checkSize), for: .normal)
+            studyingButton.setImage(UIImage(systemName: "stop", withConfiguration: checkSize), for: .normal)
             checked[0] = 0
         }
     }
@@ -73,13 +102,13 @@ class FilterView: UIViewController {
         if (checked[1] == 0)
         {
             let checkSize = UIImage.SymbolConfiguration(pointSize: 18.25, weight: .bold, scale: .large)
-            SportsButton.setImage(UIImage(systemName: "checkmark.square.fill", withConfiguration: checkSize), for: .normal)
+            sportsButton.setImage(UIImage(systemName: "checkmark.square.fill", withConfiguration: checkSize), for: .normal)
             checked[1] = 1
         }
         else
         {
             let checkSize = UIImage.SymbolConfiguration(pointSize: 20, weight: .bold, scale: .large)
-            SportsButton.setImage(UIImage(systemName: "stop", withConfiguration: checkSize), for: .normal)
+            sportsButton.setImage(UIImage(systemName: "stop", withConfiguration: checkSize), for: .normal)
             checked[1] = 0
         }
     }
@@ -87,13 +116,13 @@ class FilterView: UIViewController {
         if (checked[2] == 0)
         {
             let checkSize = UIImage.SymbolConfiguration(pointSize: 18.25, weight: .bold, scale: .large)
-            GamingButton.setImage(UIImage(systemName: "checkmark.square.fill", withConfiguration: checkSize), for: .normal)
+            gamingButton.setImage(UIImage(systemName: "checkmark.square.fill", withConfiguration: checkSize), for: .normal)
             checked[2] = 1
         }
         else
         {
             let checkSize = UIImage.SymbolConfiguration(pointSize: 20, weight: .bold, scale: .large)
-            GamingButton.setImage(UIImage(systemName: "stop", withConfiguration: checkSize), for: .normal)
+            gamingButton.setImage(UIImage(systemName: "stop", withConfiguration: checkSize), for: .normal)
             checked[2] = 0
         }
     }
@@ -101,13 +130,13 @@ class FilterView: UIViewController {
         if (checked[3] == 0)
         {
             let checkSize = UIImage.SymbolConfiguration(pointSize: 18.25, weight: .bold, scale: .large)
-            EatingButton.setImage(UIImage(systemName: "checkmark.square.fill", withConfiguration: checkSize), for: .normal)
+            eatingButton.setImage(UIImage(systemName: "checkmark.square.fill", withConfiguration: checkSize), for: .normal)
             checked[3] = 1
         }
         else
         {
             let checkSize = UIImage.SymbolConfiguration(pointSize: 20, weight: .bold, scale: .large)
-            EatingButton.setImage(UIImage(systemName: "stop", withConfiguration: checkSize), for: .normal)
+            eatingButton.setImage(UIImage(systemName: "stop", withConfiguration: checkSize), for: .normal)
             checked[3] = 0
         }
     }
@@ -115,16 +144,54 @@ class FilterView: UIViewController {
         if (checked[4] == 0)
         {
             let checkSize = UIImage.SymbolConfiguration(pointSize: 18.25, weight: .bold, scale: .large)
-            OtherButton.setImage(UIImage(systemName: "checkmark.square.fill", withConfiguration: checkSize), for: .normal)
+            otherButton.setImage(UIImage(systemName: "checkmark.square.fill", withConfiguration: checkSize), for: .normal)
             checked[4] = 1
         }
         else
         {
             let checkSize = UIImage.SymbolConfiguration(pointSize: 20, weight: .bold, scale: .large)
-            OtherButton.setImage(UIImage(systemName: "stop", withConfiguration: checkSize), for: .normal)
+            otherButton.setImage(UIImage(systemName: "stop", withConfiguration: checkSize), for: .normal)
             checked[4] = 0
         }
     }
+    
+    func resetAllButtons(){
+        anyDistanceButton.setImage(UIImage(systemName: "circle"), for: .normal)
+        thirdMilesButton.setImage(UIImage(systemName: "circle"), for: .normal)
+        oneMileButton.setImage(UIImage(systemName: "circle"), for: .normal)
+        fiveMilesButton.setImage(UIImage(systemName: "circle"), for: .normal)
+        twentyMilesButton.setImage(UIImage(systemName: "circle"), for: .normal)
+        for n in 0...distanceCheck.count - 1{
+            distanceCheck[n] = 0
+        }
+    }
+    
+    @IBAction func AnyDistancePressed(_ sender: Any) {
+        resetAllButtons()
+        anyDistanceButton.setImage(UIImage(systemName: "largecircle.fill.circle"), for: .normal)
+        distanceCheck[0] = 1
+    }
+    @IBAction func thirdMilesPressed(_ sender: Any) {
+        resetAllButtons()
+        thirdMilesButton.setImage(UIImage(systemName: "largecircle.fill.circle"), for: .normal)
+        distanceCheck[1] = 1
+    }
+    @IBAction func oneMilePressed(_ sender: Any) {
+        resetAllButtons()
+        oneMileButton.setImage(UIImage(systemName: "largecircle.fill.circle"), for: .normal)
+        distanceCheck[2] = 1
+    }
+    @IBAction func fiveMilesPressed(_ sender: Any) {
+        resetAllButtons()
+        fiveMilesButton.setImage(UIImage(systemName: "largecircle.fill.circle"), for: .normal)
+        distanceCheck[3] = 1
+    }
+    @IBAction func twentyMilesPressed(_ sender: Any) {
+        resetAllButtons()
+        twentyMilesButton.setImage(UIImage(systemName: "largecircle.fill.circle"), for: .normal)
+        distanceCheck[4] = 1
+    }
+    
     
     
     @IBAction func ApplyPressed(_ sender: Any) {
@@ -136,6 +203,16 @@ class FilterView: UIViewController {
                 finalChecked[n] = 0
             }
         }
+        for n in 0...distanceCheck.count-1{
+            if (distanceCheck[n] == 1){
+                finalDistanceCheck[n] = 1
+            }
+            else{
+                finalDistanceCheck[n] = 0
+            }
+        }
+        /*ApiEvent.getUnviewedEventFilter(uid: String, categories: [String]?, distance: Double?, currentLocation: EventLocation?, completion: ([Event]) -> Void) {
+        }*/
         dismiss(animated: true, completion: nil)
     }
     
