@@ -19,20 +19,28 @@ We are especially focusing on making sure we can navigate through the screens gr
 
 
 James:
-* struggled
-
+* Worked on filtering event and displaying them on the home feed with Jonathan
+* Worked on sorting events and displaying them on the home feed
+https://github.com/ECS189E/project-f19-down/tree/HomeFeedLocation
 
 Jonathan: 
-* struggled
+* Firebase debugging for querying events
+* Backend restructuring
+* Just helped everyone
 
 Caleb:
-* struggled
+* Adding user profile pictures
+* Finalizing the Home Feed
+https://github.com/ECS189E/project-f19-down/tree/Feed
 
 Maxim:
-* struggled
+* Added map view screen that displays pins of events
+https://github.com/ECS189E/project-f19-down/tree/map-view
 
 ## What we plan to do ##
-* Finish
+* Finish all the functionalities and make a unified style and flow to be used throughout the app
 
 ## Any Issues ##
-* A lot
+* Many issues with inconsistancies in Firebase documentation
+* Issues with displaying filtered events
+* Synchronizing reverse location search with displaying on the table
