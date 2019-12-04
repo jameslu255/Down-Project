@@ -52,12 +52,17 @@ class EventDetailsPopupViewController: UIViewController {
             let location = CLLocation(latitude: lat, longitude: long)
             var locationString: String?
             geoCoder.reverseGeocodeLocation(location) { placemarks, error in
-                if error != nil {return}
+                if error != nil {
+                  self.Location.text = "No location"
+                  return
+                  
+              }
                 if let placemark = placemarks?[0] {
                     locationString = placemark.name
                 }
+              self.Location.text = locationString ?? "No location"
             }
-            self.Location.text = locationString ?? "No location"
+            
         }
         else {
             self.Location.text = "No location"
