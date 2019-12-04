@@ -143,12 +143,13 @@ public struct Event {
 
     */
     init(dict: [String: Any], autoID: String) {
+        print(dict)
         let startTimeStamp = dict["startTime"] as? Timestamp
         let endTimeStamp = dict["endTime"] as? Timestamp
         let geoPoint = dict["location"] as? GeoPoint
-        let categories = dict["categories"] as? [String:Bool] ?? [:]
-        
+        let categories = dict["categories"] as? [String:Int] ?? [:]
         self.numDown = dict["numDown"] as? Int ?? 0
+        
         self.autoID = autoID
         self.uid = dict["uid"] as? String ?? ""
         self.originalPoster = dict["displayName"] as? String ?? ""
@@ -337,16 +338,10 @@ public class ApiEvent {
         - returns: Void
 
        */
-    public static func getUnviewedEventFilter(uid: String, categories: [String]?, distance: Double?, currentLocation: EventLocation?, completion: @escaping ([Event]) -> Void) {
+    public static func getUnviewedEventFilter(uid: String, categories: [String], distance: Double?, currentLocation: EventLocation?, completion: @escaping ([Event]) -> Void) {
         getViewedEventIDs(uid: uid) { viewedEventIDs in
             var ref = db.collection("events")
                 .whereField("endTime", isGreaterThanOrEqualTo: Timestamp(date: Date()))
-            if let categories = categories {
-                //ref = ref.whereField("categories", arrayContains: categories)
-                for category in categories {
-                    ref = ref.whereField(category, isEqualTo: true)
-                }
-            }
             
             if let distance = distance, let currentLocation = currentLocation {
                 // ~1 mile of lat and lon in degrees
@@ -374,7 +369,13 @@ public class ApiEvent {
                     let eventID = document.documentID
                     if !viewedEventIDs.contains(eventID) {
                         let event = Event(dict: document.data(), autoID: eventID)
-                        unviewedEvents.append(event)
+                        if let eventCat = event.categories, !categories.isEmpty {
+                            if categories.intersects(with: eventCat) {
+                                unviewedEvents.append(event)
+                            }
+                        } else {
+                            unviewedEvents.append(event)
+                        }
                     }
                 }
                 completion(unviewedEvents)
@@ -406,7 +407,7 @@ public class ApiEvent {
             for category in categories {
                 categoryDict[category] = true
             }
-            eventDict["category"] = categoryDict
+            eventDict["categories"] = categoryDict
         }
         
         //we can't hae null doubles, so this is a workaround
@@ -539,8 +540,15 @@ public class ApiEvent {
             "endTime": Timestamp(date: event.dates.endDate),
             "numDown": event.numDown,
             "isPublic": event.isPublic,
-            "categories": event.categories ?? []
             ] as [String : Any]
+        
+        if let categories = event.categories {
+            var categoryDict = [String:Bool]()
+            for category in categories {
+                categoryDict[category] = true
+            }
+            eventDict["categories"] = categoryDict
+        }
         //we can't hae null doubles, so this is a workaround
         if let location = event.location {
             eventDict["location"] = GeoPoint(latitude: location.latitude,
@@ -616,5 +624,15 @@ extension Event {
             result = result.replacingOccurrences(of: ":00", with: "")
             return result
         }
+    }
+}
+
+extension Sequence where Iterator.Element : Hashable {
+
+    func intersects<S : Sequence>(with sequence: S) -> Bool
+        where S.Iterator.Element == Iterator.Element
+    {
+        let sequenceSet = Set(sequence)
+        return self.contains(where: sequenceSet.contains)
     }
 }

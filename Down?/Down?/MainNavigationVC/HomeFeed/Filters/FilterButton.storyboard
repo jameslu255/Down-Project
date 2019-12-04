@@ -361,18 +361,27 @@
                                 <state key="normal" image="circle" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="17" scale="large" weight="bold"/>
                                 </state>
+                                <connections>
+                                    <action selector="timePressed:" destination="guS-se-lrz" eventType="touchUpInside" id="uCw-iZ-xHX"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Ad-js-FrY">
-                                <rect key="frame" x="368" y="197.66666666666663" width="25.333333333333314" height="24.666666666666657"/>
+                                <rect key="frame" x="368" y="197.66666666666666" width="25.333333333333314" height="24.666666666666657"/>
                                 <state key="normal" image="circle" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="17" scale="large" weight="bold"/>
                                 </state>
+                                <connections>
+                                    <action selector="distancePressed:" destination="guS-se-lrz" eventType="touchUpInside" id="YSd-Ab-uBZ"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S2H-vy-cmz">
                                 <rect key="frame" x="368" y="236.33333333333334" width="25.333333333333314" height="24.666666666666657"/>
                                 <state key="normal" image="circle" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="17" scale="large" weight="bold"/>
                                 </state>
+                                <connections>
+                                    <action selector="downsPressed:" destination="guS-se-lrz" eventType="touchUpInside" id="sJs-cw-ADn"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -404,6 +413,11 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="PZ7-ui-r03"/>
                     </view>
+                    <connections>
+                        <outlet property="distanceButton" destination="7Ad-js-FrY" id="tn9-ES-qbq"/>
+                        <outlet property="downsButton" destination="S2H-vy-cmz" id="FHd-0L-L5E"/>
+                        <outlet property="timeButton" destination="M5i-UF-4Nf" id="FMs-5t-0mH"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="u1c-W8-Imz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

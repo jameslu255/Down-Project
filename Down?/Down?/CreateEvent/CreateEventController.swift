@@ -113,8 +113,8 @@ class CreateEventController: UITableViewController {
     print(id)
     ApiEvent.getUnviewedEvent(uid: currentUser.uid) { newEvents in
         events = newEvents
+        DataManager.shared.firstVC.Feed.reloadData()
     }
-    DataManager.shared.firstVC.Feed.reloadData()
     dismiss(animated: true, completion: nil)
   }
   
