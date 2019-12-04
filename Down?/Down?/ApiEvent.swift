@@ -253,6 +253,37 @@ public class ApiEvent {
     }
     
     /**
+     Fetches a list of event objects that the user has previously created
+
+     - parameter uid: The user ID
+     - parameter completion: Closure whose callback will contain the list of the event objects
+     - returns: Void
+
+    */
+    public static func getCreatedEvents(uid: String, completion: @escaping ([Event]) -> Void) {
+        var createdEvents = [Event]()
+        //synchronize event lookup
+        let group = DispatchGroup()
+        db.collection("user_events").document(uid).collection("created").getDocuments() { snapshot, error in
+            if error != nil { return }
+            guard let documents = snapshot?.documents else { return }
+            for document in documents {
+                group.enter()
+                let createdEventID = document.documentID
+                self.getEventDetails(autoID: createdEventID) { event in
+                    if let event = event {
+                        createdEvents.append(event)
+                    }
+                    group.leave()
+                }
+            }
+            group.notify(queue: .main) {
+                completion(createdEvents)
+            }
+        }
+    }
+    
+    /**
      Fetches a list of event objects that the user is not down for.
 
      - parameter uid: The user ID

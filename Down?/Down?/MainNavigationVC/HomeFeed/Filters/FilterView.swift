@@ -261,9 +261,16 @@ class FilterView: UIViewController {
         }
         checked = finalChecked
         distanceCheck = finalDistanceCheck
-        print(categoryFilters)
-        ApiEvent.getUnviewedEventFilter(uid: user.uid, categories: categoryFilters) { newEvents in
-            print(newEvents.count)
+
+//        if let latitude = vc?.locationManager.location?.coordinate.latitude, let longitude = vc?.locationManager.location?.coordinate.longitude {
+//            let location = EventLocation(latitude: latitude, longitude: longitude)
+//
+//        }
+//        else {
+//            print("sumting wong")
+//        }
+      print(categoryFilters)
+      ApiEvent.getUnviewedEventFilter(uid: user.uid, categories: categoryFilters) { newEvents in
             events = newEvents
             if let distance = distanceFilter, let currentLocation = currentLocation {
                 events = self.filterByDistance(events: events, currentLocation: currentLocation, distance: distance)

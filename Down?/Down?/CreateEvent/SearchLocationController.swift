@@ -15,7 +15,7 @@ class SearchLocationController: UIViewController, MKMapViewDelegate {
   
   let locationManager = CLLocationManager()
   //var userLocation: CLLocation?
-  let regionInMeters = 500.0
+  let regionInMeters = 200.0
   
   let geoCoder = CLGeocoder()
   

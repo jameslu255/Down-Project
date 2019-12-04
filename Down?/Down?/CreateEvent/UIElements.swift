@@ -112,3 +112,15 @@ class LocationPin: NSObject, MKAnnotation {
     super.init()
   }
 }
+
+class EventPin: NSObject, MKAnnotation {
+  var coordinate: CLLocationCoordinate2D
+  var title: String?
+  var event: Event?
+  
+  init(event: Event, coordinate: CLLocationCoordinate2D) {
+    self.event = event
+    //self.title = event.title
+    self.coordinate = coordinate
+  }
+}

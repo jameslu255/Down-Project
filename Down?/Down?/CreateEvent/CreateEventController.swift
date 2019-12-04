@@ -115,6 +115,7 @@ class CreateEventController: UITableViewController {
         events = newEvents
         DataManager.shared.firstVC.Feed.reloadData()
     }
+    
     dismiss(animated: true, completion: nil)
   }
   

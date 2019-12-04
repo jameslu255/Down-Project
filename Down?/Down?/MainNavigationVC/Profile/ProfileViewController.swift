@@ -8,7 +8,7 @@
 import UIKit
 import Firebase
 
-class ProfileViewController: UIViewController {
+class ProfileViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
    
     @IBOutlet weak var profilePictureButton: UIButton!
     @IBOutlet weak var userNameLabel: UITextField!
@@ -16,6 +16,7 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var userNameWarningStackView: UIStackView!
     @IBOutlet weak var userNameEditingButton: UIButton!
     
+    var imagePicker = UIImagePickerController()
     var isEditingUserName: Bool = false
     
     override func viewDidLoad() {
@@ -55,7 +56,22 @@ class ProfileViewController: UIViewController {
     }
     
     @IBAction func changeProfilePicturePressed(_ sender: UIButton) {
+        if UIImagePickerController.isSourceTypeAvailable(.savedPhotosAlbum){
+            imagePicker.delegate = self
+            imagePicker.sourceType = .savedPhotosAlbum
+            imagePicker.allowsEditing = false
+            imagePicker.modalPresentationStyle = .fullScreen
+            self.present(imagePicker, animated: true, completion: nil)
+        }
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
+        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            profilePictureButton.setImage(image, for: .normal)
+        }
+        
+        dismiss(animated: true)
     }
     
     @IBAction func editUserNameButtonPressed(_ sender: Any) {

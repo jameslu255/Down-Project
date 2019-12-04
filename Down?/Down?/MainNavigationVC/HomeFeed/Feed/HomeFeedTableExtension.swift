@@ -43,6 +43,7 @@ extension HomeViewController {
 
 // Swiping functionality
 extension HomeViewController: SwipeableEventCellDelegate {
+    
     func swipeRight(cell: EventCell) {
         removeEventCell(cell, withDirection: .right)
         if let eventID = cell.event?.autoID, let uid = Auth.auth().currentUser?.uid {
@@ -96,22 +97,27 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         eventCell.profilePictureImageView.image = UIImage(named: "Default.ProfilePicture")
         eventCell.usernameLabel.text = event.originalPoster
         eventCell.eventTitleLabel.text = event.title == "" ? "No title" : event.title ?? "No title"
+        eventCell.numDownLabel.text = String(event.numDown)
         eventCell.durationLabel.text = event.stringShortFormat
         if let lat = event.location?.latitude, let long = event.location?.longitude {
             let location = CLLocation(latitude: lat, longitude: long)
-            var locationString: String?
-            geoCoder.reverseGeocodeLocation(location) { placemarks, error in
-                if error != nil {return}
-                if let placemark = placemarks?[0] {
-                    locationString = placemark.name
-                }
+            CLGeocoder().reverseGeocodeLocation(location) { placemarks, error in
+                if error != nil {
+                  eventCell.locationTextView.text = "No location"
+                  return
+                  
+              }
+              if let name = placemarks?[0].name {
+                eventCell.locationTextView.text = name
+              }
+              else {
+                eventCell.locationTextView.text = "No location"
+              }
             }
-            eventCell.locationTextView.text = locationString ?? "No location"
         }
         else {
             eventCell.locationTextView.text = "No location"
         }
-        
         return eventCell
     }
 }
