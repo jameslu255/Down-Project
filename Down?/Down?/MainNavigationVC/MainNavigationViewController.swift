@@ -32,8 +32,9 @@ class MainNavigationViewController: UIViewController {
         let storyboard = UIStoryboard(name: "HomeFeed", bundle: nil)
         homeVC = storyboard.instantiateViewController(identifier: "homeVC")
         decidedEventsVC = storyboard.instantiateViewController(identifier: "decidedEventsVC")
+      let mapVC = UIStoryboard(name: "Mapview", bundle: nil).instantiateViewController(identifier:"mapVC") as! MapViewController
         profileVC = storyboard.instantiateViewController(identifier: "profileVC")
-        viewControllers = [homeVC, decidedEventsVC, profileVC, profileVC]
+        viewControllers = [homeVC, decidedEventsVC, mapVC, profileVC]
     }
 
     @IBAction func TabButtonPressed(_ sender: UIButton) {
@@ -46,7 +47,15 @@ class MainNavigationViewController: UIViewController {
         prevVC.removeFromParent()
         
         TitleNavItem.title = viewControllersNames[currentVCIndex]
-        let curVC = viewControllers[currentVCIndex]
+        var curVC = viewControllers[currentVCIndex]
+      if (currentVCIndex == 2) {
+        guard let feedVC = viewControllers[0] as? HomeViewController else {
+          return
+        }
+        let mapViewCo = curVC as! MapViewController
+        mapViewCo.events = feedVC.events
+        curVC = mapViewCo
+      }
         addChild(curVC)
         curVC.view.frame = contentView.bounds
         contentView.addSubview(curVC.view)
