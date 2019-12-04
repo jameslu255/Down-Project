@@ -223,20 +223,23 @@ class FilterView: UIViewController {
                 finalDistanceCheck[n] = 0
             }
         }
-        weak var vc = presentingViewController as? HomeViewController
+        //weak var vc = presentingViewController as? HomeViewController
         checked = finalChecked
         distanceCheck = finalDistanceCheck
-        if let latitude = vc?.locationManager.location?.coordinate.latitude, let longitude = vc?.locationManager.location?.coordinate.longitude {
-            let location = EventLocation(latitude: latitude, longitude: longitude)
-            ApiEvent.getUnviewedEventFilter(uid: user.uid, categories: categoryFilters, distance: distanceFilter, currentLocation: location) { events in
-                vc?.events = events
-                vc?.Feed.reloadData()
-                self.dismiss(animated: true, completion: nil)
-            }
-        }
-        else {
-            print("sumting wong")
-        }
+//        if let latitude = vc?.locationManager.location?.coordinate.latitude, let longitude = vc?.locationManager.location?.coordinate.longitude {
+//            let location = EventLocation(latitude: latitude, longitude: longitude)
+//
+//        }
+//        else {
+//            print("sumting wong")
+//        }
+      
+      ApiEvent.getUnviewedEventFilter(uid: user.uid, categories: categoryFilters, distance: distanceFilter, currentLocation: currentLocation) { events in
+//          vc?.events = events
+//          vc?.Feed.reloadData()
+        print("success")
+          self.dismiss(animated: true, completion: nil)
+      }
         
     }
     

@@ -9,6 +9,8 @@ import UIKit
 import Firebase
 import MapKit
 
+var currentLocation: EventLocation?
+
 class HomeViewController: UIViewController {
 
     let locationManager = CLLocationManager()
@@ -79,11 +81,11 @@ extension HomeViewController: CLLocationManagerDelegate {
     checkLocationAuthorization()
   }
   
-//  func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-//    if let loc = locationManager.location?.coordinate.latitude {
-//      print(loc)
-//    }
-//  }
+  func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    if let latitude = locationManager.location?.coordinate.latitude, let longitude = locationManager.location?.coordinate.longitude {
+      currentLocation = EventLocation(latitude: latitude, longitude: longitude)
+    }
+  }
 }
 
 
