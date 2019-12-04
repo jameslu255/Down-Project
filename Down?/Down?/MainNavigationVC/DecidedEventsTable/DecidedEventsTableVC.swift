@@ -67,7 +67,6 @@ class DecidedEventsTableVC: UITableViewController {
         group.enter()
         ApiEvent.getNotDownEvents(uid: user.uid) { events in
             self.cellContents[1] = events
-            if events.count == 0 {print("No not down events")}
             self.group.leave()
         }
     }
@@ -96,6 +95,7 @@ class DecidedEventsTableVC: UITableViewController {
                 eventCell.event = event
                 eventCell.delegate = self
                 eventCell.eventTitleLabel.text = event.title ?? "No title"
+                eventCell.numDownLabel.text = String(event.numDown)
                 eventCell.usernameLabel.text = event.originalPoster
                 eventCell.durationLabel.text = event.stringShortFormat
                 if let lat = event.location?.latitude, let long = event.location?.longitude {

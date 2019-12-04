@@ -98,6 +98,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         eventCell.profilePictureImageView.image = UIImage(named: "Default.ProfilePicture")
         eventCell.usernameLabel.text = event.originalPoster
         eventCell.eventTitleLabel.text = event.title == "" ? "No title" : event.title ?? "No title"
+        eventCell.numDownLabel.text = String(event.numDown)
         eventCell.durationLabel.text = event.stringShortFormat
         if let lat = event.location?.latitude, let long = event.location?.longitude {
             let location = CLLocation(latitude: lat, longitude: long)

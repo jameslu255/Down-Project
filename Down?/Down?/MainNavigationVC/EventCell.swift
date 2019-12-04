@@ -20,6 +20,8 @@ class EventCell: UITableViewCell {
     @IBOutlet weak var locationTextView: UITextView!
     @IBOutlet weak var CellSpacer: UIView!
     @IBOutlet weak var nonSpacerArea: UIView!
+    @IBOutlet weak var numDownLabel: UILabel!
+    @IBOutlet weak var NumDownView: UIView!
     
     var view: UIView?
     
@@ -50,6 +52,9 @@ class EventCell: UITableViewCell {
         profilePictureImageView.layer.cornerRadius = 5
         durationLabelBackgroundView.layer.cornerRadius = 5
         locationTextView.layer.cornerRadius = 5
+        NumDownView.layer.cornerRadius = 5
+//        NumDownView.layer.borderWidth = 1
+//        NumDownView.layer.borderColor = UIColor.systemBlue.cgColor
     }
     
     required init?(coder: NSCoder) {
