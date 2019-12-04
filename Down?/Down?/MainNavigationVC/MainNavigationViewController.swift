@@ -49,11 +49,8 @@ class MainNavigationViewController: UIViewController {
         TitleNavItem.title = viewControllersNames[currentVCIndex]
         var curVC = viewControllers[currentVCIndex]
       if (currentVCIndex == 2) {
-        guard let feedVC = viewControllers[0] as? HomeViewController else {
-          return
-        }
         let mapViewCo = curVC as! MapViewController
-        mapViewCo.events = feedVC.events
+        mapViewCo.events = events
         curVC = mapViewCo
       }
         addChild(curVC)

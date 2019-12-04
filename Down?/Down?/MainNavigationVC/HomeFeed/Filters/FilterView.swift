@@ -236,7 +236,7 @@ class FilterView: UIViewController {
       print(categoryFilters)
       ApiEvent.getUnviewedEventFilter(uid: user.uid, categories: categoryFilters, distance: distanceFilter, currentLocation: currentLocation) { newEvents in
         print(newEvents.count)
-        print(distanceFilter)
+        //print(distanceFilter)
             events = newEvents
 //          vc?.events = events
 //          vc?.Feed.reloadData()
