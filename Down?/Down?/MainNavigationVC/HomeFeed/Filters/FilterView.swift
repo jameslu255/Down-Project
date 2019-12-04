@@ -269,8 +269,8 @@ class FilterView: UIViewController {
 //        else {
 //            print("sumting wong")
 //        }
-      print(categoryFilters)
-      ApiEvent.getUnviewedEventFilter(uid: user.uid, categories: categoryFilters) { newEvents in
+
+        ApiEvent.getUnviewedEventFilter(uid: user.uid, categories: categoryFilters) { newEvents in
             events = newEvents
             if let distance = distanceFilter, let currentLocation = currentLocation {
                 events = self.filterByDistance(events: events, currentLocation: currentLocation, distance: distance)
