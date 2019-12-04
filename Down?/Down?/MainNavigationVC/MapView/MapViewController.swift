@@ -12,7 +12,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
 
   @IBOutlet weak var map: MKMapView!
   
-  var events:[Event] = []
+  //var events:[Event] = []
   
   let locationManager = CLLocationManager()
   let regionInMeters = 500.0
@@ -20,6 +20,11 @@ class MapViewController: UIViewController, MKMapViewDelegate {
   override func viewDidLoad() {
     super.viewDidLoad()
     locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+    setupMapView()
+    setupAnnotations()
+  }
+  
+  override func viewDidAppear(_ animated: Bool) {
     setupMapView()
     setupAnnotations()
   }
@@ -38,7 +43,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
   }
   
   func setupAnnotations() {
-    let annotations:[MKAnnotation] = self.events.compactMap({
+    let annotations:[MKAnnotation] = events.compactMap({
       guard let location = $0.location else {
         return nil
       }
