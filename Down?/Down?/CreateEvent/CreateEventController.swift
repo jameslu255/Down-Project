@@ -110,6 +110,7 @@ class CreateEventController: UITableViewController {
     
     guard let id = ApiEvent.addEvent(event: event) else { return }
     print(id)
+    DataManager.shared.firstVC.Feed.reloadData()
     dismiss(animated: true, completion: nil)
   }
   
