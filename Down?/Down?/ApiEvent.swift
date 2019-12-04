@@ -175,10 +175,12 @@ public class ApiEvent {
      - returns: Void
 
     */
-    public static func getDownEventIDs(uid: String, completion: @escaping ([String]) -> Void) {
+    private static func getDownEventIDs(uid: String, completion: @escaping ([String]) -> Void) {
         var downEventIDs = [String]()
 
-        db.collection("user_events").document(uid).collection("down").getDocuments() { snapshot, error in
+        db.collection("user_events").document(uid).collection("down")
+            .whereField("date", isGreaterThanOrEqualTo: Timestamp(date: Date()))
+            .getDocuments() { snapshot, error in
             if error != nil { return }
             guard let documents = snapshot?.documents else { return }
             for document in documents {
@@ -291,10 +293,12 @@ public class ApiEvent {
      - returns: Void
 
     */
-    public static func getNotDownEventIDs(uid: String, completion: @escaping ([String]) -> Void) {
+    private static func getNotDownEventIDs(uid: String, completion: @escaping ([String]) -> Void) {
         var notDownEventIDs = [String]()
 
-        db.collection("user_events").document(uid).collection("not_down").getDocuments() { snapshot, error in
+        db.collection("user_events").document(uid).collection("not_down")
+            .whereField("date", isGreaterThanOrEqualTo: Timestamp(date: Date()))
+            .getDocuments() { snapshot, error in
             if error != nil { return }
             guard let documents = snapshot?.documents else { return }
             for document in documents {
