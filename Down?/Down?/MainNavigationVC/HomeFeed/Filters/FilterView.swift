@@ -233,11 +233,16 @@ class FilterView: UIViewController {
 //        else {
 //            print("sumting wong")
 //        }
-      
-      ApiEvent.getUnviewedEventFilter(uid: user.uid, categories: categoryFilters, distance: distanceFilter, currentLocation: currentLocation) { events in
+      print(categoryFilters)
+      ApiEvent.getUnviewedEventFilter(uid: user.uid, categories: categoryFilters, distance: distanceFilter, currentLocation: currentLocation) { newEvents in
+        print(newEvents.count)
+        print(distanceFilter)
+            events = newEvents
 //          vc?.events = events
 //          vc?.Feed.reloadData()
-        print("success")
+            print("success")
+        DataManager.shared.firstVC.Feed.reloadData()
+        categoryFilters = []
           self.dismiss(animated: true, completion: nil)
       }
         

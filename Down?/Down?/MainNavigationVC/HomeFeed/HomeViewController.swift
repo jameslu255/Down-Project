@@ -10,9 +10,16 @@ import Firebase
 import MapKit
 
 var currentLocation: EventLocation?
+var events: [Event] = []
+
+class DataManager {
+    static let shared = DataManager()
+    var firstVC = HomeViewController()
+}
 
 class HomeViewController: UIViewController {
 
+    
     let locationManager = CLLocationManager()
     let geoCoder = CLGeocoder()
     
@@ -24,10 +31,11 @@ class HomeViewController: UIViewController {
     let cellSpacing: CGFloat = 5.0
     let numTestCells: Int = 50
         
-    var events: [Event] = []
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        DataManager.shared.firstVC = self
         registerFilterNib()
         checkLocationServices()
         self.setUpFeed()
