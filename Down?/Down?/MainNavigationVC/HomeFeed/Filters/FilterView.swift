@@ -202,7 +202,43 @@ class FilterView: UIViewController {
         distanceCheck[4] = 1
     }
     
+    //https://www.geodatasource.com/developers/swift
+    ///  This function converts decimal degrees to radians
+    private func deg2rad(_ deg:Double) -> Double {
+        return deg * Double.pi / 180
+    }
+
+    ///  This function converts radians to decimal degrees
+    private func rad2deg(_ rad:Double) -> Double {
+        return rad * 180.0 / Double.pi
+    }
+
+    ///  This function calculates the distance between two corrdinates in miles
+    private func distanceInMiles(lat1:Double, lon1:Double, lat2:Double, lon2:Double) -> Double {
+        let theta = lon1 - lon2
+        var dist = sin(deg2rad(lat1)) * sin(deg2rad(lat2)) + cos(deg2rad(lat1)) * cos(deg2rad(lat2)) * cos(deg2rad(theta))
+        dist = acos(dist)
+        dist = rad2deg(dist)
+        dist = dist * 60 * 1.1515
+
+        return dist
+    }
     
+    /// Filters events by a given distance and returns the filtered events
+    private func filterByDistance(events: [Event], currentLocation: EventLocation, distance: Double) -> [Event] {
+        var filtered = [Event]()
+        for event in events {
+            if let lat = event.location?.latitude, let lon = event.location?.longitude {
+                let distFromCurrLocation = distanceInMiles(lat1: currentLocation.latitude,
+                                                           lon1: currentLocation.longitude, lat2: lat, lon2: lon)
+                if distFromCurrLocation <= distance {
+                    print("curr: \(distFromCurrLocation) dist:\(distance)")
+                    filtered.append(event)
+                }
+            }
+        }
+        return filtered
+    }
     
     @IBAction func ApplyPressed(_ sender: Any) {
         for n in 0...checked.count-1{
@@ -223,28 +259,19 @@ class FilterView: UIViewController {
                 finalDistanceCheck[n] = 0
             }
         }
-        //weak var vc = presentingViewController as? HomeViewController
         checked = finalChecked
         distanceCheck = finalDistanceCheck
-//        if let latitude = vc?.locationManager.location?.coordinate.latitude, let longitude = vc?.locationManager.location?.coordinate.longitude {
-//            let location = EventLocation(latitude: latitude, longitude: longitude)
-//
-//        }
-//        else {
-//            print("sumting wong")
-//        }
-      print(categoryFilters)
-      ApiEvent.getUnviewedEventFilter(uid: user.uid, categories: categoryFilters, distance: distanceFilter, currentLocation: currentLocation) { newEvents in
-        print(newEvents.count)
-        print(distanceFilter)
+        print(categoryFilters)
+        ApiEvent.getUnviewedEventFilter(uid: user.uid, categories: categoryFilters) { newEvents in
+            print(newEvents.count)
             events = newEvents
-//          vc?.events = events
-//          vc?.Feed.reloadData()
-            print("success")
-        DataManager.shared.firstVC.Feed.reloadData()
-        categoryFilters = []
-          self.dismiss(animated: true, completion: nil)
-      }
+            if let distance = distanceFilter, let currentLocation = currentLocation {
+                events = self.filterByDistance(events: events, currentLocation: currentLocation, distance: distance)
+            }
+            DataManager.shared.firstVC.Feed.reloadData()
+            categoryFilters = []
+            self.dismiss(animated: true, completion: nil)
+        }
         
     }
     

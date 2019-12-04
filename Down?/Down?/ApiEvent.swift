@@ -166,43 +166,7 @@ public struct Event {
 public class ApiEvent {
     private static let db = Firestore.firestore()
     
-    //https://www.geodatasource.com/developers/swift
-    ///  This function converts decimal degrees to radians
-    private static func deg2rad(_ deg:Double) -> Double {
-        return deg * Double.pi / 180
-    }
-
-    ///  This function converts radians to decimal degrees
-    private static func rad2deg(_ rad:Double) -> Double {
-        return rad * 180.0 / Double.pi
-    }
-
-    ///  This function calculates the distance between two corrdinates in miles
-    private static func distanceInMiles(lat1:Double, lon1:Double, lat2:Double, lon2:Double) -> Double {
-        let theta = lon1 - lon2
-        var dist = sin(deg2rad(lat1)) * sin(deg2rad(lat2)) + cos(deg2rad(lat1)) * cos(deg2rad(lat2)) * cos(deg2rad(theta))
-        dist = acos(dist)
-        dist = rad2deg(dist)
-        dist = dist * 60 * 1.1515
-
-        return dist
-    }
     
-    /// Filters events by a given distance and returns the filtered events
-    private static func filterByDistance(events: [Event], currentLocation: EventLocation, distance: Double) -> [Event] {
-        var filtered = [Event]()
-        for event in events {
-            if let lat = event.location?.latitude, let lon = event.location?.longitude {
-                let distFromCurrLocation = distanceInMiles(lat1: currentLocation.latitude,
-                                                           lon1: currentLocation.longitude, lat2: lat, lon2: lon)
-                if distFromCurrLocation <= distance {
-                    print("curr: \(distFromCurrLocation) dist:\(distance)")
-                    filtered.append(event)
-                }
-            }
-        }
-        return filtered
-    }
     /**
      Fetches a list of event IDs that the user is down for.
 
@@ -368,13 +332,11 @@ public class ApiEvent {
 
         - parameter uid: The user ID
         - parameter categories: The list of categories
-        - parameter distance: The distance from the current location
-        - parameter currentLocation: The user's current location
         - parameter completion: Closure whose callback will contain the list of the event objects
         - returns: Void
 
        */
-    public static func getUnviewedEventFilter(uid: String, categories: [String], distance: Double?, currentLocation: EventLocation?, completion: @escaping ([Event]) -> Void) {
+    public static func getUnviewedEventFilter(uid: String, categories: [String], completion: @escaping ([Event]) -> Void) {
         getViewedEventIDs(uid: uid) { viewedEventIDs in
             let ref = db.collection("events")
                 .whereField("endTime", isGreaterThanOrEqualTo: Timestamp(date: Date()))
@@ -394,9 +356,6 @@ public class ApiEvent {
                             unviewedEvents.append(event)
                         }
                     }
-                }
-                if let distance = distance, let currentLocation = currentLocation {
-                    unviewedEvents = self.filterByDistance(events: unviewedEvents, currentLocation: currentLocation, distance: distance)
                 }
                 completion(unviewedEvents)
             }
