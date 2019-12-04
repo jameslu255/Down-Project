@@ -15,7 +15,7 @@ extension HomeViewController {
     func setUpFeed(){
         if let user = Auth.auth().currentUser {
             ApiEvent.getUnviewedEvent(uid: user.uid) { apiEvents in
-                self.events = apiEvents
+                events = apiEvents
                 self.Feed.reloadData()
             }
         }
