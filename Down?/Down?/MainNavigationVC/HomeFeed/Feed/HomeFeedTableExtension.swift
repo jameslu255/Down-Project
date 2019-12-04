@@ -15,6 +15,7 @@ extension HomeViewController {
     func setUpFeed(){
         if let user = Auth.auth().currentUser {
             ApiEvent.getUnviewedEvent(uid: user.uid) { apiEvents in
+                print(apiEvents.count)
                 self.events = apiEvents
                 self.Feed.reloadData()
             }
@@ -43,6 +44,7 @@ extension HomeViewController {
 
 // Swiping functionality
 extension HomeViewController: SwipeableEventCellDelegate {
+    
     func swipeRight(cell: EventCell) {
         removeEventCell(cell, withDirection: .right)
         if let eventID = cell.event?.autoID, let uid = Auth.auth().currentUser?.uid {
