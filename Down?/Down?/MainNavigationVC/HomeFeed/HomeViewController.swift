@@ -80,8 +80,12 @@ class HomeViewController: UIViewController {
             if sortedCheck[2] == 1{
                 events.sort(by: {return $0.numDown > $1.numDown})
             }
-            self.refreshControl.endRefreshing()
-            self.Feed.reloadData()
+            loadLocations() { geoLocations in
+                //reload table before dismissing
+                self.refreshControl.endRefreshing()
+                self.Feed.reloadData()
+            }
+
         }
         
     }
