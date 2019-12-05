@@ -28,20 +28,30 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Event Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zA9-3e-IN6">
-                                                    <rect key="frame" x="20" y="10" width="115" height="27"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Event Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zA9-3e-IN6">
+                                                    <rect key="frame" x="20" y="11.5" width="125" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="125" id="wKl-Sm-eUH"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="HiraMaruProN-W4" family="Hiragino Maru Gothic ProN" pointSize="21"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Add title" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Vkx-xu-Fp0">
-                                                    <rect key="frame" x="159" y="7" width="235" height="34"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Add title" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Vkx-xu-Fp0">
+                                                    <rect key="frame" x="169" y="5" width="225" height="34"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="zA9-3e-IN6" firstAttribute="centerY" secondItem="PIV-5h-NhS" secondAttribute="centerY" id="3sc-V6-wgx"/>
+                                                <constraint firstAttribute="trailing" secondItem="Vkx-xu-Fp0" secondAttribute="trailing" constant="20" id="FkV-de-A0k"/>
+                                                <constraint firstItem="zA9-3e-IN6" firstAttribute="leading" secondItem="PIV-5h-NhS" secondAttribute="leadingMargin" id="OGg-gP-04Q"/>
+                                                <constraint firstItem="Vkx-xu-Fp0" firstAttribute="top" secondItem="PIV-5h-NhS" secondAttribute="top" constant="5" id="TsN-Gf-7Nq"/>
+                                                <constraint firstItem="Vkx-xu-Fp0" firstAttribute="leading" secondItem="zA9-3e-IN6" secondAttribute="trailing" constant="24" id="W3f-gV-JIP"/>
+                                                <constraint firstItem="Vkx-xu-Fp0" firstAttribute="centerY" secondItem="PIV-5h-NhS" secondAttribute="centerY" id="twh-eA-ajv"/>
+                                                <constraint firstAttribute="bottom" secondItem="Vkx-xu-Fp0" secondAttribute="bottom" constant="5" id="vbd-Gc-K30"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" tag="7" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="start" rowHeight="44" id="qIi-Kf-sjy">
@@ -52,11 +62,11 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Starts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ldv-td-vKZ">
-                                                    <rect key="frame" x="20" y="8.5" width="126" height="27"/>
+                                                    <rect key="frame" x="20" y="11.5" width="126" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="126" id="aPh-c7-Oeu"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                                    <fontDescription key="fontDescription" name="HiraMaruProN-W4" family="Hiragino Maru Gothic ProN" pointSize="21"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -106,11 +116,11 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ends" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cxh-7I-taX">
-                                                    <rect key="frame" x="20" y="8.5" width="126" height="27"/>
+                                                    <rect key="frame" x="20" y="11.5" width="126" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="126" id="qR9-TC-9x3"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                                    <fontDescription key="fontDescription" name="HiraMaruProN-W4" family="Hiragino Maru Gothic ProN" pointSize="21"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -160,23 +170,23 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="1" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="250" scrollEnabled="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="qE9-zt-LHy">
-                                                    <rect key="frame" x="147" y="11" width="247" height="147"/>
+                                                    <rect key="frame" x="161" y="11" width="233" height="147"/>
                                                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                     <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                                     <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 </textView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ogW-jr-bKn">
-                                                    <rect key="frame" x="20" y="11" width="109" height="27"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                                    <rect key="frame" x="20" y="11" width="117" height="21"/>
+                                                    <fontDescription key="fontDescription" name="HiraMaruProN-W4" family="Hiragino Maru Gothic ProN" pointSize="21"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="ogW-jr-bKn" firstAttribute="top" secondItem="9Zr-3o-Vfa" secondAttribute="topMargin" id="3m3-wn-VWJ"/>
-                                                <constraint firstItem="qE9-zt-LHy" firstAttribute="leading" secondItem="ogW-jr-bKn" secondAttribute="trailing" constant="18" id="3vU-vx-tyN"/>
+                                                <constraint firstItem="qE9-zt-LHy" firstAttribute="leading" secondItem="ogW-jr-bKn" secondAttribute="trailing" constant="24" id="3vU-vx-tyN"/>
                                                 <constraint firstItem="ogW-jr-bKn" firstAttribute="leading" secondItem="9Zr-3o-Vfa" secondAttribute="leadingMargin" id="Esp-2j-WGL"/>
                                                 <constraint firstItem="qE9-zt-LHy" firstAttribute="top" secondItem="9Zr-3o-Vfa" secondAttribute="topMargin" id="JE3-hk-YqT"/>
                                                 <constraint firstItem="qE9-zt-LHy" firstAttribute="trailing" secondItem="9Zr-3o-Vfa" secondAttribute="trailingMargin" id="izm-YP-nCZ"/>
@@ -192,11 +202,11 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wp8-e7-cIU">
-                                                    <rect key="frame" x="20" y="8.5" width="83" height="27"/>
+                                                    <rect key="frame" x="20" y="11.5" width="105" height="21"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="83" id="QB1-BM-J6Y"/>
+                                                        <constraint firstAttribute="width" constant="105" id="QB1-BM-J6Y"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                                    <fontDescription key="fontDescription" name="HiraMaruProN-W4" family="Hiragino Maru Gothic ProN" pointSize="21"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -224,10 +234,12 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="60"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Event Type:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4N7-wG-Ulg">
-                                                    <rect key="frame" x="20" y="16" width="111" height="27"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Event Type" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4N7-wG-Ulg">
+                                                    <rect key="frame" x="20" y="19.5" width="121" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="121" id="4Yf-nX-bbg"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="HiraMaruProN-W4" family="Hiragino Maru Gothic ProN" pointSize="21"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -241,7 +253,9 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="1Kv-8i-9yC" firstAttribute="top" secondItem="Q0o-Rv-H22" secondAttribute="top" constant="15" id="1ZK-ME-yfN"/>
+                                                <constraint firstItem="4N7-wG-Ulg" firstAttribute="leading" secondItem="Q0o-Rv-H22" secondAttribute="leadingMargin" id="Jyj-ez-j3G"/>
                                                 <constraint firstAttribute="bottom" secondItem="1Kv-8i-9yC" secondAttribute="bottom" constant="15" id="S4C-Ai-3u6"/>
+                                                <constraint firstItem="4N7-wG-Ulg" firstAttribute="centerY" secondItem="Q0o-Rv-H22" secondAttribute="centerY" id="VnR-BT-Bfy"/>
                                                 <constraint firstAttribute="trailing" secondItem="1Kv-8i-9yC" secondAttribute="trailing" constant="20" id="zYY-LS-kkp"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -254,7 +268,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="onDrag" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="E1X-YY-OJN">
-                                                    <rect key="frame" x="20" y="44" width="374" height="60"/>
+                                                    <rect key="frame" x="20" y="38" width="374" height="66"/>
                                                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="lD9-Tc-niE">
                                                         <size key="itemSize" width="50" height="50"/>
@@ -265,18 +279,22 @@
                                                     <cells/>
                                                 </collectionView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Categories" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6dK-lJ-gWu">
-                                                    <rect key="frame" x="20" y="11" width="104" height="27"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                                    <rect key="frame" x="20" y="0.0" width="112" height="37"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="37" id="kyT-K5-cln"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="HiraMaruProN-W4" family="Hiragino Maru Gothic ProN" pointSize="21"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="E1X-YY-OJN" firstAttribute="top" secondItem="6dK-lJ-gWu" secondAttribute="bottom" constant="6" id="IdP-HR-hL4"/>
+                                                <constraint firstAttribute="bottom" secondItem="E1X-YY-OJN" secondAttribute="bottom" id="GIL-J7-WNb"/>
+                                                <constraint firstItem="6dK-lJ-gWu" firstAttribute="top" secondItem="tbV-uQ-daW" secondAttribute="top" id="OTa-hZ-8eZ"/>
                                                 <constraint firstItem="E1X-YY-OJN" firstAttribute="leading" secondItem="tbV-uQ-daW" secondAttribute="leading" constant="20" id="bCf-Th-BbW"/>
+                                                <constraint firstItem="E1X-YY-OJN" firstAttribute="top" secondItem="6dK-lJ-gWu" secondAttribute="bottom" constant="1" id="bb1-NG-ewx"/>
                                                 <constraint firstAttribute="trailing" secondItem="E1X-YY-OJN" secondAttribute="trailing" constant="20" id="u09-AT-yJi"/>
                                                 <constraint firstItem="6dK-lJ-gWu" firstAttribute="leading" secondItem="tbV-uQ-daW" secondAttribute="leadingMargin" id="uFC-7a-3Oj"/>
-                                                <constraint firstItem="6dK-lJ-gWu" firstAttribute="top" secondItem="tbV-uQ-daW" secondAttribute="topMargin" id="x7w-9Y-S1T"/>
                                                 <constraint firstAttribute="bottom" secondItem="E1X-YY-OJN" secondAttribute="bottom" id="ze6-sS-eTf"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -289,9 +307,9 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Tb-EC-ZwJ" customClass="RoundButton" customModule="Down_" customModuleProvider="target">
-                                                    <rect key="frame" x="20" y="9.5" width="374" height="41"/>
+                                                    <rect key="frame" x="20" y="12.5" width="374" height="35"/>
                                                     <color key="backgroundColor" red="0.38431372549999998" green="0.4039215686" blue="0.87450980389999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                                    <fontDescription key="fontDescription" name="HiraMaruProN-W4" family="Hiragino Maru Gothic ProN" pointSize="23"/>
                                                     <state key="normal" title="Create Event">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </state>
@@ -355,7 +373,7 @@
                                     <constraint firstAttribute="height" constant="36" id="MBG-WV-iOo"/>
                                     <constraint firstAttribute="width" constant="96" id="rNt-Ak-AA6"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <fontDescription key="fontDescription" name="HiraMaruProN-W4" family="Hiragino Maru Gothic ProN" pointSize="18"/>
                                 <state key="normal" title="Cancel"/>
                                 <connections>
                                     <action selector="cancel:" destination="BGx-dK-RNJ" eventType="touchUpInside" id="Jgb-Qm-VEp"/>
