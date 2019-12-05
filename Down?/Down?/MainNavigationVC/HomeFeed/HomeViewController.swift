@@ -11,6 +11,7 @@ import MapKit
 
 var currentLocation: EventLocation?
 var events: [Event] = [] {
+    //calls this whenever events array is changed.
     didSet{
         if events.count == 0{
             DataManager.shared.firstVC.noEventsLabel.isHidden = false
@@ -21,6 +22,7 @@ var events: [Event] = [] {
     }
 }
 
+// class that provides a shared instance of the HomeViewController so that values can be called from different views.
 class DataManager {
     static let shared = DataManager()
     var firstVC = HomeViewController()
@@ -41,7 +43,8 @@ class HomeViewController: UIViewController {
     var refreshControl = UIRefreshControl()
     var user: User = Auth.auth().currentUser!
 
-    
+    //https://www.geodatasource.com/developers/swift
+    ///  This function converts decimal degrees to radians
     private func deg2rad(_ deg:Double) -> Double {
         return deg * Double.pi / 180
     }
@@ -77,6 +80,8 @@ class HomeViewController: UIViewController {
         }
         return filtered
     }
+    
+    // This refresh function is called when the table is being pulled down
     @objc func refresh(_ sender:Any)
     {
         // Updating your data here...
@@ -106,7 +111,9 @@ class HomeViewController: UIViewController {
   
     override func viewDidLoad() {
         super.viewDidLoad()
+        // adds the refresh target on the table and calls refresh function
         refreshControl.addTarget(self, action:  #selector(refresh(_:)), for: .valueChanged)
+        // sets the DataManager as a delegate so that shared instance will work
         DataManager.shared.firstVC = self
         registerFilterNib()
         checkLocationServices()

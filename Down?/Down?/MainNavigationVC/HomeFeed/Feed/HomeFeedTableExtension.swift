@@ -13,6 +13,13 @@ import Firebase
 // General feed functions
 extension HomeViewController {
     func setUpFeed(){
+        loadModelData()
+        if events.count == 0{
+            DataManager.shared.firstVC.noEventsLabel.isHidden = false
+        }
+        else{
+            DataManager.shared.firstVC.noEventsLabel.isHidden = true
+        }
         self.Feed.rowHeight = 100
         self.Feed.rowHeight = UITableView.automaticDimension
         self.Feed.estimatedRowHeight = UITableView.automaticDimension
@@ -20,12 +27,14 @@ extension HomeViewController {
         Feed.delegate = self
         Feed.dataSource = self
         Feed.separatorStyle = .none
+        //checks if version is older that ios 10.0 because refresh is not there yet.
         if #available(iOS 10.0, *) {
             Feed.refreshControl = refreshControl
         } else {
+            //adds a subview containing the refresh
             Feed.addSubview(refreshControl)
         }
-        Feed.reloadData()
+        
     }
     
     func loadModelData() {
@@ -33,6 +42,7 @@ extension HomeViewController {
             ApiEvent.getUnviewedEvent(uid: user.uid) { apiEvents in
                 events = apiEvents
                 events.sort(by: {return $0.dates.startDate < $1.dates.startDate})
+                self.Feed.reloadData()
                 }
             }
         
