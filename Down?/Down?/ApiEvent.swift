@@ -595,7 +595,9 @@ public class ApiEvent {
             if let error = error {
                 print(error)
             } else {
-                db.collection("events").document(eventID).updateData(["numDown": FieldValue.increment(Int64(-1))])
+                if from == "down" {
+                    db.collection("events").document(eventID).updateData(["numDown": FieldValue.increment(Int64(-1))])
+                }
                 completion()
             }
         }
