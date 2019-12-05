@@ -48,6 +48,8 @@ class CreateEventController: UITableViewController {
   var endDate: Date?
   var location: CLPlacemark?
   var currentUser: User = Auth.auth().currentUser!
+  
+  let keywords:[String] = ["Hangout", "Meetup", "Get together", "Rendezvous", "Chilling", "Chillaxing", "Gathering"]
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -246,8 +248,15 @@ class CreateEventController: UITableViewController {
   
   func setLocation() {
     if let loc = location, let name = loc.name {
+      autoFillEventName(with: name)
       locationField.text = name
     }
+  }
+  
+  func autoFillEventName(with name: String) {
+    let randInt = Int.random(in: 0 ..< keywords.count)
+    let nameStr = "\(keywords[randInt]) at \(name)"
+    eventNameField.text = nameStr
   }
   
   // MARK: Protocol Methods
@@ -340,6 +349,7 @@ extension CreateEventController: CLLocationManagerDelegate {
       if (locationText == "Location not found") {
         self.locationField.textColor = .label
         self.locationField.text = name
+        self.autoFillEventName(with: name)
       }
  
       if (error != nil) {
