@@ -93,7 +93,11 @@ class EmailView: UIViewController, UITextFieldDelegate {
     func signupUser() {
         if let email = Email.text, let password = Password.text {
             //Create the user then send the verfication email
+            self.showSpinner(onView: self.view)
+            self.view.isUserInteractionEnabled = false
             Auth.auth().createUser(withEmail: email, password: password) { user, error in
+                self.removeSpinner()
+                self.view.isUserInteractionEnabled = true
                 if let error = error {
                     self.displayMessage(message: error.localizedDescription, color: .red)
                 } else {

@@ -37,7 +37,11 @@ class ResetView: UIViewController, UITextFieldDelegate {
     
     func resetPassword(){
         if let email = Email.text, !email.isEmpty {
+            self.showSpinner(onView: self.view)
+            self.view.isUserInteractionEnabled = false
             Auth.auth().sendPasswordReset(withEmail: email) { error in
+                self.removeSpinner()
+                self.view.isUserInteractionEnabled = true
                 if let error = error {
                     self.displayMessage(message: error.localizedDescription, color: .red)
                 } else {

@@ -247,6 +247,8 @@ class FilterView: UIViewController {
     }
     
     @IBAction func ApplyPressed(_ sender: Any) {
+        self.showSpinner(onView: self.view)
+        self.view.isUserInteractionEnabled = false
         // erase previous category filters back to empty
         categoryFilters = []
         for n in 0...checked.count-1{
@@ -274,6 +276,8 @@ class FilterView: UIViewController {
 
         // filters out the events from the home view.
         ApiEvent.getUnviewedEventFilter(uid: user.uid, categories: categoryFilters) { newEvents in
+            self.removeSpinner()
+            self.view.isUserInteractionEnabled = true
             events = newEvents
             if let distance = distanceFilter, let currentLocation = currentLocation {
                 //filters all events that are too far from current location based on selection.

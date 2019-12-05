@@ -59,7 +59,11 @@ class LoginView: UIViewController, UITextFieldDelegate{
     
     func loginUser() {
         if let email = EmailText.text, let password = PasswordText.text, !email.isEmpty && !password.isEmpty {
+            self.showSpinner(onView: self.view)
+            self.view.isUserInteractionEnabled = false
             Auth.auth().signIn(withEmail: email, password: password) { user, error in
+                self.removeSpinner()
+                self.view.isUserInteractionEnabled = true
                 // Notify the user that the mail has sent or couldn't because of an error.
                 if let error = error {
                     self.displayMessage(message: error.localizedDescription, color: .red)

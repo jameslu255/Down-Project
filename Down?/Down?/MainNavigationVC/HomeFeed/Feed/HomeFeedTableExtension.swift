@@ -39,7 +39,11 @@ extension HomeViewController {
     
     func loadModelData() {
         if let user = Auth.auth().currentUser {
+            self.showSpinner(onView: self.view)
+            self.view.isUserInteractionEnabled = false
             ApiEvent.getUnviewedEvent(uid: user.uid) { apiEvents in
+                self.removeSpinner()
+                self.view.isUserInteractionEnabled = true
                 events = apiEvents
                 events.sort(by: {return $0.dates.startDate < $1.dates.startDate})
                 self.Feed.reloadData()

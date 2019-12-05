@@ -29,6 +29,8 @@ class DecidedEventsTableVC: UITableViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        self.showSpinner(onView: self.view)
+        self.view.isUserInteractionEnabled = false
         getDownEvents()
         getNotDownEvents()
         group.notify(queue: .main) {
@@ -54,6 +56,8 @@ class DecidedEventsTableVC: UITableViewController {
         }
         group.enter()
         ApiEvent.getDownEvents(uid: user.uid) { events in
+            self.removeSpinner()
+            self.view.isUserInteractionEnabled = true
             self.cellContents[0] = events
             self.group.leave()
         }
@@ -66,6 +70,8 @@ class DecidedEventsTableVC: UITableViewController {
         }
         group.enter()
         ApiEvent.getNotDownEvents(uid: user.uid) { events in
+            self.removeSpinner()
+            self.view.isUserInteractionEnabled = true
             self.cellContents[1] = events
             self.group.leave()
         }
