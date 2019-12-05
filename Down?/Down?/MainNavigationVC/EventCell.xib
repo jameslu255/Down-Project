@@ -31,6 +31,9 @@
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jeY-6r-eNm">
                             <rect key="frame" x="199" y="67.5" width="16" height="30"/>
                             <color key="backgroundColor" systemColor="tertiarySystemBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="16" id="8r0-hx-A4Z"/>
+                            </constraints>
                             <inset key="contentEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
                             <state key="normal">
                                 <color key="titleColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
@@ -41,8 +44,11 @@
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="jeY-6r-eNm" secondAttribute="trailing" constant="8" id="zMU-qH-3IN"/>
+                    </constraints>
                 </view>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Eventg" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EMH-29-n4g">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Eventg" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EMH-29-n4g">
                     <rect key="frame" x="8" y="8" width="64" height="24"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="24" id="tFN-Nx-zlc"/>
@@ -148,6 +154,7 @@
                 <constraint firstItem="bUf-ey-kRA" firstAttribute="leading" secondItem="gXX-w0-6YD" secondAttribute="trailing" constant="4" id="epm-Zd-95G"/>
                 <constraint firstItem="5hG-li-ZgC" firstAttribute="top" secondItem="bUf-ey-kRA" secondAttribute="bottom" constant="6" id="iE9-H7-g0i"/>
                 <constraint firstItem="gXX-w0-6YD" firstAttribute="centerY" secondItem="bUf-ey-kRA" secondAttribute="centerY" id="slH-zK-tZ2"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="EMH-29-n4g" secondAttribute="trailing" constant="8" id="vZl-2u-h3n"/>
                 <constraint firstItem="JCT-9G-ZIP" firstAttribute="top" secondItem="hnc-Ig-ZIX" secondAttribute="bottom" constant="-1" id="xGP-zC-Nhg"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
