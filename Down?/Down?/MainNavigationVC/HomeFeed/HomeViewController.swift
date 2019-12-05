@@ -37,10 +37,10 @@ class HomeViewController: UIViewController {
     
     let cellSpacing: CGFloat = 5.0
     let numTestCells: Int = 50
-      
+
     var refreshControl = UIRefreshControl()
     var user: User = Auth.auth().currentUser!
-    
+
     
     private func deg2rad(_ deg:Double) -> Double {
         return deg * Double.pi / 180

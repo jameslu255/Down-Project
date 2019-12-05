@@ -11,6 +11,7 @@
             <connections>
                 <outlet property="CellSpacer" destination="JCT-9G-ZIP" id="yrZ-Ic-XGt"/>
                 <outlet property="NumDownView" destination="5hG-li-ZgC" id="4xZ-ks-wHh"/>
+                <outlet property="addressTextView" destination="i94-45-3Bq" id="eYD-XX-clT"/>
                 <outlet property="durationLabel" destination="ztA-6X-qQr" id="Ujh-TQ-TRP"/>
                 <outlet property="durationLabelBackgroundView" destination="bUf-ey-kRA" id="ZfE-bh-1bi"/>
                 <outlet property="eventTitleLabel" destination="EMH-29-n4g" id="j7v-u4-rwH"/>
@@ -77,13 +78,12 @@
                     <color key="textColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" scrollEnabled="NO" contentInsetAdjustmentBehavior="always" editable="NO" text="jkh" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Fve-O2-DPX">
-                    <rect key="frame" x="199" y="60" width="29" height="33"/>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" scrollEnabled="NO" contentInsetAdjustmentBehavior="always" editable="NO" text="-----" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fve-O2-DPX">
+                    <rect key="frame" x="199" y="60" width="42.5" height="33"/>
                     <color key="backgroundColor" systemColor="tertiarySystemBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <color key="textColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                    <dataDetectorType key="dataDetectorTypes" address="YES"/>
                 </textView>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mappin.and.ellipse" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="TDu-o5-mjC">
                     <rect key="frame" x="175" y="66" width="20" height="20.5"/>
@@ -124,6 +124,14 @@
                         <constraint firstAttribute="height" constant="10" id="Bwf-ET-Yeo"/>
                     </constraints>
                 </view>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="i94-45-3Bq">
+                    <rect key="frame" x="199" y="60" width="43" height="33"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="textColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    <dataDetectorType key="dataDetectorTypes" address="YES"/>
+                </textView>
             </subviews>
             <color key="backgroundColor" systemColor="secondarySystemBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -132,10 +140,12 @@
                 <constraint firstItem="bUf-ey-kRA" firstAttribute="centerY" secondItem="TDu-o5-mjC" secondAttribute="centerY" id="8ax-AM-adA"/>
                 <constraint firstItem="JCT-9G-ZIP" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="9At-SU-gMt"/>
                 <constraint firstItem="hnc-Ig-ZIX" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="9kK-IR-I9M"/>
+                <constraint firstItem="i94-45-3Bq" firstAttribute="width" secondItem="Fve-O2-DPX" secondAttribute="width" multiplier="1.01176" id="BEq-I7-LeY"/>
                 <constraint firstItem="2cA-jm-eLV" firstAttribute="top" secondItem="EMH-29-n4g" secondAttribute="bottom" constant="4" id="FCm-wJ-0zi"/>
                 <constraint firstItem="582-XD-mAT" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="8" id="FTB-wE-Gai"/>
                 <constraint firstItem="gXX-w0-6YD" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="8" id="GFS-c1-E7J"/>
                 <constraint firstItem="5hG-li-ZgC" firstAttribute="top" secondItem="Fve-O2-DPX" secondAttribute="bottom" constant="4" id="GtE-NA-7Nv"/>
+                <constraint firstItem="i94-45-3Bq" firstAttribute="centerY" secondItem="Fve-O2-DPX" secondAttribute="centerY" id="HrE-33-LQB"/>
                 <constraint firstAttribute="bottom" secondItem="JCT-9G-ZIP" secondAttribute="bottom" id="J2s-q2-gmc"/>
                 <constraint firstItem="582-XD-mAT" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="LIX-K6-g4f"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="2cA-jm-eLV" secondAttribute="trailing" constant="8" id="LYp-nA-kwq"/>
@@ -144,10 +154,12 @@
                 <constraint firstItem="JCT-9G-ZIP" firstAttribute="top" secondItem="5hG-li-ZgC" secondAttribute="bottom" constant="4" id="Y0A-sb-iTR"/>
                 <constraint firstItem="bUf-ey-kRA" firstAttribute="height" secondItem="Fve-O2-DPX" secondAttribute="height" id="aOz-dj-EVR"/>
                 <constraint firstAttribute="trailing" secondItem="JCT-9G-ZIP" secondAttribute="trailing" id="bNB-T1-bd7"/>
+                <constraint firstItem="i94-45-3Bq" firstAttribute="centerX" secondItem="Fve-O2-DPX" secondAttribute="centerX" id="brM-Ww-9r6"/>
                 <constraint firstItem="TDu-o5-mjC" firstAttribute="centerY" secondItem="Fve-O2-DPX" secondAttribute="centerY" id="btk-5p-fyn"/>
                 <constraint firstItem="TDu-o5-mjC" firstAttribute="leading" secondItem="bUf-ey-kRA" secondAttribute="trailing" constant="8" id="dBz-d1-dEh"/>
                 <constraint firstItem="bUf-ey-kRA" firstAttribute="leading" secondItem="gXX-w0-6YD" secondAttribute="trailing" constant="4" id="epm-Zd-95G"/>
                 <constraint firstItem="Fve-O2-DPX" firstAttribute="leading" secondItem="TDu-o5-mjC" secondAttribute="trailing" constant="4" id="haK-sr-h6u"/>
+                <constraint firstItem="i94-45-3Bq" firstAttribute="height" secondItem="Fve-O2-DPX" secondAttribute="height" id="jSL-Uh-rGC"/>
                 <constraint firstItem="Fve-O2-DPX" firstAttribute="top" secondItem="582-XD-mAT" secondAttribute="bottom" constant="8" id="mKe-wM-j39"/>
                 <constraint firstItem="gXX-w0-6YD" firstAttribute="centerY" secondItem="bUf-ey-kRA" secondAttribute="centerY" id="slH-zK-tZ2"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Fve-O2-DPX" secondAttribute="trailing" constant="8" id="tTf-rY-aZF"/>
