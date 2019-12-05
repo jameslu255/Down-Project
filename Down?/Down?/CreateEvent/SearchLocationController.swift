@@ -55,6 +55,7 @@ class SearchLocationController: UIViewController, MKMapViewDelegate {
   }
   
   @IBAction func cancel(_ sender: Any) {
+    // Dismisses the map view
     dismiss(animated: true, completion: nil)
   }
   
@@ -63,6 +64,7 @@ class SearchLocationController: UIViewController, MKMapViewDelegate {
   }
   
   func setupMapView() {
+    // Recenters the map
     if let coordinate = locationManager.location?.coordinate {
       let region = MKCoordinateRegion(center: coordinate, latitudinalMeters: regionInMeters, longitudinalMeters: regionInMeters)
       mapView.setRegion(region, animated: true)
@@ -89,15 +91,17 @@ class SearchLocationController: UIViewController, MKMapViewDelegate {
       break
     case .authorizedAlways:
       // I guess we do stuff here too
+      setupMapView()
       locationManager.startUpdatingLocation()
       break
     default:
-      print("shit")
+      print("Something went wrong")
       break
     }
   }
   
   func locationAlert() {
+    // Creates alert telling the user to turn on location services for the app
     let alert = UIAlertController(title: "Please enable location services for this app", message: "Setting > Privacy > Location Services", preferredStyle: .alert)
     let openSettings = UIAlertAction(title: "Open Settings", style: .default) { (_) -> Void in
       guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
@@ -117,13 +121,17 @@ class SearchLocationController: UIViewController, MKMapViewDelegate {
   }
   
   @objc func action(_ sender: UIButton) {
-    let screen = createEventScreen!
+    guard let screen = createEventScreen else {
+      dismiss(animated: true, completion: nil)
+      return
+    }
     screen.location = selectedLocation
     screen.setLocation()
     dismiss(animated: true, completion: nil)
   }
   
   func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+    // Creates the annotation view that allows for users to set the event location
     if (annotation is MKUserLocation) {
       return nil
     }
@@ -137,44 +145,16 @@ class SearchLocationController: UIViewController, MKMapViewDelegate {
   }
   
   func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
-    
+    // Selects the annotation that was added
     if let annotation = views.first(where: { $0.reuseIdentifier == "anno" })?.annotation {
       mapView.selectAnnotation(annotation, animated: true)
     }
   }
-//  func search() {
-//    let search = MKLocalSearch(request: request)
-//    guard let query = request.naturalLanguageQuery else { return }
-//    if (query.isEmpty) {
-//      if (search.isSearching) {
-//        search.cancel()
-//      }
-//    }
-//
-//    if (search.isSearching) {
-//      print("cancel search")
-//      search.cancel()
-//    }
-//    search.start { response, error in
-//      guard let r = response else { print("no r")
-//        return } // no r if type in gibberish
-//      if (r.mapItems.isEmpty) {
-//        print("no results")
-//      }
-//
-//      for item in r.mapItems {
-//        print("\(item.name!)")
-//      }
-//      if (error != nil) {
-//        print("error")
-//      }
-//    }
-//  }
-
 }
 
 extension SearchLocationController: CLLocationManagerDelegate {
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    // Moves the user's location on the map when they move
     guard let location = locations.last else { return }
     let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
     let region = MKCoordinateRegion(center: center, latitudinalMeters: regionInMeters, longitudinalMeters: regionInMeters)
