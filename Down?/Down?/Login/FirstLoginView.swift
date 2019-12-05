@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Firebase
+
 class FirstLoginView: UIViewController {
     @IBOutlet weak var LoginButton: UIButton!
     @IBOutlet weak var SignupButton: UIButton!
@@ -15,6 +17,16 @@ class FirstLoginView: UIViewController {
         //changes button to be curved
         LoginButton.layer.cornerRadius = 20
         SignupButton.layer.cornerRadius = 20
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        if Auth.auth().currentUser != nil {
+            let storyboard = UIStoryboard(name: "HomeFeed", bundle: nil)
+            let newController = storyboard.instantiateViewController(withIdentifier: "mainNavigationViewController")
+            newController.modalPresentationStyle = .fullScreen
+            self.present(newController, animated: false, completion: nil)
+        }
     }
 
     @IBAction func LoginPressed(_ sender: Any) {
