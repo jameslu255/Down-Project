@@ -13,7 +13,7 @@ class DecidedEventsTableVC: UITableViewController {
 
     var cellContents: [[Event]] = [[], []]
     var sections: [String] = ["Down", "Not Down"]
-    let geoCoder = CLGeocoder()
+    //let geoCoder = CLGeocoder()
     //sync loading of down and not down events
     let group = DispatchGroup()
     
@@ -101,13 +101,14 @@ class DecidedEventsTableVC: UITableViewController {
                 if let lat = event.location?.latitude, let long = event.location?.longitude {
                     let location = CLLocation(latitude: lat, longitude: long)
                     var locationString: String?
-                    geoCoder.reverseGeocodeLocation(location) { placemarks, error in
+                    CLGeocoder().reverseGeocodeLocation(location) { placemarks, error in
                         if error != nil {return}
                         if let placemark = placemarks?[0] {
                             locationString = placemark.name
+                            eventCell.locationTextView.text = locationString ?? "No location"
                         }
                     }
-                    eventCell.locationTextView.text = locationString ?? "No location"
+                    
                 }
                 return eventCell
             }
@@ -125,13 +126,14 @@ class DecidedEventsTableVC: UITableViewController {
                 if let lat = event.location?.latitude, let long = event.location?.longitude {
                     let location = CLLocation(latitude: lat, longitude: long)
                     var locationString: String?
-                    geoCoder.reverseGeocodeLocation(location) { placemarks, error in
+                    CLGeocoder().reverseGeocodeLocation(location) { placemarks, error in
                         if error != nil {return}
                         if let placemark = placemarks?[0] {
                             locationString = placemark.name
+                            eventCell.locationTextView.text = locationString ?? "No location"
                         }
                     }
-                    eventCell.locationTextView.text = locationString ?? "No location"
+                    
                 }
                 return eventCell
             }
