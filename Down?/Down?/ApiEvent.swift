@@ -59,6 +59,12 @@ public struct EventLocation {
     
 }
 
+public struct ApiUser {
+    var uid: String
+    var displayName: String
+    var profilePicture: UIImage?
+}
+
 public struct Event {
     var originalPoster: String
     var uid: String

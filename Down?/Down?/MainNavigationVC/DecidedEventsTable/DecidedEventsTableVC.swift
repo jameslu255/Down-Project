@@ -121,6 +121,7 @@ class DecidedEventsTableVC: UITableViewController {
                 eventCell.event = event
                 eventCell.delegate = self
                 eventCell.eventTitleLabel.text = event.title ?? "No title"
+                eventCell.numDownLabel.text = String(event.numDown)
                 eventCell.usernameLabel.text = event.originalPoster
                 eventCell.durationLabel.text = event.stringShortFormat
                 if let lat = event.location?.latitude, let long = event.location?.longitude {

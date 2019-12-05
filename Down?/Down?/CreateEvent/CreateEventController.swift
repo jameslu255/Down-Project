@@ -88,11 +88,23 @@ class CreateEventController: UITableViewController {
   // MARK: IBActions
   
   @IBAction func startTimeChanged(_ sender: UIDatePicker) {
+    if let end = endDate, let start = startDate {
+      if sender.date > end.addingTimeInterval(60 * -5) {
+        sender.date = start
+        return
+      }
+    }
     changeTimeLabel(of: startTimeLabel, to: sender.date)
     startDate = sender.date
   }
   
   @IBAction func endTimeChanged(_ sender: UIDatePicker) {
+    if let start = startDate, let end = endDate {
+      if sender.date < start {
+        sender.date = end
+        return
+      }
+    }
     changeTimeLabel(of: endTimeLabel, to: sender.date)
     endDate = sender.date
   }
@@ -197,6 +209,8 @@ class CreateEventController: UITableViewController {
     
     startDate = now
     endDate = now.addingTimeInterval(60 * 60)
+    
+    endTimePicker.date = now.addingTimeInterval(60 * 60)
     
     changeTimeLabel(of: startTimeLabel, to: now)
     changeTimeLabel(of: endTimeLabel, to: now.addingTimeInterval(60 * 60))
