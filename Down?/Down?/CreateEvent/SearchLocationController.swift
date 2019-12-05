@@ -155,13 +155,11 @@ class SearchLocationController: UIViewController, MKMapViewDelegate {
 extension SearchLocationController: CLLocationManagerDelegate {
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
     // Moves the user's location on the map when they move
-    guard let location = locations.last else { return }
-    if (location == locationManager.location) {
+    guard let location = locations.last, let locMan = locationManager.location else { return }
+    if (location == locMan) {
       print("same")
     }
-    let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-    let region = MKCoordinateRegion(center: center, latitudinalMeters: regionInMeters, longitudinalMeters: regionInMeters)
-    mapView.setRegion(region, animated: true)
+
   }
   
   func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {

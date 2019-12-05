@@ -15,8 +15,7 @@ class EventCell: UITableViewCell, UITextViewDelegate {
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var durationLabelBackgroundView: UIView!
     @IBOutlet weak var durationLabel: UILabel!
-    @IBOutlet weak var locationTextView: UITextView!
-    @IBOutlet weak var addressTextView: UITextView!
+    @IBOutlet weak var addressButton: UIButton!
     @IBOutlet weak var CellSpacer: UIView!
     @IBOutlet weak var nonSpacerArea: UIView!
     @IBOutlet weak var numDownLabel: UILabel!
@@ -42,6 +41,12 @@ class EventCell: UITableViewCell, UITextViewDelegate {
         self.view?.frame = self.contentView.bounds
     }
     
+    @IBAction func locationButtonPressed(_ sender: Any) {
+        if let eventLocation = event?.location {
+            openMap(location: eventLocation)
+        }
+    }
+    
     func loadFromNib() -> UIView? {
         let nib = UINib(nibName: nibName, bundle: nil)
         return nib.instantiate(withOwner: self, options: nil).first as? UIView
@@ -50,7 +55,7 @@ class EventCell: UITableViewCell, UITextViewDelegate {
     func setupSubviews(){
         //profilePictureImageView.layer.cornerRadius = 5
         durationLabelBackgroundView.layer.cornerRadius = 5
-        locationTextView.layer.cornerRadius = 5
+        addressButton.layer.cornerRadius = 5
         NumDownView.layer.cornerRadius = 5
     }
     

@@ -99,12 +99,10 @@ class DecidedEventsTableVC: UITableViewController {
                 eventCell.durationLabel.text = event.stringShortFormat
                 if let lat = event.location?.latitude, let long = event.location?.longitude {
                     let location = CLLocation(latitude: lat, longitude: long)
-                    var locationString: String?
                     CLGeocoder().reverseGeocodeLocation(location) { placemarks, error in
                         if error != nil {return}
                         if let placemark = placemarks?[0] {
-                            locationString = placemark.name
-                          eventCell.locationTextView.text = locationString ?? "No location"
+                            eventCell.addressButton.setTitle(placemark.name, for: .normal)
                         }
                     }
                     
@@ -125,12 +123,10 @@ class DecidedEventsTableVC: UITableViewController {
                 eventCell.durationLabel.text = event.stringShortFormat
                 if let lat = event.location?.latitude, let long = event.location?.longitude {
                     let location = CLLocation(latitude: lat, longitude: long)
-                    var locationString: String?
                     CLGeocoder().reverseGeocodeLocation(location) { placemarks, error in
                         if error != nil {return}
                         if let placemark = placemarks?[0] {
-                            locationString = placemark.name
-                          eventCell.locationTextView.text = locationString ?? "No location"
+                            eventCell.addressButton.setTitle(placemark.name, for: .normal)
                         }
                     }
                     
