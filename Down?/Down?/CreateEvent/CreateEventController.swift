@@ -142,7 +142,10 @@ class CreateEventController: UITableViewController {
     guard let _ = ApiEvent.addEvent(event: event) else { return }
     ApiEvent.getUnviewedEvent(uid: currentUser.uid) { newEvents in
         events = newEvents
-        DataManager.shared.firstVC.Feed.reloadData()
+        loadLocations() { geoLocations in
+            locations = geoLocations
+            DataManager.shared.firstVC.Feed.reloadData()
+        }
     }
     
     dismiss(animated: true, completion: nil)

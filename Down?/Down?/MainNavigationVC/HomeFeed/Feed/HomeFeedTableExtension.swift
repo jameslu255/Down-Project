@@ -35,17 +35,21 @@ extension HomeViewController {
             Feed.addSubview(refreshControl)
         }
     }
+
     
     func loadModelData() {
         if let user = Auth.auth().currentUser {
             ApiEvent.getUnviewedEvent(uid: user.uid) { apiEvents in
-                self.removeSpinner()
-                self.view.isUserInteractionEnabled = true
                 events = apiEvents
                 events.sort(by: {return $0.dates.startDate < $1.dates.startDate})
-                self.Feed.reloadData()
+                loadLocations() { geoLocations in
+                    self.removeSpinner()
+                    self.view.isUserInteractionEnabled = true
+                    locations = geoLocations
+                    self.Feed.reloadData()
                 }
             }
+        }
         
 //         To be used in future releases
         
@@ -154,6 +158,8 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         }
                 
         let event = events[indexPath.row]
+        let name = locations[indexPath.row] ?? "No Location"
+        print(name)
         eventCell.delegate = self
         eventCell.event = event
         //eventCell.profilePictureImageView.image = UIImage(named: "Default.ProfilePicture")
@@ -161,19 +167,8 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         eventCell.eventTitleLabel.text = event.title == "" ? "No title" : event.title ?? "No title"
         eventCell.numDownLabel.text = String(event.numDown)
         eventCell.durationLabel.text = event.stringShortFormat
-        eventCell.addressButton.setTitle("", for: .normal)
-        if let lat = event.location?.latitude, let long = event.location?.longitude {
-            let location = CLLocation(latitude: lat, longitude: long)
-            CLGeocoder().reverseGeocodeLocation(location) { placemarks, error in
-                if error != nil {
-                  return
-              }
-                if let placemark = placemarks?[0], let name = placemark.name {
-                    
-                    eventCell.addressButton.setTitle(name, for: .normal)
-                }
-            }
-        }
+        //eventCell.addressButton.setTitle("BU", for: .normal)
+        eventCell.addressButton.setTitle(name, for: .normal)
         return eventCell
     }
 }
