@@ -169,7 +169,11 @@ extension DecidedEventsTableVC: SwipeableEventCellDelegate {
     }
     
     func tapped(event: Event) {
-        
+        let storyboard = UIStoryboard(name: "HomeFeed", bundle: nil)
+        guard let eventDetailsPopup = storyboard.instantiateViewController(withIdentifier: "eventDetailsPopup") as? EventDetailsPopupViewController else {return}
+        eventDetailsPopup.event = event
+        self.present(eventDetailsPopup, animated: true) {
+        }
     }
     
     func removeEventCell(_ cell: EventCell, withDirection direction: UITableView.RowAnimation){
