@@ -259,9 +259,18 @@ class FilterView: UIViewController {
             if sortedCheck[2] == 1{
                 events.sort(by: {return $0.numDown > $1.numDown})
             }
-            //reload table before dismissing
-            DataManager.shared.firstVC.Feed.reloadData()
-            self.dismiss(animated: true, completion: nil)
+            
+            loadLocations() { geoLocations in
+                //re-enable user interaction
+                self.removeSpinner()
+                self.view.isUserInteractionEnabled = true
+                //reload table before dismissing
+                locations = geoLocations
+                DataManager.shared.firstVC.Feed.reloadData()
+                self.dismiss(animated: true, completion: nil)
+
+            }
+            
         }
         
     }

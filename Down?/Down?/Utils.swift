@@ -111,6 +111,7 @@ func filterByDistance(events: [Event], currentLocation: EventLocation, distance:
     return filtered
 }
 
+/// Used to load all event locations after the events have been fetched
 func loadLocations(completion: @escaping ([String?]) -> Void) {
     let group = DispatchGroup()
     var geoLocations = [String?]()

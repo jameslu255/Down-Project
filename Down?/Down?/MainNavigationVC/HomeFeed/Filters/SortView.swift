@@ -85,10 +85,14 @@ class SortView: UIViewController{
         sortedCheck[0] = 1
         //sort events then reload data
         events.sort(by: {return $0.dates.startDate < $1.dates.startDate})
-        DataManager.shared.firstVC.Feed.reloadData()
-        dismissAndClear()
-        
+        loadLocations() { geoLocations in
+            //reload table before dismissing
+            locations = geoLocations
+            DataManager.shared.firstVC.Feed.reloadData()
+            self.dismissAndClear()
+        }
     }
+    
     @IBAction func distancePressed(_ sender: Any) {
         resetAllButtons()
         distanceButton.setImage(UIImage(systemName: "largecircle.fill.circle"), for: .normal)
@@ -99,17 +103,26 @@ class SortView: UIViewController{
                 guard let lat = $0.location?.latitude, let lon = $0.location?.longitude, let lat2 = $1.location?.latitude, let lon2 = $1.location?.longitude else {return false}
                 return distanceInMiles(lat1: currentLocation.latitude, lon1: currentLocation.longitude, lat2: lat, lon2: lon) < distanceInMiles(lat1: currentLocation.latitude, lon1: currentLocation.longitude, lat2: lat2, lon2: lon2)})
         }
-        DataManager.shared.firstVC.Feed.reloadData()
-        dismissAndClear()
+        loadLocations() { geoLocations in
+            //reload table before dismissing
+            locations = geoLocations
+            DataManager.shared.firstVC.Feed.reloadData()
+            self.dismissAndClear()
+        }
     }
+    
     @IBAction func downsPressed(_ sender: Any) {
         resetAllButtons()
         downsButton.setImage(UIImage(systemName: "largecircle.fill.circle"), for: .normal)
         sortedCheck[2] = 1
         // sort by number of downs then reload data
         events.sort(by: {return $0.numDown > $1.numDown})
-        DataManager.shared.firstVC.Feed.reloadData()
-        dismissAndClear()
+        loadLocations() { geoLocations in
+            //reload table before dismissing
+            locations = geoLocations
+            DataManager.shared.firstVC.Feed.reloadData()
+            self.dismissAndClear()
+        }
     }
     
 }
