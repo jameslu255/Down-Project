@@ -190,9 +190,9 @@ class CreateEventController: UITableViewController {
     
     let now = Date()
     startTimePicker.minimumDate = now
-    startTimePicker.maximumDate = now.addingTimeInterval(60 * 60) // Need to establish is there is a limit to how far ahead to start
+    startTimePicker.maximumDate = now.addingTimeInterval((60 * 60 * 24) - (60 * 5)) // Need to establish is there is a limit to how far ahead to start
     
-    endTimePicker.minimumDate = now.addingTimeInterval(60 * 60)
+    endTimePicker.minimumDate = now.addingTimeInterval(60 * 5)
     endTimePicker.maximumDate = now.addingTimeInterval(60 * 60 * 24)
     
     startDate = now
@@ -334,7 +334,9 @@ extension CreateEventController: CLLocationManagerDelegate {
     guard let location = locations.last else { return }
     geoCoder.reverseGeocodeLocation(location) { placemarks, error in
       guard let place = placemarks?[0], let name = place.name else { return }
-      //self.location = place
+      if (self.location == nil) {
+        self.location = place
+      }
       guard let locationText = self.locationField.text else { return }
       if (locationText == "Location not found") {
         self.locationField.textColor = .label
