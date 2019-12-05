@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 class MainNavigationViewController: UIViewController {
 
@@ -34,9 +35,23 @@ class MainNavigationViewController: UIViewController {
         decidedEventsVC = storyboard.instantiateViewController(identifier: "decidedEventsVC")
       let mapVC = UIStoryboard(name: "Mapview", bundle: nil).instantiateViewController(identifier:"mapVC") as! MapViewController
         profileVC = storyboard.instantiateViewController(identifier: "profileVC")
+        profileVC.signOut = signOut
         viewControllers = [homeVC, decidedEventsVC, mapVC, profileVC]
     }
 
+    func signOut(){
+        print("Hello")
+        do {
+            try Auth.auth().signOut()
+        } catch let signOutError as NSError {
+            print("Error signing out: %@", signOutError)
+        }
+        
+        self.dismiss(animated: true) {
+            print("whadup")
+        }
+    }
+    
     @IBAction func TabButtonPressed(_ sender: UIButton) {
         let prevIndex = currentVCIndex
         currentVCIndex = sender.tag

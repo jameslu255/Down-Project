@@ -18,23 +18,41 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Ehe-hm-GCB">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </mapView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="WHh-LV-GPD">
+                                <rect key="frame" x="8" y="52" width="191" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="191" id="GDc-Wi-D5l"/>
+                                    <constraint firstAttribute="height" constant="31" id="nvT-xG-f2s"/>
+                                </constraints>
+                                <segments>
+                                    <segment title="New"/>
+                                    <segment title="Down"/>
+                                    <segment title="All"/>
+                                </segments>
+                                <connections>
+                                    <action selector="filterChanged:" destination="gHI-rX-Bpa" eventType="valueChanged" id="sey-BZ-oSC"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="WHh-LV-GPD" firstAttribute="leading" secondItem="l4k-Kq-WwV" secondAttribute="leading" constant="8" id="Bmc-AS-xgh"/>
                             <constraint firstAttribute="bottom" secondItem="Ehe-hm-GCB" secondAttribute="bottom" id="Bnf-Oz-gQK"/>
                             <constraint firstItem="Ehe-hm-GCB" firstAttribute="leading" secondItem="pgB-M4-vJB" secondAttribute="leading" id="FT0-QZ-xeu"/>
                             <constraint firstAttribute="trailing" secondItem="Ehe-hm-GCB" secondAttribute="trailing" id="X53-Wp-fnX"/>
+                            <constraint firstItem="WHh-LV-GPD" firstAttribute="top" secondItem="l4k-Kq-WwV" secondAttribute="top" constant="8" id="agt-e9-dxp"/>
                             <constraint firstItem="Ehe-hm-GCB" firstAttribute="top" secondItem="pgB-M4-vJB" secondAttribute="top" id="rsv-Ne-9Mf"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="l4k-Kq-WwV"/>
                     </view>
                     <connections>
+                        <outlet property="eventsFilter" destination="WHh-LV-GPD" id="P14-cL-MCe"/>
                         <outlet property="map" destination="Ehe-hm-GCB" id="9xQ-dj-BbP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bnn-Pz-Ri8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-12" y="67"/>
+            <point key="canvasLocation" x="-13.043478260869566" y="66.964285714285708"/>
         </scene>
     </scenes>
 </document>

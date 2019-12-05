@@ -7,12 +7,15 @@
 
 import UIKit
 import MapKit
+import Firebase
 
 class MapViewController: UIViewController, MKMapViewDelegate {
 
   @IBOutlet weak var map: MKMapView!
-  
-  //var events:[Event] = []
+    @IBOutlet weak var eventsFilter: UISegmentedControl!
+    
+  var new = events
+
   
   let locationManager = CLLocationManager()
   let regionInMeters = 500.0
@@ -25,13 +28,17 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     setupAnnotations()
   }
   
-  override func viewDidAppear(_ animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
     locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
     checkLocationAuthorization()
     setupMapView()
     setupAnnotations()
   }
-  
+    @IBAction func filterChanged(_ sender: UISegmentedControl) {
+        setupMapView()
+        setupAnnotations()
+    }
+    
   func setupMapView() {
     map.delegate = self
     map.showsUserLocation = true
@@ -45,17 +52,42 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     }
   }
   
-  func setupAnnotations() {
-    let annotations:[MKAnnotation] = events.compactMap({
-      guard let location = $0.location else {
-        return nil
-      }
-      let coordinate = CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
-      let annotation = EventPin(event: $0, coordinate: coordinate)
-      return annotation
-    })
-    map.removeAnnotations(self.map.annotations)
-    map.addAnnotations(annotations)
+    func loadEvents(filterIndex: Int, completion: @escaping ([Event])->()) {
+        switch filterIndex {
+        case 0:
+            completion(events)
+        case 1:
+            if let uid = Auth.auth().currentUser?.uid {
+                ApiEvent.getDownEvents(uid: uid) { newEvents in
+                    completion(newEvents)
+                }
+            }
+        case 2:
+            if let uid = Auth.auth().currentUser?.uid {
+                ApiEvent.getDownEvents(uid: uid) { newEvents in
+                    let all = events + newEvents
+                    completion(all)
+                }
+            }
+        default:
+            completion([])
+        }
+    }
+    
+    func setupAnnotations() {
+
+        loadEvents(filterIndex: eventsFilter.selectedSegmentIndex) { events in
+        let annotations:[MKAnnotation] = events.compactMap({
+          guard let location = $0.location else {
+            return nil
+          }
+          let coordinate = CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
+          let annotation = EventPin(event: $0, coordinate: coordinate)
+          return annotation
+        })
+        self.map.removeAnnotations(self.map.annotations)
+        self.map.addAnnotations(annotations)
+    }
   }
   
   func checkLocationAuthorization() {
