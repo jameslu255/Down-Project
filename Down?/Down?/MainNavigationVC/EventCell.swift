@@ -7,9 +7,7 @@
 
 import UIKit
 
-
-
-class EventCell: UITableViewCell {
+class EventCell: UITableViewCell, UITextViewDelegate {
 
     
     @IBOutlet weak var profilePictureImageView: UIImageView!
@@ -18,6 +16,7 @@ class EventCell: UITableViewCell {
     @IBOutlet weak var durationLabelBackgroundView: UIView!
     @IBOutlet weak var durationLabel: UILabel!
     @IBOutlet weak var locationTextView: UITextView!
+    @IBOutlet weak var addressTextView: UITextView!
     @IBOutlet weak var CellSpacer: UIView!
     @IBOutlet weak var nonSpacerArea: UIView!
     @IBOutlet weak var numDownLabel: UILabel!
@@ -53,8 +52,6 @@ class EventCell: UITableViewCell {
         durationLabelBackgroundView.layer.cornerRadius = 5
         locationTextView.layer.cornerRadius = 5
         NumDownView.layer.cornerRadius = 5
-//        NumDownView.layer.borderWidth = 1
-//        NumDownView.layer.borderColor = UIColor.systemBlue.cgColor
     }
     
     required init?(coder: NSCoder) {

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		03563FC32398868200340610 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03563FC22398868200340610 /* Utils.swift */; };
+		03563FC52398A84A00340610 /* EventCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03563FC42398A84A00340610 /* EventCellModel.swift */; };
 		035836BC237F9442000C0D30 /* SwipeableEventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035836BA237F9442000C0D30 /* SwipeableEventCell.swift */; };
 		035AD4FA238A7DC2005B073A /* HomeFeedFilterExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035AD4F9238A7DC2005B073A /* HomeFeedFilterExtension.swift */; };
 		035AD4FC238A7E24005B073A /* HomeFeedTableExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035AD4FB238A7E24005B073A /* HomeFeedTableExtension.swift */; };
@@ -50,6 +52,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		03563FC22398868200340610 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		03563FC42398A84A00340610 /* EventCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCellModel.swift; sourceTree = "<group>"; };
 		035836BA237F9442000C0D30 /* SwipeableEventCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeableEventCell.swift; sourceTree = "<group>"; };
 		035AD4F9238A7DC2005B073A /* HomeFeedFilterExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedFilterExtension.swift; sourceTree = "<group>"; };
 		035AD4FB238A7E24005B073A /* HomeFeedTableExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedTableExtension.swift; sourceTree = "<group>"; };
@@ -241,6 +245,8 @@
 				840BE10A23876B27002A6A9F /* ApiEvent.swift */,
 				846C10B9237B96D9001A4BDD /* GoogleService-Info.plist */,
 				8486A9CE2376269400ABB50B /* LaunchScreen.storyboard */,
+				03563FC22398868200340610 /* Utils.swift */,
+				03563FC42398A84A00340610 /* EventCellModel.swift */,
 			);
 			path = "Down?";
 			sourceTree = "<group>";
@@ -388,8 +394,10 @@
 				09DD15D1237BF501002BE8C9 /* ResetView.swift in Sources */,
 				03759DE5238243AA009ACE37 /* DownClasses.swift in Sources */,
 				0368BDA2238CFA6A00482CA1 /* DownNotDownEventCells.swift in Sources */,
+				03563FC32398868200340610 /* Utils.swift in Sources */,
 				0380C125238BB7020038558A /* EventCell.swift in Sources */,
 				097130D123875FEC00FB7351 /* SortView.swift in Sources */,
+				03563FC52398A84A00340610 /* EventCellModel.swift in Sources */,
 				097130CE23875FEC00FB7351 /* FilterView.swift in Sources */,
 				840BE10B23876B27002A6A9F /* ApiEvent.swift in Sources */,
 				035AD4FA238A7DC2005B073A /* HomeFeedFilterExtension.swift in Sources */,
@@ -557,13 +565,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 6WJ796BDL9;
+				DEVELOPMENT_TEAM = J2Y7FW72RW;
 				INFOPLIST_FILE = "Down?/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ECS189.Down;
+				PRODUCT_BUNDLE_IDENTIFIER = ECS18912345.Down;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -576,13 +584,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 6WJ796BDL9;
+				DEVELOPMENT_TEAM = J2Y7FW72RW;
 				INFOPLIST_FILE = "Down?/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ECS189.Down;
+				PRODUCT_BUNDLE_IDENTIFIER = ECS18912345.Down;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
