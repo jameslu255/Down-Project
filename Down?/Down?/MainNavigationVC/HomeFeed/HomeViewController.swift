@@ -81,6 +81,19 @@ class HomeViewController: UIViewController {
         return filtered
     }
     
+    func showFirstTimeInstructions() {
+        //Create the alert controller.
+        let alert = UIAlertController(title: "Directions",
+                                      message: "Swipe right for down and swipe left for not down.",
+                                      preferredStyle: .alert)
+        
+        //Present the alert.
+        self.present(alert, animated: true, completion: {
+        })
+
+    }
+    
+    
     // This refresh function is called when the table is being pulled down
     @objc func refresh(_ sender:Any)
     {
@@ -119,7 +132,9 @@ class HomeViewController: UIViewController {
         registerFilterNib()
         checkLocationServices()
         self.setUpFeed()
-    
+        if firstLaunchFlag {
+            self.showFirstTimeInstructions()
+        }
     }
 }
 
