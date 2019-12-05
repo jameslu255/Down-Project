@@ -35,7 +35,34 @@ extension HomeViewController {
             Feed.addSubview(refreshControl)
         }
     }
-    
+    func loadLocations(completion: @escaping ([String?]) -> Void) {
+        let group = DispatchGroup()
+        var geoLocations = [String?]()
+        for event in events {
+            if let lat = event.location?.latitude, let long = event.location?.longitude {
+                let location = CLLocation(latitude: lat, longitude: long)
+                group.enter()
+                CLGeocoder().reverseGeocodeLocation(location) { placemarks, error in
+                    if error != nil {
+                      group.leave()
+                      return
+                  }
+                    if let placemark = placemarks?[0], let name = placemark.name {
+                        geoLocations.append(name)
+                    } else {
+                        geoLocations.append(nil)
+                    }
+                    group.leave()
+                }
+            } else {
+                geoLocations.append(nil)
+            }
+        }
+        group.notify(queue: .main) {
+            print(geoLocations)
+            completion(geoLocations)
+        }
+    }
     func loadModelData() {
         if let user = Auth.auth().currentUser {
             ApiEvent.getUnviewedEvent(uid: user.uid) { apiEvents in
@@ -43,9 +70,12 @@ extension HomeViewController {
                 self.view.isUserInteractionEnabled = true
                 events = apiEvents
                 events.sort(by: {return $0.dates.startDate < $1.dates.startDate})
-                self.Feed.reloadData()
+                self.loadLocations() { geoLocations in
+                    locations = geoLocations
+                    self.Feed.reloadData()
                 }
             }
+        }
         
 //         To be used in future releases
         
@@ -154,6 +184,8 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         }
                 
         let event = events[indexPath.row]
+        let name = locations[indexPath.row] ?? "No Location"
+        print(name)
         eventCell.delegate = self
         eventCell.event = event
         //eventCell.profilePictureImageView.image = UIImage(named: "Default.ProfilePicture")
@@ -162,18 +194,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         eventCell.numDownLabel.text = String(event.numDown)
         eventCell.durationLabel.text = event.stringShortFormat
         eventCell.addressButton.setTitle("", for: .normal)
-        if let lat = event.location?.latitude, let long = event.location?.longitude {
-            let location = CLLocation(latitude: lat, longitude: long)
-            CLGeocoder().reverseGeocodeLocation(location) { placemarks, error in
-                if error != nil {
-                  return
-              }
-                if let placemark = placemarks?[0], let name = placemark.name {
-                    
-                    eventCell.addressButton.setTitle(name, for: .normal)
-                }
-            }
-        }
+        eventCell.addressButton.setTitle(name, for: .normal)
         return eventCell
     }
 }
