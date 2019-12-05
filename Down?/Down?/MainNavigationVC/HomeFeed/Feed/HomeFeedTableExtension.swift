@@ -161,26 +161,18 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         eventCell.eventTitleLabel.text = event.title == "" ? "No title" : event.title ?? "No title"
         eventCell.numDownLabel.text = String(event.numDown)
         eventCell.durationLabel.text = event.stringShortFormat
+        eventCell.addressButton.setTitle("", for: .normal)
         if let lat = event.location?.latitude, let long = event.location?.longitude {
-            //print(lat)
-            //print(long)
             let location = CLLocation(latitude: lat, longitude: long)
             CLGeocoder().reverseGeocodeLocation(location) { placemarks, error in
                 if error != nil {
-                    eventCell.addressButton.setTitle("No title", for: .normal)
                   return
               }
                 if let placemark = placemarks?[0], let name = placemark.name {
                     
                     eventCell.addressButton.setTitle(name, for: .normal)
                 }
-              else {
-                    eventCell.addressButton.setTitle("No title", for: .normal)
-              }
             }
-        }
-        else {
-            eventCell.addressButton.setTitle("No title", for: .normal)
         }
         return eventCell
     }
