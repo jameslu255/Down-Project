@@ -241,6 +241,7 @@ class FilterView: UIViewController {
     }
     
     @IBAction func ApplyPressed(_ sender: Any) {
+        categoryFilters = []
         for n in 0...checked.count-1{
             if (checked[n] == 1){
                 finalChecked[n] = 1
@@ -281,7 +282,6 @@ class FilterView: UIViewController {
                 events.sort(by: {return $0.numDown > $1.numDown})
             }
             DataManager.shared.firstVC.Feed.reloadData()
-            categoryFilters = []
             self.dismiss(animated: true, completion: nil)
         }
         

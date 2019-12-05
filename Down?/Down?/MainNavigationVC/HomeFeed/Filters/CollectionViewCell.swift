@@ -25,7 +25,6 @@ class CollectionViewCell: UICollectionViewCell, UIViewControllerTransitioningDel
     
     func configureCell(buttonName: String) {
         self.buttonLabel.setTitle(buttonName, for: .normal)
-        //let spacing: CGFloat = 76.5
         self.buttonLabel.contentEdgeInsets = UIEdgeInsets(top: 5, left: DataManager.shared.firstVC.collectionView.bounds.width/5.45, bottom: 5, right: DataManager.shared.firstVC.collectionView.bounds.width/5.45)
         self.buttonLabel.layer.cornerRadius = 10
         self.buttonLabel.layer.borderWidth = 1

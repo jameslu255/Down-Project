@@ -179,7 +179,7 @@ public class ApiEvent {
         var downEventIDs = [String]()
 
         db.collection("user_events").document(uid).collection("down")
-            .whereField("date", isGreaterThanOrEqualTo: Timestamp(date: Date()))
+            //.whereField("date", isGreaterThanOrEqualTo: Timestamp(date: Date()))
             .getDocuments() { snapshot, error in
             if error != nil { return }
             guard let documents = snapshot?.documents else { return }
@@ -297,7 +297,7 @@ public class ApiEvent {
         var notDownEventIDs = [String]()
 
         db.collection("user_events").document(uid).collection("not_down")
-            .whereField("date", isGreaterThanOrEqualTo: Timestamp(date: Date()))
+            //.whereField("date", isGreaterThanOrEqualTo: Timestamp(date: Date()))
             .getDocuments() { snapshot, error in
             if error != nil { return }
             guard let documents = snapshot?.documents else { return }
