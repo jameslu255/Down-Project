@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Firebase
 
 class FirstLoginView: UIViewController {
     @IBOutlet weak var LoginButton: UIButton!
@@ -21,12 +20,6 @@ class FirstLoginView: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-        if Auth.auth().currentUser != nil {
-            let storyboard = UIStoryboard(name: "HomeFeed", bundle: nil)
-            let newController = storyboard.instantiateViewController(withIdentifier: "mainNavigationViewController")
-            newController.modalPresentationStyle = .fullScreen
-            self.present(newController, animated: false, completion: nil)
-        }
     }
 
     @IBAction func LoginPressed(_ sender: Any) {
