@@ -32,7 +32,7 @@
                             <rect key="frame" x="199" y="67.5" width="16" height="30"/>
                             <color key="backgroundColor" systemColor="tertiarySystemBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="16" id="8r0-hx-A4Z"/>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="16" id="8r0-hx-A4Z"/>
                             </constraints>
                             <inset key="contentEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
                             <state key="normal">
