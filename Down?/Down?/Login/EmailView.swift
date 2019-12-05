@@ -85,7 +85,7 @@ class EmailView: UIViewController, UITextFieldDelegate {
     }
     func presentFirstView() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let newController = storyboard.instantiateViewController(withIdentifier: "FirstLoginView")
+        let newController = storyboard.instantiateViewController(withIdentifier: "firstlogin")
         newController.modalPresentationStyle = .fullScreen
         self.present(newController, animated: true, completion: nil)
     }

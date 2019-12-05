@@ -34,7 +34,6 @@
 		09DD15D1237BF501002BE8C9 /* ResetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09DD15D0237BF501002BE8C9 /* ResetView.swift */; };
 		840BE10B23876B27002A6A9F /* ApiEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840BE10A23876B27002A6A9F /* ApiEvent.swift */; };
 		840BE11323876BED002A6A9F /* UIElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840BE10E23876BEC002A6A9F /* UIElements.swift */; };
-		840BE11523876BED002A6A9F /* Classes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840BE11023876BED002A6A9F /* Classes.swift */; };
 		840BE11723876BED002A6A9F /* SearchLocationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840BE11223876BED002A6A9F /* SearchLocationController.swift */; };
 		845F4A89237E61E30054BC18 /* HomeFeed.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 845F4A86237E61E30054BC18 /* HomeFeed.storyboard */; };
 		845F4A8B237E61E30054BC18 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845F4A88237E61E30054BC18 /* HomeViewController.swift */; };
@@ -81,7 +80,6 @@
 		6F4BD3769F55183FE0DC25A5 /* Pods-Down?.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Down?.debug.xcconfig"; path = "Target Support Files/Pods-Down?/Pods-Down?.debug.xcconfig"; sourceTree = "<group>"; };
 		840BE10A23876B27002A6A9F /* ApiEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiEvent.swift; sourceTree = "<group>"; };
 		840BE10E23876BEC002A6A9F /* UIElements.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIElements.swift; sourceTree = "<group>"; };
-		840BE11023876BED002A6A9F /* Classes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Classes.swift; sourceTree = "<group>"; };
 		840BE11223876BED002A6A9F /* SearchLocationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchLocationController.swift; sourceTree = "<group>"; };
 		845F4A86237E61E30054BC18 /* HomeFeed.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = HomeFeed.storyboard; sourceTree = "<group>"; };
 		845F4A88237E61E30054BC18 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -195,7 +193,6 @@
 		845F4A8D237E62870054BC18 /* CreateEvent */ = {
 			isa = PBXGroup;
 			children = (
-				840BE11023876BED002A6A9F /* Classes.swift */,
 				840BE11223876BED002A6A9F /* SearchLocationController.swift */,
 				848F3F4223971AB8005DEE88 /* CreateEvent.storyboard */,
 				848F3F4623971BBD005DEE88 /* CreateEventController.swift */,
@@ -403,7 +400,6 @@
 				035AD4FA238A7DC2005B073A /* HomeFeedFilterExtension.swift in Sources */,
 				8486A9C42376269200ABB50B /* AppDelegate.swift in Sources */,
 				095269A7237A430E00A21F35 /* LoginView.swift in Sources */,
-				840BE11523876BED002A6A9F /* Classes.swift in Sources */,
 				035D4A352394CB0A0067E4EC /* ProfileViewController.swift in Sources */,
 				0380C120238BA23D0038558A /* MainNavigationViewController.swift in Sources */,
 				035836BC237F9442000C0D30 /* SwipeableEventCell.swift in Sources */,

@@ -176,16 +176,16 @@ public class ApiEvent {
     /**
      Fetches a list of event IDs that the user is down for.
 
-     - parameter uid: The user ID
+     - parameter uid: The user ID to fetch IDs of down events
      - parameter completion: Closure whose callback will contain the list of the event IDs
      - returns: Void
 
     */
     private static func getDownEventIDs(uid: String, completion: @escaping ([String]) -> Void) {
         var downEventIDs = [String]()
-
+        
+        //get the ID of the down events
         db.collection("user_events").document(uid).collection("down")
-            //.whereField("date", isGreaterThanOrEqualTo: Timestamp(date: Date()))
             .getDocuments() { snapshot, error in
             if error != nil { return }
             guard let documents = snapshot?.documents else { return }
@@ -200,7 +200,7 @@ public class ApiEvent {
     /**
      Fetches a list of event IDs that the user is not down for.
 
-     - parameter uid: The user ID
+     - parameter uid: The user ID to fetch down events
      - parameter completion: Closure whose callback will contain the list of the event IDs
      - returns: Void
 
@@ -209,7 +209,7 @@ public class ApiEvent {
         var downEvents = [Event]()
         //synchronize event lookup
         let group = DispatchGroup()
-
+        //get the user's down events
         db.collection("user_events").document(uid).collection("down").getDocuments() { snapshot, error in
             if error != nil { return }
             guard let documents = snapshot?.documents else { return }
@@ -223,6 +223,7 @@ public class ApiEvent {
                     group.leave()
                 }
             }
+            //the query is finished
             group.notify(queue: .main) {
                 completion(downEvents)
             }
@@ -254,6 +255,7 @@ public class ApiEvent {
                     group.leave()
                 }
             }
+            //the query is finished
             group.notify(queue: .main) {
                 completion(notDownEvents)
             }
@@ -263,7 +265,7 @@ public class ApiEvent {
     /**
      Fetches a list of event objects that the user has previously created
 
-     - parameter uid: The user ID
+     - parameter uid: The id of the user to fetch created events
      - parameter completion: Closure whose callback will contain the list of the event objects
      - returns: Void
 
@@ -294,7 +296,7 @@ public class ApiEvent {
     /**
      Fetches a list of event objects that the user is not down for.
 
-     - parameter uid: The user ID
+     - parameter uid: The ID of the user to fetch not down events
      - parameter completion: Closure whose callback will contain the list of the event objects
      - returns: Void
 
@@ -339,12 +341,14 @@ public class ApiEvent {
       This makes three separate API calls to get the down event IDs, not down event IDs, and the event IDs that
        are not present in the those two former lists.
 
-     - parameter uid: The user ID
+     - parameter uid: The ID of the user to query unviewed events
      - parameter completion: Closure whose callback will contain the list of the event objects
      - returns: Void
 
     */
     public static func getUnviewedEvent(uid: String, completion: @escaping ([Event]) -> Void) {
+        //get IDs of events the user has responded to
+        //make sure the event is still valid
         getViewedEventIDs(uid: uid) { viewedEventIDs in
             db.collection("events")
                 .whereField("endTime", isGreaterThanOrEqualTo: Timestamp(date: Date()))
@@ -354,6 +358,7 @@ public class ApiEvent {
                     guard let documents = snapshot?.documents else { return }
                     for document in documents {
                         let eventID = document.documentID
+                        //the user has not responded to this event before
                         if !viewedEventIDs.contains(eventID) {
                             let event = Event(dict: document.data(), autoID: eventID)
                             unviewedEvents.append(event)
@@ -378,7 +383,9 @@ public class ApiEvent {
 
        */
     public static func getUnviewedEventFilter(uid: String, categories: [String], completion: @escaping ([Event]) -> Void) {
+        //get the viewed event IDs
         getViewedEventIDs(uid: uid) { viewedEventIDs in
+            //only get events that are still happening
             let ref = db.collection("events")
                 .whereField("endTime", isGreaterThanOrEqualTo: Timestamp(date: Date()))
             ref.getDocuments() { (snapshot, error) in
@@ -387,9 +394,11 @@ public class ApiEvent {
                 guard let documents = snapshot?.documents else { return }
                 for document in documents {
                     let eventID = document.documentID
+                    //the user hasn't responded to this event yet
                     if !viewedEventIDs.contains(eventID) {
                         let event = Event(dict: document.data(), autoID: eventID)
                         if let eventCat = event.categories, !categories.isEmpty {
+                            //if the event categories intersects with the user set categories
                             if categories.intersects(with: eventCat) {
                                 unviewedEvents.append(event)
                             }
@@ -473,12 +482,13 @@ public class ApiEvent {
 
     */
     public static func getEventDetails(autoID: String, completion: @escaping (Event?) -> Void) {
+        //get the event from events
         db.collection("events").document(autoID).getDocument() { (document, error) in
             if error != nil {
                 completion(nil)
                 return
             }
-            
+            //we could find the event
             if let responseDocument = document, responseDocument.exists {
                 guard let data = responseDocument.data() else {
                     completion(nil)
@@ -506,7 +516,7 @@ public class ApiEvent {
 
     */
     public static func addUserDown(eventID: String, uid: String, completion: @escaping () -> Void) {
-      
+      //add the event to the user's down collection with the time
         db.collection("user_events")
             .document(uid)
             .collection("down")
@@ -532,6 +542,7 @@ public class ApiEvent {
 
     */
     public static func addUserNotDown(eventID: String, uid: String, completion: @escaping () -> Void) {
+        //add the event to the user's not down collection with the time
         db.collection("user_events")
             .document(uid)
             .collection("not_down")
@@ -551,6 +562,7 @@ public class ApiEvent {
      */
     public static func updateEvent(event: Event, completion: @escaping () -> Void) {
         guard let eventID = event.autoID else { return }
+        //prepare the event dictionary to be added to firestore
         var eventDict = [
             "title": event.title ?? "",
             "description": event.description ?? "",
@@ -561,7 +573,7 @@ public class ApiEvent {
             "numDown": event.numDown,
             "isPublic": event.isPublic,
             ] as [String : Any]
-        
+        //if the user set categories
         if let categories = event.categories {
             var categoryDict = [String:Bool]()
             for category in categories {
@@ -596,12 +608,14 @@ public class ApiEvent {
 
     */
     public static func undoEventAction(eventID: String, uid: String, from: String, completion: @escaping () -> Void) {
+        //should only be able to modify down or not down
         if (from != "down" && from != "not_down") { return }
         db.collection("user_events").document(uid).collection(from).document(eventID).delete() { error in
             if let error = error {
                 print(error)
             } else {
                 if from == "down" {
+                    //atomically decrement numDown
                     db.collection("events").document(eventID).updateData(["numDown": FieldValue.increment(Int64(-1))])
                 }
                 completion()
@@ -622,6 +636,7 @@ public class ApiEvent {
 
     */
     public static func deleteEvent(eventID: String, completion: @escaping () -> Void) {
+        //delete the event from the events
         db.collection("events").document(eventID).delete() { error in
             if let error = error {
                 print(error)
@@ -630,30 +645,6 @@ public class ApiEvent {
             }
         }
     }
-    
-    public static func getLastUserCreatedEvent(uid: String, completion: @escaping (Event?) -> Void) {
-        db.collection("user_events")
-            .document(uid)
-            .collection("created")
-            .limit(to: 1)
-            .getDocuments() { snapshot, error in
-            if error != nil { completion(nil); return }
-            guard let documents = snapshot?.documents else { completion(nil); return }
-            if documents.count == 0 { completion(nil); return }
-                
-            for document in documents {
-                let createdEventID = document.documentID
-                self.getEventDetails(autoID: createdEventID) { event in
-                    if let event = event {
-                        completion(event)
-                    } else {
-                        completion(nil)
-                    }
-                }
-            }
-        }
-    }
-
 }
 
 
@@ -674,8 +665,9 @@ extension Event {
     }
 }
 
+//used to find events with certain categories
 extension Sequence where Iterator.Element : Hashable {
-
+    //nice O(n) intersection function that uses set
     func intersects<S : Sequence>(with sequence: S) -> Bool
         where S.Iterator.Element == Iterator.Element
     {

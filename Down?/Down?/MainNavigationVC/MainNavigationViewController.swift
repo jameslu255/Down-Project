@@ -19,7 +19,7 @@ class MainNavigationViewController: UIViewController {
     var profileVC: ProfileViewController!
     
     var viewControllers: [UIViewController]!
-    var viewControllersNames: [String] = ["Down?", "Your Events", "Map", "Profile"]
+    var viewControllersNames: [String] = ["Down?", "Your Events", "Map", "Signout"]
     var currentVCIndex: Int = 0
     
     override func viewDidLoad() {
@@ -47,9 +47,10 @@ class MainNavigationViewController: UIViewController {
             print("Error signing out: %@", signOutError)
         }
         
-        self.dismiss(animated: true) {
-            print("whadup")
-        }
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let newController = storyboard.instantiateViewController(withIdentifier: "firstlogin")
+        newController.modalPresentationStyle = .fullScreen
+        self.present(newController, animated: false, completion: nil)
     }
     
     @IBAction func TabButtonPressed(_ sender: UIButton) {
