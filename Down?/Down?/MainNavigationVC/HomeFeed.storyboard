@@ -212,6 +212,12 @@
                                     <outlet property="delegate" destination="ESs-yJ-p0h" id="0Lv-vV-B6Y"/>
                                 </connections>
                             </collectionView>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Looks like you're out of events!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eN1-iq-CIy">
+                                <rect key="frame" x="20" y="200" width="374" height="71.666666666666686"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
@@ -220,8 +226,11 @@
                             <constraint firstAttribute="bottom" secondItem="J1A-jf-aSN" secondAttribute="bottom" id="6hh-Dl-BH9"/>
                             <constraint firstItem="uxl-QH-2lZ" firstAttribute="top" secondItem="XGB-pb-ow4" secondAttribute="top" id="Cpi-Gl-RRS"/>
                             <constraint firstItem="4zG-ib-WDk" firstAttribute="trailing" secondItem="J1A-jf-aSN" secondAttribute="trailing" id="MLt-ro-zrr"/>
+                            <constraint firstItem="eN1-iq-CIy" firstAttribute="leading" secondItem="4zG-ib-WDk" secondAttribute="leading" constant="20" id="bEf-YQ-Bpr"/>
                             <constraint firstItem="J1A-jf-aSN" firstAttribute="leading" secondItem="4zG-ib-WDk" secondAttribute="leading" id="lrk-Vk-W11"/>
                             <constraint firstItem="uxl-QH-2lZ" firstAttribute="leading" secondItem="4zG-ib-WDk" secondAttribute="leading" id="raP-Gf-mr6"/>
+                            <constraint firstItem="eN1-iq-CIy" firstAttribute="top" secondItem="uxl-QH-2lZ" secondAttribute="bottom" constant="155" id="td6-an-0Ka"/>
+                            <constraint firstItem="4zG-ib-WDk" firstAttribute="trailing" secondItem="eN1-iq-CIy" secondAttribute="trailing" constant="20" id="wvk-kp-ani"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="4zG-ib-WDk"/>
                     </view>
@@ -230,6 +239,7 @@
                     <connections>
                         <outlet property="Feed" destination="J1A-jf-aSN" id="kfz-CK-OST"/>
                         <outlet property="collectionView" destination="uxl-QH-2lZ" id="GQP-iB-NXd"/>
+                        <outlet property="noEventsLabel" destination="eN1-iq-CIy" id="vLY-pw-IH6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ubh-ke-6w1" sceneMemberID="firstResponder"/>
