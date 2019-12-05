@@ -362,12 +362,14 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J6v-2O-PvA" customClass="RoundButton" customModule="Down_" customModuleProvider="target">
-                                <rect key="frame" x="314" y="762" width="50" height="50"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <rect key="frame" x="314" y="760.5" width="50" height="52.5"/>
+                                <color key="backgroundColor" name="SystemBackgroundHighOpacity"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="2d1-pd-1SM"/>
                                     <constraint firstAttribute="width" constant="50" id="fD0-Jf-qiv"/>
                                 </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" backgroundImage="scope" catalog="system"/>
                                 <connections>
                                     <action selector="centerScreen:" destination="BGx-dK-RNJ" eventType="touchUpInside" id="sd9-fU-6yJ"/>
                                 </connections>
@@ -402,6 +404,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="scope" catalog="system" width="64" height="60"/>
         <namedColor name="SystemBackgroundHighOpacity">
             <color red="1" green="1" blue="1" alpha="0.89999997615814209" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
