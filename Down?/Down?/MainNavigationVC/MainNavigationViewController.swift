@@ -22,6 +22,7 @@ class MainNavigationViewController: UIViewController {
     var viewControllersNames: [String] = ["Down?", "Your Events", "Map", "Signout"]
     var currentVCIndex: Int = 0
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         initializeVCs()
