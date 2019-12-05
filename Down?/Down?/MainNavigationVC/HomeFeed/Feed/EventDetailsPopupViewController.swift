@@ -14,9 +14,9 @@ class EventDetailsPopupViewController: UIViewController {
     let geoCoder = CLGeocoder()
     
     @IBOutlet weak var Container: UIView!
-    @IBOutlet weak var ProfilePicture: UIImageView!
-    @IBOutlet weak var Username: UILabel!
+    //@IBOutlet weak var ProfilePicture: UIImageView!
     @IBOutlet weak var EventTitle: UILabel!
+    @IBOutlet weak var Name: UILabel!
     @IBOutlet weak var Duration: UITextView!
     @IBOutlet weak var Location: UITextView!
     @IBOutlet weak var Description: UITextView!
@@ -30,17 +30,16 @@ class EventDetailsPopupViewController: UIViewController {
     }
     
     func setupViews(){
-        ProfilePicture.contentMode = .scaleAspectFill
-        ProfilePicture.clipsToBounds = true
-        ProfilePicture.layer.cornerRadius = 5
+        //ProfilePicture.contentMode = .scaleAspectFill
+        //ProfilePicture.clipsToBounds = true
+        //ProfilePicture.layer.cornerRadius = 5
         Duration.layer.cornerRadius = 5
         Location.layer.cornerRadius = 5
         Description.layer.cornerRadius = 5
     }
     
     func loadEventToViews(){
-        self.ProfilePicture.image = UIImage(named: "Default.ProfilePicture")
-        self.Username.text = event?.originalPoster ?? "Error"
+        self.Name.text = event?.originalPoster ?? "Error"
         if let title = event?.title {
             self.EventTitle.text = title.isEmpty ? "No title" : title
         }

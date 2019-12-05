@@ -104,6 +104,11 @@ class HomeViewController: UIViewController {
         
     }
   
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.loadModelData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         refreshControl.addTarget(self, action:  #selector(refresh(_:)), for: .valueChanged)
@@ -111,6 +116,7 @@ class HomeViewController: UIViewController {
         registerFilterNib()
         checkLocationServices()
         self.setUpFeed()
+    
     }
 }
 

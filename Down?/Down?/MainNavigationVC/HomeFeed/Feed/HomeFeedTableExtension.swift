@@ -13,6 +13,7 @@ import Firebase
 // General feed functions
 extension HomeViewController {
     func setUpFeed(){
+        loadModelData()
         self.Feed.rowHeight = 100
         self.Feed.rowHeight = UITableView.automaticDimension
         self.Feed.estimatedRowHeight = UITableView.automaticDimension
@@ -25,7 +26,6 @@ extension HomeViewController {
         } else {
             Feed.addSubview(refreshControl)
         }
-        Feed.reloadData()
     }
     
     func loadModelData() {
@@ -33,6 +33,7 @@ extension HomeViewController {
             ApiEvent.getUnviewedEvent(uid: user.uid) { apiEvents in
                 events = apiEvents
                 events.sort(by: {return $0.dates.startDate < $1.dates.startDate})
+                self.Feed.reloadData()
                 }
             }
         
@@ -52,6 +53,7 @@ extension HomeViewController {
 //            }
 //        }
     }
+    
 //    func loadPlacemarks(events: [Event], completion: @escaping ([CLPlacemark]) -> ()){
 //        let geoLocator = CLGeocoder()
 //        let locationGroup = DispatchGroup()
@@ -144,7 +146,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         let event = events[indexPath.row]
         eventCell.delegate = self
         eventCell.event = event
-        eventCell.profilePictureImageView.image = UIImage(named: "Default.ProfilePicture")
+        //eventCell.profilePictureImageView.image = UIImage(named: "Default.ProfilePicture")
         eventCell.usernameLabel.text = event.originalPoster
         eventCell.eventTitleLabel.text = event.title == "" ? "No title" : event.title ?? "No title"
         eventCell.numDownLabel.text = String(event.numDown)
@@ -161,13 +163,6 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
                     var address: String = ""
                     if let street = placemark.postalAddress?.street {
                         address = street
-                        print(address)
-                        if address.isEmpty {
-                            print("yote")
-                        }
-                    }
-                    else if let _ = placemark.postalAddress?.city, let _ = placemark.postalAddress?.subLocality {
-                        print("here")
                     }
                     eventCell.addressTextView.text = address
                     eventCell.locationTextView.text = name
