@@ -22,20 +22,12 @@ class DecidedEventsTableVC: UITableViewController {
         reloadModelData()
         tableView.register(DownEventCell.self, forCellReuseIdentifier: "down")
         tableView.register(NotDownEventCell.self, forCellReuseIdentifier: "notDown")
-        	
-        group.notify(queue: .main) {
-            self.tableView.reloadData()
-        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
         self.showSpinner(onView: self.view)
         self.view.isUserInteractionEnabled = false
-        getDownEvents()
-        getNotDownEvents()
-        group.notify(queue: .main) {
-            self.tableView.reloadData()
-        }
+        reloadModelData()
     }
     
     func reloadModelData(){
@@ -44,9 +36,11 @@ class DecidedEventsTableVC: UITableViewController {
 //        let downEvent = Event(displayName: "Sam Harris", uid: "lgefCO4Io2ffOzETaEaAw1GeKvb2", startDate: downEventStartDate, endDate: downEventEndDate, isPublic: true, description: "Just tryna chill with da mindful homies", title: "Meditatin", latitude: 38.540944, longitude: -121.737213, categories: [])
 //        cellContents[0] = [downEvent]
 //        cellContents[1] = []
-
         getDownEvents()
         getNotDownEvents()
+        group.notify(queue: .main) {
+            self.tableView.reloadData()
+        }
     }
     
     func getDownEvents() {
@@ -156,14 +150,14 @@ extension DecidedEventsTableVC: SwipeableEventCellDelegate {
             return }
         let category = indexPath.section == 0 ? "down" : "not_down"
         if let eventID = event.autoID {
-            ApiEvent.undoEventAction(eventID: eventID, uid: currentUser.uid, from: category) { print("api complete") }
+            ApiEvent.undoEventAction(eventID: eventID, uid: currentUser.uid, from: category) { }
         }
         removeEventCell(cell, withDirection: .left)
     }
     
     func swipeRight(cell: EventCell) {
         guard let event = cell.event, let currentUser = Auth.auth().currentUser, let indexPath = self.tableView.indexPath(for: cell) else { return }
-        let category = indexPath.section == 0 ? "down" : "notDown"
+        let category = indexPath.section == 0 ? "down" : "not_down"
         
         if let eventID = event.autoID {
             ApiEvent.undoEventAction(eventID: eventID, uid: currentUser.uid, from: category) { }
@@ -171,7 +165,7 @@ extension DecidedEventsTableVC: SwipeableEventCellDelegate {
                 ApiEvent.addUserNotDown(eventID: eventID, uid: currentUser.uid, completion: {})
             }
             else {
-                ApiEvent.addUserNotDown(eventID: eventID, uid: currentUser.uid, completion: {})
+                ApiEvent.addUserDown(eventID: eventID, uid: currentUser.uid, completion: {})
             }
         }
         removeEventCell(cell, withDirection: .right)
@@ -195,6 +189,8 @@ extension DecidedEventsTableVC: SwipeableEventCellDelegate {
         let sectionName = self.sections[indexPath.section]
         let headerTitle = "\(sectionName) (\(eventCount))"
         header?.textLabel?.text = headerTitle
+        header?.layoutSubviews()
         self.tableView.endUpdates()
+        reloadModelData()
     }
 }

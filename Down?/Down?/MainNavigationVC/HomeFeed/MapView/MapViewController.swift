@@ -33,8 +33,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
   }
   
     @IBAction func filterChanged(_ sender: UISegmentedControl) {
-      // If the filter settings are changed, set up the map again
-        setupMapView()
+      // If the filter settings are changed, reload the annotations
         setupAnnotations()
     }
     
@@ -77,14 +76,14 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     func setupAnnotations() {
       // Gets the events and then transforms them into event annotations
         loadEvents(filterIndex: eventsFilter.selectedSegmentIndex) { events in
-        let annotations:[MKAnnotation] = events.compactMap({
-          guard let location = $0.location else {
-            return nil
-          }
-          let coordinate = CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
-          let annotation = EventPin(event: $0, coordinate: coordinate)
-          return annotation
-        })
+            let annotations:[MKAnnotation] = events.compactMap({
+              guard let location = $0.location else {
+                return nil
+              }
+              let coordinate = CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
+              let annotation = EventPin(event: $0, coordinate: coordinate)
+              return annotation
+            })
         self.map.removeAnnotations(self.map.annotations)
         self.map.addAnnotations(annotations)
     }

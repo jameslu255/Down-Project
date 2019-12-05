@@ -10,7 +10,7 @@ import UIKit
 class EventCell: UITableViewCell, UITextViewDelegate {
 
     
-    @IBOutlet weak var profilePictureImageView: UIImageView!
+    //@IBOutlet weak var profilePictureImageView: UIImageView!
     @IBOutlet weak var eventTitleLabel: UILabel!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var durationLabelBackgroundView: UIView!
@@ -48,7 +48,7 @@ class EventCell: UITableViewCell, UITextViewDelegate {
     }
     
     func setupSubviews(){
-        profilePictureImageView.layer.cornerRadius = 5
+        //profilePictureImageView.layer.cornerRadius = 5
         durationLabelBackgroundView.layer.cornerRadius = 5
         locationTextView.layer.cornerRadius = 5
         NumDownView.layer.cornerRadius = 5

@@ -109,6 +109,11 @@ class HomeViewController: UIViewController {
         
     }
   
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.loadModelData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // adds the refresh target on the table and calls refresh function
@@ -118,6 +123,7 @@ class HomeViewController: UIViewController {
         registerFilterNib()
         checkLocationServices()
         self.setUpFeed()
+    
     }
 }
 

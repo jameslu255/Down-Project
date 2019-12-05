@@ -40,7 +40,6 @@ class MainNavigationViewController: UIViewController {
     }
 
     func signOut(){
-        print("Hello")
         do {
             try Auth.auth().signOut()
         } catch let signOutError as NSError {
