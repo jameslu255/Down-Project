@@ -35,42 +35,16 @@ extension HomeViewController {
             Feed.addSubview(refreshControl)
         }
     }
-    func loadLocations(completion: @escaping ([String?]) -> Void) {
-        let group = DispatchGroup()
-        var geoLocations = [String?]()
-        for event in events {
-            if let lat = event.location?.latitude, let long = event.location?.longitude {
-                let location = CLLocation(latitude: lat, longitude: long)
-                group.enter()
-                CLGeocoder().reverseGeocodeLocation(location) { placemarks, error in
-                    if error != nil {
-                      group.leave()
-                      return
-                  }
-                    if let placemark = placemarks?[0], let name = placemark.name {
-                        geoLocations.append(name)
-                    } else {
-                        geoLocations.append(nil)
-                    }
-                    group.leave()
-                }
-            } else {
-                geoLocations.append(nil)
-            }
-        }
-        group.notify(queue: .main) {
-            print(geoLocations)
-            completion(geoLocations)
-        }
-    }
+
+    
     func loadModelData() {
         if let user = Auth.auth().currentUser {
             ApiEvent.getUnviewedEvent(uid: user.uid) { apiEvents in
-                self.removeSpinner()
-                self.view.isUserInteractionEnabled = true
                 events = apiEvents
                 events.sort(by: {return $0.dates.startDate < $1.dates.startDate})
-                self.loadLocations() { geoLocations in
+                loadLocations() { geoLocations in
+                    self.removeSpinner()
+                    self.view.isUserInteractionEnabled = true
                     locations = geoLocations
                     self.Feed.reloadData()
                 }
