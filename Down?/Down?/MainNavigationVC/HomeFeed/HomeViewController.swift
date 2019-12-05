@@ -45,17 +45,17 @@ class HomeViewController: UIViewController {
 
     //https://www.geodatasource.com/developers/swift
     ///  This function converts decimal degrees to radians
-    private func deg2rad(_ deg:Double) -> Double {
+    func deg2rad(_ deg:Double) -> Double {
         return deg * Double.pi / 180
     }
 
     ///  This function converts radians to decimal degrees
-    private func rad2deg(_ rad:Double) -> Double {
+    func rad2deg(_ rad:Double) -> Double {
         return rad * 180.0 / Double.pi
     }
 
     ///  This function calculates the distance between two corrdinates in miles
-    private func distanceInMiles(lat1:Double, lon1:Double, lat2:Double, lon2:Double) -> Double {
+    func distanceInMiles(lat1:Double, lon1:Double, lat2:Double, lon2:Double) -> Double {
         let theta = lon1 - lon2
         var dist = sin(deg2rad(lat1)) * sin(deg2rad(lat2)) + cos(deg2rad(lat1)) * cos(deg2rad(lat2)) * cos(deg2rad(theta))
         dist = acos(dist)
@@ -66,7 +66,7 @@ class HomeViewController: UIViewController {
     }
     
     /// Filters events by a given distance and returns the filtered events
-    private func filterByDistance(events: [Event], currentLocation: EventLocation, distance: Double) -> [Event] {
+    func filterByDistance(events: [Event], currentLocation: EventLocation, distance: Double) -> [Event] {
         var filtered = [Event]()
         for event in events {
             if let lat = event.location?.latitude, let lon = event.location?.longitude {
@@ -108,14 +108,10 @@ class HomeViewController: UIViewController {
         }
         
     }
-  
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        self.loadModelData()
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.loadModelData()
         // adds the refresh target on the table and calls refresh function
         refreshControl.addTarget(self, action:  #selector(refresh(_:)), for: .valueChanged)
         // sets the DataManager as a delegate so that shared instance will work

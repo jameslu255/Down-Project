@@ -21,11 +21,13 @@ class DecidedEventsTableVC: UITableViewController {
         super.viewDidLoad()
         tableView.register(DownEventCell.self, forCellReuseIdentifier: "down")
         tableView.register(NotDownEventCell.self, forCellReuseIdentifier: "notDown")
+        self.showSpinner(onView: self.view)
+        self.view.isUserInteractionEnabled = false
+        reloadModelData()
+
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        self.showSpinner(onView: self.view)
-        self.view.isUserInteractionEnabled = false
         reloadModelData()
     }
     
