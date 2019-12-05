@@ -18,33 +18,6 @@ extension UITextView: UITextViewDelegate {
   }
 }
 
-/*class DescriptionBox: UITextView {
-  override init(frame: CGRect, textContainer: NSTextContainer?) {
-    super.init(frame: frame, textContainer: textContainer)
-    setup()
-  }
-  
-  required init?(coder: NSCoder) {
-    super.init(coder: coder)
-    setup()
-  }
-  
-  func setup() {
-    // Styles UITextView to look like UITextField
-//    self.layer.borderWidth = 1
-//    self.layer.borderColor = UIColor.systemGray4.cgColor
-//    self.layer.cornerRadius = 8
-//    self.layer.masksToBounds = true
-    
-    self.insertPlaceHolder()
-  }
-  
-  func insertPlaceHolder() {
-    self.textColor = .lightGray
-    self.text = "Add description"
-  }
-}*/
-
 class CategoryCell: UICollectionViewCell {
   var label: UILabel?
   
@@ -59,6 +32,7 @@ class CategoryCell: UICollectionViewCell {
   }
   
   private func setup() {
+    // Sets up style preferences of category pills in create event screen
     self.layer.cornerRadius = 12
     self.layer.borderColor = UIColor.lightGray.cgColor
     
@@ -102,6 +76,7 @@ class RoundButton: UIButton {
   }
 }
 
+// Custom annotation for pins on Search Location map
 class LocationPin: NSObject, MKAnnotation {
   var coordinate: CLLocationCoordinate2D
   var title: String?
@@ -110,17 +85,5 @@ class LocationPin: NSObject, MKAnnotation {
     self.title = title
     self.coordinate = coordinate
     super.init()
-  }
-}
-
-class EventPin: NSObject, MKAnnotation {
-  var coordinate: CLLocationCoordinate2D
-  var title: String?
-  var event: Event?
-  
-  init(event: Event, coordinate: CLLocationCoordinate2D) {
-    self.event = event
-    //self.title = event.title
-    self.coordinate = coordinate
   }
 }

@@ -12,13 +12,10 @@ import Firebase
 class MapViewController: UIViewController, MKMapViewDelegate {
 
   @IBOutlet weak var map: MKMapView!
-    @IBOutlet weak var eventsFilter: UISegmentedControl!
-    
-  var new = events
-
+  @IBOutlet weak var eventsFilter: UISegmentedControl!
   
   let locationManager = CLLocationManager()
-  let regionInMeters = 500.0
+  let regionInMeters = 200.0
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -34,7 +31,9 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     setupMapView()
     setupAnnotations()
   }
+  
     @IBAction func filterChanged(_ sender: UISegmentedControl) {
+      // If the filter settings are changed, reload the annotations
         setupAnnotations()
     }
     
@@ -51,6 +50,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     }
   }
   
+  // Loads events based on the filter selected. Returns array of events that map will use to make annotations
     func loadEvents(filterIndex: Int, completion: @escaping ([Event])->()) {
         switch filterIndex {
         case 0:
@@ -74,6 +74,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     }
     
     func setupAnnotations() {
+      // Gets the events and then transforms them into event annotations
         loadEvents(filterIndex: eventsFilter.selectedSegmentIndex) { events in
             let annotations:[MKAnnotation] = events.compactMap({
               guard let location = $0.location else {
@@ -111,7 +112,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
       locationManager.startUpdatingLocation()
       break
     default:
-      print("shit")
+      print("Something went wrong")
       break
     }
   }
@@ -140,6 +141,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
       return nil
     }
     
+    // When annotations are added, add the event details popup into their view so the details are shown when the pin is pressed on
     let annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "eventAnno")
     annotationView.canShowCallout = true
     let storyboard = UIStoryboard(name: "HomeFeed", bundle: nil)
@@ -147,8 +149,20 @@ class MapViewController: UIViewController, MKMapViewDelegate {
       eventDetails.event = anno.event
       annotationView.detailCalloutAccessoryView = eventDetails.view
     }
-    //annotationView.detailCalloutAccessoryView
     
     return annotationView
+  }
+}
+
+// Custom annotation for pins on HomeFeed map
+class EventPin: NSObject, MKAnnotation {
+  var coordinate: CLLocationCoordinate2D
+  var title: String?
+  // This event gets passed to another view later
+  var event: Event?
+  
+  init(event: Event, coordinate: CLLocationCoordinate2D) {
+    self.event = event
+    self.coordinate = coordinate
   }
 }

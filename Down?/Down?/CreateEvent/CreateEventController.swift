@@ -121,6 +121,7 @@ class CreateEventController: UITableViewController {
       return
     }
 
+    // Converts categories to backend-friendly format
     var selectedCategories:[String] = categoriesData.compactMap({
       if ($0.isSelected) {
         return $0.name
@@ -128,6 +129,7 @@ class CreateEventController: UITableViewController {
       return nil
     })
     
+    // Auto selecting Other if no categories are selected
     if (selectedCategories.count == 0) {
       selectedCategories.append("Other")
     }
@@ -136,8 +138,8 @@ class CreateEventController: UITableViewController {
     let isPublic = eventSegment == "Everyone"
     let event = Event(displayName: displayName, uid: uid, startDate: startDate,endDate: endDate, isPublic: isPublic, description: eventDescription.text, title: eventName, latitude: lat, longitude: long, categories: selectedCategories)
     
-    guard let id = ApiEvent.addEvent(event: event) else { return }
-    print(id)
+    // Successfully added to firebase if returns an ID
+    guard let _ = ApiEvent.addEvent(event: event) else { return }
     ApiEvent.getUnviewedEvent(uid: currentUser.uid) { newEvents in
         events = newEvents
         DataManager.shared.firstVC.Feed.reloadData()
@@ -185,7 +187,7 @@ class CreateEventController: UITableViewController {
       locationManager.startUpdatingLocation()
       break
     default:
-      print("shit")
+      print("Something went wrong")
       break
     }
   }
@@ -198,18 +200,17 @@ class CreateEventController: UITableViewController {
   }
   
   func setTimeDefaults() {
-    // Query server to get info
-    
     let now = Date()
     startTimePicker.minimumDate = now
-    startTimePicker.maximumDate = now.addingTimeInterval((60 * 60 * 24) - (60 * 5)) // Need to establish is there is a limit to how far ahead to start
+    startTimePicker.maximumDate = now.addingTimeInterval((60 * 60 * 24) - (60 * 5)) // 23 hours, 55 minutes after now
     
-    endTimePicker.minimumDate = now.addingTimeInterval(60 * 5)
-    endTimePicker.maximumDate = now.addingTimeInterval(60 * 60 * 24)
+    endTimePicker.minimumDate = now.addingTimeInterval(60 * 5) // minimum duration is 5 minutes
+    endTimePicker.maximumDate = now.addingTimeInterval(60 * 60 * 24) // maximum end time is 24 hours after now
     
     startDate = now
     endDate = now.addingTimeInterval(60 * 60)
     
+    // Sets the time on the picker
     endTimePicker.date = now.addingTimeInterval(60 * 60)
     
     changeTimeLabel(of: startTimeLabel, to: now)
@@ -220,17 +221,18 @@ class CreateEventController: UITableViewController {
     if let lab = label {
       formatter.dateStyle = .short
       formatter.timeStyle = .short
-      //formatter.dateFormat = "MM/dd, hh:mm aa"
       lab.text = formatter.string(from: date)
     }
   }
   
   func tableUpdates() {
+    // Tells table view that there are updates coming
     tableView.beginUpdates()
     tableView.endUpdates()
   }
   
   func setLocation() {
+    // Unwraps the the location and sets the name if it exists
     if let loc = location, let name = loc.name {
       autoFillEventName(with: name)
       locationField.text = name
@@ -239,9 +241,11 @@ class CreateEventController: UITableViewController {
   }
   
   func autoFillEventName(with name: String) {
+    // Randomly assigns as hangout-related keyword
+    // Structure [keyword] at [location]
     let randInt = Int.random(in: 0 ..< keywords.count)
-    let nameStr = "\(keywords[randInt]) at \(name)"
-    eventNameField.text = nameStr
+    let eventNameString = "\(keywords[randInt]) at \(name)"
+    eventNameField.text = eventNameString
   }
   
   func locationAlert() {
@@ -267,13 +271,16 @@ class CreateEventController: UITableViewController {
   
   override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     if (indexPath.row == 5) {
+      // Properly fits the description text view into the cell
       descriptionLabel.sizeToFit()
       return UITableView.automaticDimension
     }
     if (indexPath.row == 2 && startTimePicker.isHidden) {
+      // Hides the cell if it is hidden
       return 0
     }
     if (indexPath.row == 4 && endTimePicker.isHidden) {
+      // Hides the cell if it is hidden
       return 0
     }
     
@@ -286,6 +293,7 @@ class CreateEventController: UITableViewController {
   }
   
   override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
+    // The time pickers and anything after event type selector shouldn't be highlighted/selectable
     return !(indexPath.row == 2 || indexPath.row == 4 || indexPath.row > 7)
   }
   
@@ -293,22 +301,27 @@ class CreateEventController: UITableViewController {
     tableView.deselectRow(at: indexPath, animated: false)
     switch indexPath.row {
     case 0:
+      // Event Name
       eventNameField.becomeFirstResponder()
     case 1:
+      // Toggle start time picker
       startTimePicker.isHidden = !startTimePicker.isHidden
       tableUpdates()
     case 3:
+      // Toggle end time picker
       endTimePicker.isHidden = !endTimePicker.isHidden
       tableUpdates()
     case 5:
+      // Event description
       eventDescription.becomeFirstResponder()
     case 6:
       // segue to search location
       let nextVC = storyboard?.instantiateViewController(identifier: "searchLocation") as! SearchLocationController
       nextVC.modalPresentationStyle = .fullScreen
+      
+      // sets a reference to this screen so it can update the location label
       nextVC.createEventScreen = self
       present(nextVC, animated: true, completion: nil)
-      //locationField.becomeFirstResponder()
     case 7:
       print("segment control")
     default:
@@ -325,7 +338,7 @@ extension CreateEventController: UIGestureRecognizerDelegate {
     let isTouchingTable = touch.view?.isDescendant(of: tableView) ?? true
     let isTouchingField = touch.view?.isDescendant(of: eventNameField) ?? true || touch.view?.isDescendant(of: eventDescription) ?? true
     
-    // If tapping over the table and no first responders
+    // If tapping over the table and no first responders, regular touch
     if (isTouchingTable && !areFirstResponders){
       return false
     }
@@ -345,6 +358,7 @@ extension CreateEventController: CLLocationManagerDelegate {
   }
 
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    // Updates the location label text as user moves
     guard let location = locations.last else { return }
     geoCoder.reverseGeocodeLocation(location) { placemarks, error in
       guard let place = placemarks?[0], let name = place.name else { return }
@@ -353,13 +367,15 @@ extension CreateEventController: CLLocationManagerDelegate {
       }
       guard let locationText = self.locationField.text else { return }
       if (locationText == "Location not found") {
+        // If it is the default placeholder text
         self.locationField.textColor = .label
-        self.locationField.text = name
-        self.autoFillEventName(with: name)
       }
+      self.locationField.text = name
+      self.autoFillEventName(with: name)
  
       if (error != nil) {
         print("Error")
+        return
       }
     }
   }
@@ -370,6 +386,7 @@ extension CreateEventController: CLLocationManagerDelegate {
 }
 
 extension CreateEventController: UITextViewDelegate {
+  // Emulating uitextfield place holder behavior
   func textViewDidBeginEditing(_ textView: UITextView) {
     if (textView.textColor == UIColor.lightGray) {
       textView.text = nil
