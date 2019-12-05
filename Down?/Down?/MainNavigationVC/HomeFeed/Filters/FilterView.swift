@@ -262,18 +262,23 @@ class FilterView: UIViewController {
         checked = finalChecked
         distanceCheck = finalDistanceCheck
 
-//        if let latitude = vc?.locationManager.location?.coordinate.latitude, let longitude = vc?.locationManager.location?.coordinate.longitude {
-//            let location = EventLocation(latitude: latitude, longitude: longitude)
-//
-//        }
-//        else {
-//            print("sumting wong")
-//        }
-
         ApiEvent.getUnviewedEventFilter(uid: user.uid, categories: categoryFilters) { newEvents in
             events = newEvents
             if let distance = distanceFilter, let currentLocation = currentLocation {
                 events = self.filterByDistance(events: events, currentLocation: currentLocation, distance: distance)
+            }
+            if sortedCheck[0] == 1{
+                events.sort(by: {return $0.dates.startDate < $1.dates.startDate})
+            }
+            if sortedCheck[1] == 1{
+                if let currentLocation = currentLocation {
+                    events.sort(by: {
+                        guard let lat = $0.location?.latitude, let lon = $0.location?.longitude, let lat2 = $1.location?.latitude, let lon2 = $1.location?.longitude else {return false}
+                        return self.distanceInMiles(lat1: currentLocation.latitude, lon1: currentLocation.longitude, lat2: lat, lon2: lon) < self.distanceInMiles(lat1: currentLocation.latitude, lon1: currentLocation.longitude, lat2: lat2, lon2: lon2)})
+                }
+            }
+            if sortedCheck[2] == 1{
+                events.sort(by: {return $0.numDown > $1.numDown})
             }
             DataManager.shared.firstVC.Feed.reloadData()
             categoryFilters = []
