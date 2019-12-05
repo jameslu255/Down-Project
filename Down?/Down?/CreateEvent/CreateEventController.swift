@@ -290,7 +290,7 @@ extension CreateEventController: CLLocationManagerDelegate {
     guard let location = locations.first else { return }
     geoCoder.reverseGeocodeLocation(location) { placemarks, error in
       guard let place = placemarks?[0], let name = place.name else { return }
-      self.location = place
+      //self.location = place
       guard let locationText = self.locationField.text else { return }
       if (locationText == "Location not found") {
         self.locationField.textColor = .label

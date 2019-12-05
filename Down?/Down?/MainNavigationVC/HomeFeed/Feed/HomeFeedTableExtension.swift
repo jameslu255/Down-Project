@@ -13,13 +13,6 @@ import Firebase
 // General feed functions
 extension HomeViewController {
     func setUpFeed(){
-        if let user = Auth.auth().currentUser {
-            ApiEvent.getUnviewedEvent(uid: user.uid) { apiEvents in
-                events = apiEvents
-                events.sort(by: {return $0.dates.startDate < $1.dates.startDate})
-                self.Feed.reloadData()
-            }
-        }
         self.Feed.rowHeight = 100
         self.Feed.rowHeight = UITableView.automaticDimension
         self.Feed.estimatedRowHeight = UITableView.automaticDimension
@@ -27,8 +20,60 @@ extension HomeViewController {
         Feed.delegate = self
         Feed.dataSource = self
         Feed.separatorStyle = .none
-        Feed.reloadData()
+        
+        loadModelData()
     }
+    
+    func loadModelData() {
+        if let user = Auth.auth().currentUser {
+            ApiEvent.getUnviewedEvent(uid: user.uid) { apiEvents in
+                events = apiEvents
+                events.sort(by: {return $0.dates.startDate < $1.dates.startDate})
+                }
+            }
+        
+//         To be used in future releases
+        
+//        if let user = Auth.auth().currentUser {
+//            var events = [Event]()
+//            var placemarks = [CLPlacemark]()
+//            group.enter()
+//            ApiEvent.getUnviewedEvent(uid: user.uid) { apiEvents in
+//                events = apiEvents
+//                events.sort(by: {return $0.dates.startDate < $1.dates.startDate})
+//                self.loadPlacemarks(events: events) { placemarks in
+//
+//                }
+//                self.group.leave()
+//            }
+//        }
+    }
+//    func loadPlacemarks(events: [Event], completion: @escaping ([CLPlacemark]) -> ()){
+//        let geoLocator = CLGeocoder()
+//        let locationGroup = DispatchGroup()
+//        var placemarks = [CLPlacemark]()
+//        for event in events {
+//            if let location =  event.location {
+//                let clLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
+//                locationGroup.enter()
+//                geoLocator.reverseGeocodeLocation(clLocation) { pMarks, error in
+//                    if error != nil {
+//                        locationGroup.leave()
+//                        return
+//                    }
+//
+//                    if let pMarks = pMarks {
+//                        let placemark = pMarks[0]
+//                        placemarks.append(placemark)
+//                    }
+//                    locationGroup.leave()
+//                }
+//            }
+//        }
+//        locationGroup.notify(queue: .main) {
+//            completion(placemarks)
+//        }
+//    }
     
     func removeEventCell(_ cell: EventCell, withDirection direction: UITableView.RowAnimation){
         guard let indexPath = Feed.indexPath(for: cell) else {
@@ -108,9 +153,21 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
                   return
                   
               }
-              if let name = placemarks?[0].name {
-                eventCell.locationTextView.text = name
-              }
+                if let placemark = placemarks?[0], let name = placemark.name {
+                    var address: String = ""
+                    if let street = placemark.postalAddress?.street {
+                        address = street
+                        print(address)
+                        if address.isEmpty {
+                            print("yote")
+                        }
+                    }
+                    else if let _ = placemark.postalAddress?.city, let _ = placemark.postalAddress?.subLocality {
+                        print("here")
+                    }
+                    eventCell.addressTextView.text = address
+                    eventCell.locationTextView.text = name
+                }
               else {
                 eventCell.locationTextView.text = "No location"
               }

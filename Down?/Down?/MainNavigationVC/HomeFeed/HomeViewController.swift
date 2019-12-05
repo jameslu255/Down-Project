@@ -31,7 +31,7 @@ class HomeViewController: UIViewController {
     let cellSpacing: CGFloat = 5.0
     let numTestCells: Int = 50
         
-    
+    let group = DispatchGroup()
     
     override func viewDidLoad() {
         super.viewDidLoad()
