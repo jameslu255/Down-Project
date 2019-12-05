@@ -42,44 +42,6 @@ class HomeViewController: UIViewController {
 
     var refreshControl = UIRefreshControl()
     var user: User = Auth.auth().currentUser!
-
-    //https://www.geodatasource.com/developers/swift
-    ///  This function converts decimal degrees to radians
-    func deg2rad(_ deg:Double) -> Double {
-        return deg * Double.pi / 180
-    }
-
-    ///  This function converts radians to decimal degrees
-    func rad2deg(_ rad:Double) -> Double {
-        return rad * 180.0 / Double.pi
-    }
-
-    ///  This function calculates the distance between two corrdinates in miles
-    func distanceInMiles(lat1:Double, lon1:Double, lat2:Double, lon2:Double) -> Double {
-        let theta = lon1 - lon2
-        var dist = sin(deg2rad(lat1)) * sin(deg2rad(lat2)) + cos(deg2rad(lat1)) * cos(deg2rad(lat2)) * cos(deg2rad(theta))
-        dist = acos(dist)
-        dist = rad2deg(dist)
-        dist = dist * 60 * 1.1515
-
-        return dist
-    }
-    
-    /// Filters events by a given distance and returns the filtered events
-    func filterByDistance(events: [Event], currentLocation: EventLocation, distance: Double) -> [Event] {
-        var filtered = [Event]()
-        for event in events {
-            if let lat = event.location?.latitude, let lon = event.location?.longitude {
-                let distFromCurrLocation = distanceInMiles(lat1: currentLocation.latitude,
-                                                           lon1: currentLocation.longitude, lat2: lat, lon2: lon)
-                if distFromCurrLocation <= distance {
-                    print("curr: \(distFromCurrLocation) dist:\(distance)")
-                    filtered.append(event)
-                }
-            }
-        }
-        return filtered
-    }
     
     func showFirstTimeInstructions() {
         //Create the alert controller.
@@ -101,7 +63,7 @@ class HomeViewController: UIViewController {
         ApiEvent.getUnviewedEventFilter(uid: user.uid, categories: categoryFilters) { apiEvents in
             events = apiEvents
             if let distance = distanceFilter, let currentLocation = currentLocation {
-                events = self.filterByDistance(events: events, currentLocation: currentLocation, distance: distance)
+                events = filterByDistance(events: events, currentLocation: currentLocation, distance: distance)
             }
             if sortedCheck[0] == 1{
                 events.sort(by: {return $0.dates.startDate < $1.dates.startDate})
@@ -110,7 +72,7 @@ class HomeViewController: UIViewController {
                 if let currentLocation = currentLocation {
                     events.sort(by: {
                         guard let lat = $0.location?.latitude, let lon = $0.location?.longitude, let lat2 = $1.location?.latitude, let lon2 = $1.location?.longitude else {return false}
-                        return self.distanceInMiles(lat1: currentLocation.latitude, lon1: currentLocation.longitude, lat2: lat, lon2: lon) < self.distanceInMiles(lat1: currentLocation.latitude, lon1: currentLocation.longitude, lat2: lat2, lon2: lon2)})
+                        return distanceInMiles(lat1: currentLocation.latitude, lon1: currentLocation.longitude, lat2: lat, lon2: lon) < distanceInMiles(lat1: currentLocation.latitude, lon1: currentLocation.longitude, lat2: lat2, lon2: lon2)})
                 }
             }
             if sortedCheck[2] == 1{
