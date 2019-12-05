@@ -16,6 +16,7 @@ extension HomeViewController {
         if let user = Auth.auth().currentUser {
             ApiEvent.getUnviewedEvent(uid: user.uid) { apiEvents in
                 events = apiEvents
+                events.sort(by: {return $0.dates.startDate < $1.dates.startDate})
                 self.Feed.reloadData()
             }
         }
