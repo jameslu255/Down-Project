@@ -18,10 +18,7 @@ class DataManager {
 }
 
 class HomeViewController: UIViewController {
-
-    
     let locationManager = CLLocationManager()
-    let geoCoder = CLGeocoder()
     
     @IBOutlet weak var Feed: UITableView!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -31,8 +28,6 @@ class HomeViewController: UIViewController {
     let cellSpacing: CGFloat = 5.0
     let numTestCells: Int = 50
         
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         DataManager.shared.firstVC = self
@@ -51,6 +46,22 @@ extension HomeViewController: CLLocationManagerDelegate {
     }
     else {
       // tell to turn it on.
+      let alert = UIAlertController(title: "Please enable location services for this app", message: "Setting > Privacy > Location Services", preferredStyle: .alert)
+      let openSettings = UIAlertAction(title: "Open Settings", style: .default) { (_) -> Void in
+        guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+            return
+        }
+
+        if UIApplication.shared.canOpenURL(settingsUrl) {
+            UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                print("Settings opened: \(success)") // Prints true
+            })
+        }
+      }
+      let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+      alert.addAction(openSettings)
+      alert.addAction(cancel)
+      self.present(alert, animated: true)
     }
   }
   
@@ -68,6 +79,23 @@ extension HomeViewController: CLLocationManagerDelegate {
       break
     case .denied:
       // Tell user to enable
+      // https://stackoverflow.com/questions/28152526/how-do-i-open-phone-settings-when-a-button-is-clicked
+      let alert = UIAlertController(title: "Please enable location services for this app", message: "Setting > Privacy > Location Services", preferredStyle: .alert)
+      let openSettings = UIAlertAction(title: "Open Settings", style: .default) { (_) -> Void in
+        guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+            return
+        }
+
+        if UIApplication.shared.canOpenURL(settingsUrl) {
+            UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                print("Settings opened: \(success)") // Prints true
+            })
+        }
+      }
+      let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+      alert.addAction(openSettings)
+      alert.addAction(cancel)
+      self.present(alert, animated: true)
       break
     case .notDetermined:
       // Prompt a request
@@ -78,6 +106,7 @@ extension HomeViewController: CLLocationManagerDelegate {
       break
     case .authorizedAlways:
       // I guess we do stuff here too
+      locationManager.startUpdatingLocation()
       break
     default:
       print("shit")
@@ -95,7 +124,6 @@ extension HomeViewController: CLLocationManagerDelegate {
     }
   }
 }
-
 
 // Found in "Let's Build That App" YouTube channel.
 extension UIView {

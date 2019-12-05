@@ -28,8 +28,11 @@ class SearchLocationController: UIViewController, MKMapViewDelegate {
     mapView.delegate = self
     mapView.showsUserLocation = true
     mapView.isRotateEnabled = false
-    locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
     
+    locationManager.delegate = self
+    locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+    //locationManager.requestWhenInUseAuthorization()
+    checkLocationAuthorization()
     setupMapView()
   }
   
@@ -75,6 +78,22 @@ class SearchLocationController: UIViewController, MKMapViewDelegate {
       break
     case .denied:
       // Tell user to enable
+      let alert = UIAlertController(title: "Please enable location services for this app", message: "Setting > Privacy > Location Services", preferredStyle: .alert)
+      let openSettings = UIAlertAction(title: "Open Settings", style: .default) { (_) -> Void in
+        guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+            return
+        }
+
+        if UIApplication.shared.canOpenURL(settingsUrl) {
+            UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                print("Settings opened: \(success)") // Prints true
+            })
+        }
+      }
+      let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+      alert.addAction(openSettings)
+      alert.addAction(cancel)
+      self.present(alert, animated: true)
       break
     case .notDetermined:
       // Prompt a request
@@ -85,6 +104,7 @@ class SearchLocationController: UIViewController, MKMapViewDelegate {
       break
     case .authorizedAlways:
       // I guess we do stuff here too
+      locationManager.startUpdatingLocation()
       break
     default:
       print("shit")

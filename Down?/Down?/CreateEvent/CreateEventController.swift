@@ -94,16 +94,29 @@ class CreateEventController: UITableViewController {
     changeTimeLabel(of: endTimeLabel, to: sender.date)
     endDate = sender.date
   }
+  
   @IBAction func createEvent() {
     // Api call to store the data
     guard let displayName = user?.displayName, let uid = user?.uid, let eventName = eventNameField.text, let startDate = startDate, let endDate = endDate, let lat = location?.location?.coordinate.latitude, let long = location?.location?.coordinate.longitude else { return }
+    
+    if (eventName.isEmpty) {
+      // Alert user that they need to fill in event name
+      let alert = UIAlertController(title: "Event name needed", message: "Please include a name for your event", preferredStyle: .alert)
+      alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+      self.present(alert, animated: true)
+      return
+    }
 
-    let selectedCategories:[String] = categoriesData.compactMap({
+    var selectedCategories:[String] = categoriesData.compactMap({
       if ($0.isSelected) {
         return $0.name
       }
       return nil
     })
+    
+    if (selectedCategories.count == 0) {
+      selectedCategories.append("Other")
+    }
     
     let eventSegment = eventType.titleForSegment(at: eventType.selectedSegmentIndex)
     let isPublic = eventSegment == "Everyone"
@@ -126,7 +139,22 @@ class CreateEventController: UITableViewController {
       checkLocationAuthorization()
     }
     else {
-      // tell to turn it on.
+      let alert = UIAlertController(title: "Please enable location services for this app", message: "Setting > Privacy > Location Services", preferredStyle: .alert)
+      let openSettings = UIAlertAction(title: "Open Settings", style: .default) { (_) -> Void in
+        guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+            return
+        }
+
+        if UIApplication.shared.canOpenURL(settingsUrl) {
+            UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                print("Settings opened: \(success)") // Prints true
+            })
+        }
+      }
+      let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+      alert.addAction(openSettings)
+      alert.addAction(cancel)
+      self.present(alert, animated: true)
     }
   }
   
@@ -144,6 +172,22 @@ class CreateEventController: UITableViewController {
       break
     case .denied:
       // Tell user to enable
+      let alert = UIAlertController(title: "Please enable location services for this app", message: "Setting > Privacy > Location Services", preferredStyle: .alert)
+      let openSettings = UIAlertAction(title: "Open Settings", style: .default) { (_) -> Void in
+        guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+            return
+        }
+
+        if UIApplication.shared.canOpenURL(settingsUrl) {
+            UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                print("Settings opened: \(success)") // Prints true
+            })
+        }
+      }
+      let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+      alert.addAction(openSettings)
+      alert.addAction(cancel)
+      self.present(alert, animated: true)
       break
     case .notDetermined:
       // Prompt a request
@@ -154,6 +198,7 @@ class CreateEventController: UITableViewController {
       break
     case .authorizedAlways:
       // I guess we do stuff here too
+      locationManager.startUpdatingLocation()
       break
     default:
       print("shit")
