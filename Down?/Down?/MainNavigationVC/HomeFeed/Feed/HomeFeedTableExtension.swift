@@ -27,6 +27,11 @@ extension HomeViewController {
         Feed.delegate = self
         Feed.dataSource = self
         Feed.separatorStyle = .none
+        if #available(iOS 10.0, *) {
+            Feed.refreshControl = refreshControl
+        } else {
+            Feed.addSubview(refreshControl)
+        }
         Feed.reloadData()
     }
     

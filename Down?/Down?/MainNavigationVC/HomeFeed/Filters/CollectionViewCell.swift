@@ -25,7 +25,10 @@ class CollectionViewCell: UICollectionViewCell, UIViewControllerTransitioningDel
     
     func configureCell(buttonName: String) {
         self.buttonLabel.setTitle(buttonName, for: .normal)
-        self.buttonLabel.layer.cornerRadius = 15
+        self.buttonLabel.contentEdgeInsets = UIEdgeInsets(top: 5, left: DataManager.shared.firstVC.collectionView.bounds.width/5.45, bottom: 5, right: DataManager.shared.firstVC.collectionView.bounds.width/5.45)
+        self.buttonLabel.layer.cornerRadius = 10
+        self.buttonLabel.layer.borderWidth = 1
+        self.buttonLabel.layer.borderColor = UIColor.gray.cgColor
     }
     
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {

@@ -179,7 +179,7 @@ public class ApiEvent {
         var downEventIDs = [String]()
 
         db.collection("user_events").document(uid).collection("down")
-            .whereField("date", isGreaterThanOrEqualTo: Timestamp(date: Date()))
+            //.whereField("date", isGreaterThanOrEqualTo: Timestamp(date: Date()))
             .getDocuments() { snapshot, error in
             if error != nil { return }
             guard let documents = snapshot?.documents else { return }
@@ -297,7 +297,7 @@ public class ApiEvent {
         var notDownEventIDs = [String]()
 
         db.collection("user_events").document(uid).collection("not_down")
-            .whereField("date", isGreaterThanOrEqualTo: Timestamp(date: Date()))
+            //.whereField("date", isGreaterThanOrEqualTo: Timestamp(date: Date()))
             .getDocuments() { snapshot, error in
             if error != nil { return }
             guard let documents = snapshot?.documents else { return }
@@ -595,6 +595,9 @@ public class ApiEvent {
             if let error = error {
                 print(error)
             } else {
+                if from == "down" {
+                    db.collection("events").document(eventID).updateData(["numDown": FieldValue.increment(Int64(-1))])
+                }
                 completion()
             }
         }
@@ -618,6 +621,29 @@ public class ApiEvent {
                 print(error)
             } else {
                 completion()
+            }
+        }
+    }
+    
+    public static func getLastUserCreatedEvent(uid: String, completion: @escaping (Event?) -> Void) {
+        db.collection("user_events")
+            .document(uid)
+            .collection("created")
+            .limit(to: 1)
+            .getDocuments() { snapshot, error in
+            if error != nil { completion(nil); return }
+            guard let documents = snapshot?.documents else { completion(nil); return }
+            if documents.count == 0 { completion(nil); return }
+                
+            for document in documents {
+                let createdEventID = document.documentID
+                self.getEventDetails(autoID: createdEventID) { event in
+                    if let event = event {
+                        completion(event)
+                    } else {
+                        completion(nil)
+                    }
+                }
             }
         }
     }
