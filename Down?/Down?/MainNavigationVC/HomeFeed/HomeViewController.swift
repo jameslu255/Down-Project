@@ -10,7 +10,16 @@ import Firebase
 import MapKit
 
 var currentLocation: EventLocation?
-var events: [Event] = []
+var events: [Event] = [] {
+    didSet{
+        if events.count == 0{
+            DataManager.shared.firstVC.noEventsLabel.isHidden = false
+        }
+        else{
+            DataManager.shared.firstVC.noEventsLabel.isHidden = true
+        }
+    }
+}
 
 class DataManager {
     static let shared = DataManager()
@@ -22,6 +31,7 @@ class HomeViewController: UIViewController {
     
     @IBOutlet weak var Feed: UITableView!
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var noEventsLabel: UILabel!
     
     var buttons = ["Filter", "Sort"]
     
