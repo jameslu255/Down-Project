@@ -82,9 +82,7 @@ class SortView: UIViewController{
             resetAllButtons()
             timeButton.setImage(UIImage(systemName: "largecircle.fill.circle"), for: .normal)
             sortedCheck[0] = 1
-            ApiEvent.getUnviewedEvent(uid: user.uid) { newEvents in
-                events = newEvents
-            }
+            events.sort(by: {return $0.dates.startDate < $1.dates.startDate})
             DataManager.shared.firstVC.Feed.reloadData()
             dismissAndClear()
             
@@ -106,6 +104,8 @@ class SortView: UIViewController{
             resetAllButtons()
             downsButton.setImage(UIImage(systemName: "largecircle.fill.circle"), for: .normal)
             sortedCheck[2] = 1
+            events.sort(by: {return $0.numDown > $1.numDown})
+            DataManager.shared.firstVC.Feed.reloadData()
             dismissAndClear()
         }
         
