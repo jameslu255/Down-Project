@@ -167,7 +167,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         eventCell.eventTitleLabel.text = event.title == "" ? "No title" : event.title ?? "No title"
         eventCell.numDownLabel.text = String(event.numDown)
         eventCell.durationLabel.text = event.stringShortFormat
-        eventCell.addressButton.setTitle("", for: .normal)
+        //eventCell.addressButton.setTitle("BU", for: .normal)
         eventCell.addressButton.setTitle(name, for: .normal)
         return eventCell
     }
