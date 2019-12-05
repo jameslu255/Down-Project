@@ -13,7 +13,7 @@ import Firebase
 // General feed functions
 extension HomeViewController {
     func setUpFeed(){
-        loadModelData()
+
         if events.count == 0{
             DataManager.shared.firstVC.noEventsLabel.isHidden = false
         }

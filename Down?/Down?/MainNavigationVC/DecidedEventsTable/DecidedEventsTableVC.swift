@@ -19,7 +19,6 @@ class DecidedEventsTableVC: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        reloadModelData()
         tableView.register(DownEventCell.self, forCellReuseIdentifier: "down")
         tableView.register(NotDownEventCell.self, forCellReuseIdentifier: "notDown")
     }
