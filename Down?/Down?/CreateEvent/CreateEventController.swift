@@ -48,6 +48,8 @@ class CreateEventController: UITableViewController {
   var endDate: Date?
   var location: CLPlacemark?
   var currentUser: User = Auth.auth().currentUser!
+  
+  let keywords:[String] = ["Hangout", "Meetup", "Get together", "Rendezvous", "Chilling", "Chillaxing", "Gathering"]
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -94,16 +96,29 @@ class CreateEventController: UITableViewController {
     changeTimeLabel(of: endTimeLabel, to: sender.date)
     endDate = sender.date
   }
+  
   @IBAction func createEvent() {
     // Api call to store the data
     guard let displayName = user?.displayName, let uid = user?.uid, let eventName = eventNameField.text, let startDate = startDate, let endDate = endDate, let lat = location?.location?.coordinate.latitude, let long = location?.location?.coordinate.longitude else { return }
+    
+    if (eventName.isEmpty) {
+      // Alert user that they need to fill in event name
+      let alert = UIAlertController(title: "Event name needed", message: "Please include a name for your event", preferredStyle: .alert)
+      alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+      self.present(alert, animated: true)
+      return
+    }
 
-    let selectedCategories:[String] = categoriesData.compactMap({
+    var selectedCategories:[String] = categoriesData.compactMap({
       if ($0.isSelected) {
         return $0.name
       }
       return nil
     })
+    
+    if (selectedCategories.count == 0) {
+      selectedCategories.append("Other")
+    }
     
     let eventSegment = eventType.titleForSegment(at: eventType.selectedSegmentIndex)
     let isPublic = eventSegment == "Everyone"
@@ -126,7 +141,7 @@ class CreateEventController: UITableViewController {
       checkLocationAuthorization()
     }
     else {
-      // tell to turn it on.
+      locationAlert()
     }
   }
   
@@ -144,6 +159,7 @@ class CreateEventController: UITableViewController {
       break
     case .denied:
       // Tell user to enable
+      locationAlert()
       break
     case .notDetermined:
       // Prompt a request
@@ -154,6 +170,7 @@ class CreateEventController: UITableViewController {
       break
     case .authorizedAlways:
       // I guess we do stuff here too
+      locationManager.startUpdatingLocation()
       break
     default:
       print("shit")
@@ -201,8 +218,35 @@ class CreateEventController: UITableViewController {
   
   func setLocation() {
     if let loc = location, let name = loc.name {
+      autoFillEventName(with: name)
       locationField.text = name
+      locationField.textColor = .label
     }
+  }
+  
+  func autoFillEventName(with name: String) {
+    let randInt = Int.random(in: 0 ..< keywords.count)
+    let nameStr = "\(keywords[randInt]) at \(name)"
+    eventNameField.text = nameStr
+  }
+  
+  func locationAlert() {
+    let alert = UIAlertController(title: "Please enable location services for this app", message: "Setting > Privacy > Location Services", preferredStyle: .alert)
+    let openSettings = UIAlertAction(title: "Open Settings", style: .default) { (_) -> Void in
+      guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+          return
+      }
+
+      if UIApplication.shared.canOpenURL(settingsUrl) {
+          UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+              print("Settings opened: \(success)") // Prints true
+          })
+      }
+    }
+    let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+    alert.addAction(openSettings)
+    alert.addAction(cancel)
+    self.present(alert, animated: true)
   }
   
   // MARK: Protocol Methods
@@ -287,14 +331,15 @@ extension CreateEventController: CLLocationManagerDelegate {
   }
 
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-    guard let location = locations.first else { return }
+    guard let location = locations.last else { return }
     geoCoder.reverseGeocodeLocation(location) { placemarks, error in
       guard let place = placemarks?[0], let name = place.name else { return }
-      self.location = place
+      //self.location = place
       guard let locationText = self.locationField.text else { return }
       if (locationText == "Location not found") {
         self.locationField.textColor = .label
         self.locationField.text = name
+        self.autoFillEventName(with: name)
       }
  
       if (error != nil) {
