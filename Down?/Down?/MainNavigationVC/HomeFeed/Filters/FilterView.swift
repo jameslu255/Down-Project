@@ -208,44 +208,6 @@ class FilterView: UIViewController {
         distanceCheck[4] = 1
     }
     
-    //https://www.geodatasource.com/developers/swift
-    ///  This function converts decimal degrees to radians
-    private func deg2rad(_ deg:Double) -> Double {
-        return deg * Double.pi / 180
-    }
-
-    ///  This function converts radians to decimal degrees
-    private func rad2deg(_ rad:Double) -> Double {
-        return rad * 180.0 / Double.pi
-    }
-
-    ///  This function calculates the distance between two corrdinates in miles
-    private func distanceInMiles(lat1:Double, lon1:Double, lat2:Double, lon2:Double) -> Double {
-        let theta = lon1 - lon2
-        var dist = sin(deg2rad(lat1)) * sin(deg2rad(lat2)) + cos(deg2rad(lat1)) * cos(deg2rad(lat2)) * cos(deg2rad(theta))
-        dist = acos(dist)
-        dist = rad2deg(dist)
-        dist = dist * 60 * 1.1515
-
-        return dist
-    }
-    
-    /// Filters events by a given distance and returns the filtered events
-    private func filterByDistance(events: [Event], currentLocation: EventLocation, distance: Double) -> [Event] {
-        var filtered = [Event]()
-        for event in events {
-            if let lat = event.location?.latitude, let lon = event.location?.longitude {
-                let distFromCurrLocation = distanceInMiles(lat1: currentLocation.latitude,
-                                                           lon1: currentLocation.longitude, lat2: lat, lon2: lon)
-                if distFromCurrLocation <= distance {
-                    print("curr: \(distFromCurrLocation) dist:\(distance)")
-                    filtered.append(event)
-                }
-            }
-        }
-        return filtered
-    }
-    
     @IBAction func ApplyPressed(_ sender: Any) {
         self.showSpinner(onView: self.view)
         self.view.isUserInteractionEnabled = false
@@ -281,7 +243,7 @@ class FilterView: UIViewController {
             events = newEvents
             if let distance = distanceFilter, let currentLocation = currentLocation {
                 //filters all events that are too far from current location based on selection.
-                events = self.filterByDistance(events: events, currentLocation: currentLocation, distance: distance)
+                events = filterByDistance(events: events, currentLocation: currentLocation, distance: distance)
             }
             // properly sorts the event table
             if sortedCheck[0] == 1{
@@ -291,7 +253,7 @@ class FilterView: UIViewController {
                 if let currentLocation = currentLocation {
                     events.sort(by: {
                         guard let lat = $0.location?.latitude, let lon = $0.location?.longitude, let lat2 = $1.location?.latitude, let lon2 = $1.location?.longitude else {return false}
-                        return self.distanceInMiles(lat1: currentLocation.latitude, lon1: currentLocation.longitude, lat2: lat, lon2: lon) < self.distanceInMiles(lat1: currentLocation.latitude, lon1: currentLocation.longitude, lat2: lat2, lon2: lon2)})
+                        return distanceInMiles(lat1: currentLocation.latitude, lon1: currentLocation.longitude, lat2: lat, lon2: lon) < distanceInMiles(lat1: currentLocation.latitude, lon1: currentLocation.longitude, lat2: lat2, lon2: lon2)})
                 }
             }
             if sortedCheck[2] == 1{

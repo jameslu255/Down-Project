@@ -10,18 +10,21 @@ import Firebase
 
 class MainNavigationViewController: UIViewController {
 
+    // All of the tab bar buttons
     @IBOutlet var buttons: [UIButton]!
     @IBOutlet weak var TitleNavItem: UINavigationItem!
     
+    // The container of the switchable view controllers
     @IBOutlet weak var contentView: UIView!
+    // The switchable view controllers
     var homeVC: HomeViewController!
     var decidedEventsVC: UITableViewController!
     var profileVC: ProfileViewController!
     
+    // Array containing the switchable view controllers
     var viewControllers: [UIViewController]!
     var viewControllersNames: [String] = ["Down?", "Your Events", "Map", "Signout"]
     var currentVCIndex: Int = 0
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,7 +37,7 @@ class MainNavigationViewController: UIViewController {
         let storyboard = UIStoryboard(name: "HomeFeed", bundle: nil)
         homeVC = storyboard.instantiateViewController(identifier: "homeVC")
         decidedEventsVC = storyboard.instantiateViewController(identifier: "decidedEventsVC")
-      let mapVC = UIStoryboard(name: "Mapview", bundle: nil).instantiateViewController(identifier:"mapVC") as! MapViewController
+        let mapVC = UIStoryboard(name: "Mapview", bundle: nil).instantiateViewController(identifier:"mapVC") as! MapViewController
         profileVC = storyboard.instantiateViewController(identifier: "profileVC")
         profileVC.signOut = signOut
         viewControllers = [homeVC, decidedEventsVC, mapVC, profileVC]
