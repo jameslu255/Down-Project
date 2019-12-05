@@ -156,6 +156,9 @@ extension SearchLocationController: CLLocationManagerDelegate {
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
     // Moves the user's location on the map when they move
     guard let location = locations.last else { return }
+    if (location == locationManager.location) {
+      print("same")
+    }
     let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
     let region = MKCoordinateRegion(center: center, latitudinalMeters: regionInMeters, longitudinalMeters: regionInMeters)
     mapView.setRegion(region, animated: true)

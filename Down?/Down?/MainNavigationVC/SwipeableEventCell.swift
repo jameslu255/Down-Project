@@ -126,7 +126,7 @@ class SwipeableEventCell: EventCell {
         let label = UILabel()
         label.text = "No text"
         label.textColor = .white
-        label.font = UIFont(name: "Noteworthy", size: 30)
+        label.font = UIFont(name: "Hiragino Maru Gothic ProN", size: 30)
         label.textAlignment = .center
         label.alpha = 0
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -137,7 +137,7 @@ class SwipeableEventCell: EventCell {
         let label = UILabel()
         label.text = "No text"
         label.textColor = .white
-        label.font = UIFont(name: "Noteworthy", size: 30)
+        label.font = UIFont(name: "Hiragino Maru Gothic ProN", size: 30)
         label.textAlignment = .center
         label.alpha = 0
         label.translatesAutoresizingMaskIntoConstraints = false

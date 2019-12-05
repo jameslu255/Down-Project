@@ -369,9 +369,9 @@ extension CreateEventController: CLLocationManagerDelegate {
       if (locationText == "Location not found") {
         // If it is the default placeholder text
         self.locationField.textColor = .label
+        self.locationField.text = name
+        self.autoFillEventName(with: name)
       }
-      self.locationField.text = name
-      self.autoFillEventName(with: name)
  
       if (error != nil) {
         print("Error")
