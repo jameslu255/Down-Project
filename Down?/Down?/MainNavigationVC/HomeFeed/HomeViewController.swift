@@ -46,22 +46,7 @@ extension HomeViewController: CLLocationManagerDelegate {
     }
     else {
       // tell to turn it on.
-      let alert = UIAlertController(title: "Please enable location services for this app", message: "Setting > Privacy > Location Services", preferredStyle: .alert)
-      let openSettings = UIAlertAction(title: "Open Settings", style: .default) { (_) -> Void in
-        guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
-            return
-        }
-
-        if UIApplication.shared.canOpenURL(settingsUrl) {
-            UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
-                print("Settings opened: \(success)") // Prints true
-            })
-        }
-      }
-      let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-      alert.addAction(openSettings)
-      alert.addAction(cancel)
-      self.present(alert, animated: true)
+      locationAlert()
     }
   }
   
@@ -79,23 +64,7 @@ extension HomeViewController: CLLocationManagerDelegate {
       break
     case .denied:
       // Tell user to enable
-      // https://stackoverflow.com/questions/28152526/how-do-i-open-phone-settings-when-a-button-is-clicked
-      let alert = UIAlertController(title: "Please enable location services for this app", message: "Setting > Privacy > Location Services", preferredStyle: .alert)
-      let openSettings = UIAlertAction(title: "Open Settings", style: .default) { (_) -> Void in
-        guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
-            return
-        }
-
-        if UIApplication.shared.canOpenURL(settingsUrl) {
-            UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
-                print("Settings opened: \(success)") // Prints true
-            })
-        }
-      }
-      let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-      alert.addAction(openSettings)
-      alert.addAction(cancel)
-      self.present(alert, animated: true)
+      locationAlert()
       break
     case .notDetermined:
       // Prompt a request
@@ -103,6 +72,7 @@ extension HomeViewController: CLLocationManagerDelegate {
       break
     case .restricted:
       // Show alert letting them know what's up
+      restrictedAlert()
       break
     case .authorizedAlways:
       // I guess we do stuff here too
@@ -112,6 +82,32 @@ extension HomeViewController: CLLocationManagerDelegate {
       print("shit")
       break
     }
+  }
+  
+  func locationAlert() {
+    // https://stackoverflow.com/questions/28152526/how-do-i-open-phone-settings-when-a-button-is-clicked
+    let alert = UIAlertController(title: "Please enable location services for this app", message: "Setting > Privacy > Location Services", preferredStyle: .alert)
+    let openSettings = UIAlertAction(title: "Open Settings", style: .default) { (_) -> Void in
+      guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+          return
+      }
+
+      if UIApplication.shared.canOpenURL(settingsUrl) {
+          UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+              print("Settings opened: \(success)") // Prints true
+          })
+      }
+    }
+    let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+    alert.addAction(openSettings)
+    alert.addAction(cancel)
+    self.present(alert, animated: true)
+  }
+  
+  func restrictedAlert() {
+    let alert = UIAlertController(title:"Authorization restricted", message: "You will not be able fully utilize the features of the app", preferredStyle: .alert)
+    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+    
   }
   
   func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {

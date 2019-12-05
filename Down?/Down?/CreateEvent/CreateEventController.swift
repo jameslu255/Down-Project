@@ -141,22 +141,7 @@ class CreateEventController: UITableViewController {
       checkLocationAuthorization()
     }
     else {
-      let alert = UIAlertController(title: "Please enable location services for this app", message: "Setting > Privacy > Location Services", preferredStyle: .alert)
-      let openSettings = UIAlertAction(title: "Open Settings", style: .default) { (_) -> Void in
-        guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
-            return
-        }
-
-        if UIApplication.shared.canOpenURL(settingsUrl) {
-            UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
-                print("Settings opened: \(success)") // Prints true
-            })
-        }
-      }
-      let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-      alert.addAction(openSettings)
-      alert.addAction(cancel)
-      self.present(alert, animated: true)
+      locationAlert()
     }
   }
   
@@ -174,22 +159,7 @@ class CreateEventController: UITableViewController {
       break
     case .denied:
       // Tell user to enable
-      let alert = UIAlertController(title: "Please enable location services for this app", message: "Setting > Privacy > Location Services", preferredStyle: .alert)
-      let openSettings = UIAlertAction(title: "Open Settings", style: .default) { (_) -> Void in
-        guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
-            return
-        }
-
-        if UIApplication.shared.canOpenURL(settingsUrl) {
-            UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
-                print("Settings opened: \(success)") // Prints true
-            })
-        }
-      }
-      let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-      alert.addAction(openSettings)
-      alert.addAction(cancel)
-      self.present(alert, animated: true)
+      locationAlert()
       break
     case .notDetermined:
       // Prompt a request
@@ -250,6 +220,7 @@ class CreateEventController: UITableViewController {
     if let loc = location, let name = loc.name {
       autoFillEventName(with: name)
       locationField.text = name
+      locationField.textColor = .label
     }
   }
   
@@ -257,6 +228,25 @@ class CreateEventController: UITableViewController {
     let randInt = Int.random(in: 0 ..< keywords.count)
     let nameStr = "\(keywords[randInt]) at \(name)"
     eventNameField.text = nameStr
+  }
+  
+  func locationAlert() {
+    let alert = UIAlertController(title: "Please enable location services for this app", message: "Setting > Privacy > Location Services", preferredStyle: .alert)
+    let openSettings = UIAlertAction(title: "Open Settings", style: .default) { (_) -> Void in
+      guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+          return
+      }
+
+      if UIApplication.shared.canOpenURL(settingsUrl) {
+          UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+              print("Settings opened: \(success)") // Prints true
+          })
+      }
+    }
+    let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+    alert.addAction(openSettings)
+    alert.addAction(cancel)
+    self.present(alert, animated: true)
   }
   
   // MARK: Protocol Methods
@@ -341,7 +331,7 @@ extension CreateEventController: CLLocationManagerDelegate {
   }
 
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-    guard let location = locations.first else { return }
+    guard let location = locations.last else { return }
     geoCoder.reverseGeocodeLocation(location) { placemarks, error in
       guard let place = placemarks?[0], let name = place.name else { return }
       //self.location = place

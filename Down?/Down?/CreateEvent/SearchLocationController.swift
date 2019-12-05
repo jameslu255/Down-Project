@@ -78,22 +78,7 @@ class SearchLocationController: UIViewController, MKMapViewDelegate {
       break
     case .denied:
       // Tell user to enable
-      let alert = UIAlertController(title: "Please enable location services for this app", message: "Setting > Privacy > Location Services", preferredStyle: .alert)
-      let openSettings = UIAlertAction(title: "Open Settings", style: .default) { (_) -> Void in
-        guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
-            return
-        }
-
-        if UIApplication.shared.canOpenURL(settingsUrl) {
-            UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
-                print("Settings opened: \(success)") // Prints true
-            })
-        }
-      }
-      let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-      alert.addAction(openSettings)
-      alert.addAction(cancel)
-      self.present(alert, animated: true)
+      locationAlert()
       break
     case .notDetermined:
       // Prompt a request
@@ -110,6 +95,25 @@ class SearchLocationController: UIViewController, MKMapViewDelegate {
       print("shit")
       break
     }
+  }
+  
+  func locationAlert() {
+    let alert = UIAlertController(title: "Please enable location services for this app", message: "Setting > Privacy > Location Services", preferredStyle: .alert)
+    let openSettings = UIAlertAction(title: "Open Settings", style: .default) { (_) -> Void in
+      guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+          return
+      }
+
+      if UIApplication.shared.canOpenURL(settingsUrl) {
+          UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+              print("Settings opened: \(success)") // Prints true
+          })
+      }
+    }
+    let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+    alert.addAction(openSettings)
+    alert.addAction(cancel)
+    self.present(alert, animated: true)
   }
   
   @objc func action(_ sender: UIButton) {
