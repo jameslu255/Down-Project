@@ -141,19 +141,27 @@
                                     <constraint firstAttribute="height" constant="64" id="mI4-de-edn"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0JN-wm-wa1">
+                                <rect key="frame" x="0.0" y="862" width="414" height="34"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="RFW-tx-uGs" firstAttribute="top" secondItem="TfL-Du-bW8" secondAttribute="bottom" constant="-21" id="4VN-b8-Y6G"/>
                             <constraint firstItem="RFW-tx-uGs" firstAttribute="bottom" secondItem="5au-Do-Vzh" secondAttribute="bottom" id="8qW-ts-atC"/>
                             <constraint firstItem="GBd-Xv-6db" firstAttribute="leading" secondItem="5au-Do-Vzh" secondAttribute="leading" id="GTj-mm-oZZ"/>
+                            <constraint firstItem="0JN-wm-wa1" firstAttribute="top" secondItem="RFW-tx-uGs" secondAttribute="bottom" id="IXM-B9-7e7"/>
                             <constraint firstItem="RFW-tx-uGs" firstAttribute="trailing" secondItem="5au-Do-Vzh" secondAttribute="trailing" id="IsJ-mv-19u"/>
                             <constraint firstItem="RFW-tx-uGs" firstAttribute="leading" secondItem="5au-Do-Vzh" secondAttribute="leading" id="K8H-Bf-gxf"/>
                             <constraint firstItem="TfL-Du-bW8" firstAttribute="leading" secondItem="5au-Do-Vzh" secondAttribute="leading" id="Vem-sg-1Hd"/>
                             <constraint firstItem="TfL-Du-bW8" firstAttribute="top" secondItem="GBd-Xv-6db" secondAttribute="bottom" id="Vuc-l6-m5n"/>
+                            <constraint firstAttribute="bottom" secondItem="0JN-wm-wa1" secondAttribute="bottom" id="aqf-lI-31b"/>
+                            <constraint firstAttribute="trailing" secondItem="0JN-wm-wa1" secondAttribute="trailing" id="fej-Fb-if4"/>
                             <constraint firstItem="GBd-Xv-6db" firstAttribute="top" secondItem="5au-Do-Vzh" secondAttribute="top" id="lSc-yb-dhh"/>
                             <constraint firstItem="TfL-Du-bW8" firstAttribute="trailing" secondItem="5au-Do-Vzh" secondAttribute="trailing" id="o41-ug-Ngi"/>
                             <constraint firstItem="GBd-Xv-6db" firstAttribute="trailing" secondItem="5au-Do-Vzh" secondAttribute="trailing" id="ufB-Rn-SSf"/>
+                            <constraint firstItem="0JN-wm-wa1" firstAttribute="leading" secondItem="HvP-KK-5Ih" secondAttribute="leading" id="vEw-81-rhM"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="5au-Do-Vzh"/>
                     </view>
