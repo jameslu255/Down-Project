@@ -82,6 +82,7 @@ class HomeViewController: UIViewController {
             }
             loadLocations() { geoLocations in
                 //reload table before dismissing
+                locations = geoLocations
                 self.refreshControl.endRefreshing()
                 self.Feed.reloadData()
             }
