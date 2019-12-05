@@ -83,6 +83,12 @@ class EmailView: UIViewController, UITextFieldDelegate {
             self.displayMessage(message: "Email has already been verfied.", color: .red)
         }
     }
+    func presentFirstView() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let newController = storyboard.instantiateViewController(withIdentifier: "FirstLoginView")
+        newController.modalPresentationStyle = .fullScreen
+        self.present(newController, animated: true, completion: nil)
+    }
     
     func signupUser() {
         if let email = Email.text, let password = Password.text {
@@ -105,6 +111,7 @@ class EmailView: UIViewController, UITextFieldDelegate {
                         }
                     }
                     self.sendVerificationEmail()
+                    self.presentFirstView()
                 }
             }
         }
