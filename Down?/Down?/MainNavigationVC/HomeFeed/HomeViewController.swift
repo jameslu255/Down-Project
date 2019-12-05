@@ -26,7 +26,7 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var Feed: UITableView!
     @IBOutlet weak var collectionView: UICollectionView!
     
-    var buttons = ["Filter", "Sort", "Search"]
+    var buttons = ["Filter", "Sort"]
     
     let cellSpacing: CGFloat = 5.0
     let numTestCells: Int = 50

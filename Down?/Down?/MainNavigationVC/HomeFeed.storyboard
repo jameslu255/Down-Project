@@ -2,7 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Tsv-FG-X2f">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
@@ -191,19 +191,20 @@
                                     <constraint firstAttribute="height" constant="45" id="mk5-sK-Stc"/>
                                 </constraints>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" automaticEstimatedItemSize="YES" minimumLineSpacing="5" minimumInteritemSpacing="5" id="UWE-je-VOJ">
-                                    <size key="itemSize" width="50" height="45"/>
+                                    <size key="itemSize" width="185" height="47.666666666666664"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="FilterButton" id="ron-oe-maV" customClass="CollectionViewCell" customModule="Down_" customModuleProvider="target">
-                                        <rect key="frame" x="15" y="-2.6666666666666665" width="50" height="50"/>
+                                        <rect key="frame" x="15" y="-1.3333333333333333" width="185" height="47.666666666666664"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="vJo-Nw-ebr">
-                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="185" height="47.666666666666664"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </collectionViewCellContentView>
+                                        <size key="customSize" width="185" height="47.666666666666664"/>
                                     </collectionViewCell>
                                 </cells>
                                 <connections>
@@ -233,7 +234,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ubh-ke-6w1" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1613" y="839"/>
+            <point key="canvasLocation" x="-1613.0434782608697" y="838.39285714285711"/>
         </scene>
         <!--Decided Events TableVC-->
         <scene sceneID="3bw-Vi-8hJ">
