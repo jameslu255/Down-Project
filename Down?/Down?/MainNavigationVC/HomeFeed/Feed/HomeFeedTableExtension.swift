@@ -68,38 +68,12 @@ extension HomeViewController {
 //        }
     }
     
-//    func loadPlacemarks(events: [Event], completion: @escaping ([CLPlacemark]) -> ()){
-//        let geoLocator = CLGeocoder()
-//        let locationGroup = DispatchGroup()
-//        var placemarks = [CLPlacemark]()
-//        for event in events {
-//            if let location =  event.location {
-//                let clLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
-//                locationGroup.enter()
-//                geoLocator.reverseGeocodeLocation(clLocation) { pMarks, error in
-//                    if error != nil {
-//                        locationGroup.leave()
-//                        return
-//                    }
-//
-//                    if let pMarks = pMarks {
-//                        let placemark = pMarks[0]
-//                        placemarks.append(placemark)
-//                    }
-//                    locationGroup.leave()
-//                }
-//            }
-//        }
-//        locationGroup.notify(queue: .main) {
-//            completion(placemarks)
-//        }
-//    }
-    
     func removeEventCell(_ cell: EventCell, withDirection direction: UITableView.RowAnimation){
         guard let indexPath = Feed.indexPath(for: cell) else {
             return
         }
         events.remove(at: indexPath.row)
+        locations.remove(at: indexPath.row)
         
         Feed.beginUpdates()
         Feed.deleteRows(at: [indexPath], with: direction)
@@ -159,15 +133,8 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
                 
         let event = events[indexPath.row]
         let name = locations[indexPath.row] ?? "No Location"
-        print(name)
         eventCell.delegate = self
         eventCell.event = event
-        //eventCell.profilePictureImageView.image = UIImage(named: "Default.ProfilePicture")
-        eventCell.usernameLabel.text = event.originalPoster
-        eventCell.eventTitleLabel.text = event.title == "" ? "No title" : event.title ?? "No title"
-        eventCell.numDownLabel.text = String(event.numDown)
-        eventCell.durationLabel.text = event.stringShortFormat
-        //eventCell.addressButton.setTitle("BU", for: .normal)
         eventCell.addressButton.setTitle(name, for: .normal)
         return eventCell
     }

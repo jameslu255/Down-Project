@@ -12,10 +12,12 @@ import MapKit
 class DecidedEventsTableVC: UITableViewController {
 
     var cellContents: [[Event]] = [[], []]
+    var locationNames: [[String?]] = [[], []]
     var sections: [String] = ["Down", "Not Down"]
     //let geoCoder = CLGeocoder()
     //sync loading of down and not down events
-    let group = DispatchGroup()
+    let eventsGroup = DispatchGroup()
+    let locationNamesGroup = DispatchGroup()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,8 +25,6 @@ class DecidedEventsTableVC: UITableViewController {
         tableView.register(NotDownEventCell.self, forCellReuseIdentifier: "notDown")
         self.showSpinner(onView: self.view)
         self.view.isUserInteractionEnabled = false
-        reloadModelData()
-
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -32,15 +32,22 @@ class DecidedEventsTableVC: UITableViewController {
     }
     
     func reloadModelData(){
-//        let downEventStartDate = Date()
-//        let downEventEndDate = downEventStartDate.advanced(by: 3600)
-//        let downEvent = Event(displayName: "Sam Harris", uid: "lgefCO4Io2ffOzETaEaAw1GeKvb2", startDate: downEventStartDate, endDate: downEventEndDate, isPublic: true, description: "Just tryna chill with da mindful homies", title: "Meditatin", latitude: 38.540944, longitude: -121.737213, categories: [])
-//        cellContents[0] = [downEvent]
-//        cellContents[1] = []
         getDownEvents()
         getNotDownEvents()
-        group.notify(queue: .main) {
-            self.tableView.reloadData()
+        eventsGroup.notify(queue: .main) {
+            self.locationNamesGroup.enter()
+            loadLocations(events: self.cellContents[0]) { locations in
+                self.locationNames[0] = locations
+                self.locationNamesGroup.leave()
+            }
+            self.locationNamesGroup.enter()
+            loadLocations(events: self.cellContents[1]) { locations in
+                self.locationNames[1] = locations
+                self.locationNamesGroup.leave()
+            }
+            self.locationNamesGroup.notify(queue: .main) {
+                self.tableView.reloadData()
+            }
         }
     }
     
@@ -49,12 +56,12 @@ class DecidedEventsTableVC: UITableViewController {
             print("Invalid user in DecidedEventsTableVC")
             return
         }
-        group.enter()
+        eventsGroup.enter()
         ApiEvent.getDownEvents(uid: user.uid) { events in
             self.removeSpinner()
             self.view.isUserInteractionEnabled = true
             self.cellContents[0] = events
-            self.group.leave()
+            self.eventsGroup.leave()
         }
     }
 
@@ -63,12 +70,12 @@ class DecidedEventsTableVC: UITableViewController {
             print("Invalid user in DecidedEventsTableVC")
             return
         }
-        group.enter()
+        eventsGroup.enter()
         ApiEvent.getNotDownEvents(uid: user.uid) { events in
             self.removeSpinner()
             self.view.isUserInteractionEnabled = true
             self.cellContents[1] = events
-            self.group.leave()
+            self.eventsGroup.leave()
         }
     }
     
@@ -95,20 +102,7 @@ class DecidedEventsTableVC: UITableViewController {
                 let event = cellContents[indexPath.section][indexPath.row]
                 eventCell.event = event
                 eventCell.delegate = self
-                eventCell.eventTitleLabel.text = event.title ?? "No title"
-                eventCell.numDownLabel.text = String(event.numDown)
-                eventCell.usernameLabel.text = event.originalPoster
-                eventCell.durationLabel.text = event.stringShortFormat
-                if let lat = event.location?.latitude, let long = event.location?.longitude {
-                    let location = CLLocation(latitude: lat, longitude: long)
-                    CLGeocoder().reverseGeocodeLocation(location) { placemarks, error in
-                        if error != nil {return}
-                        if let placemark = placemarks?[0] {
-                            eventCell.addressButton.setTitle(placemark.name, for: .normal)
-                        }
-                    }
-                    
-                }
+                eventCell.addressButton.setTitle(locationNames[indexPath.section][indexPath.row] ?? "No location", for: .normal)
                 return eventCell
             }
             return cell
@@ -119,20 +113,7 @@ class DecidedEventsTableVC: UITableViewController {
                 let event = cellContents[indexPath.section][indexPath.row]
                 eventCell.event = event
                 eventCell.delegate = self
-                eventCell.eventTitleLabel.text = event.title ?? "No title"
-                eventCell.numDownLabel.text = String(event.numDown)
-                eventCell.usernameLabel.text = event.originalPoster
-                eventCell.durationLabel.text = event.stringShortFormat
-                if let lat = event.location?.latitude, let long = event.location?.longitude {
-                    let location = CLLocation(latitude: lat, longitude: long)
-                    CLGeocoder().reverseGeocodeLocation(location) { placemarks, error in
-                        if error != nil {return}
-                        if let placemark = placemarks?[0] {
-                            eventCell.addressButton.setTitle(placemark.name, for: .normal)
-                        }
-                    }
-                    
-                }
+                eventCell.addressButton.setTitle(locationNames[indexPath.section][indexPath.row] ?? "No location", for: .normal)
                 return eventCell
             }
             return cell
@@ -182,6 +163,7 @@ extension DecidedEventsTableVC: SwipeableEventCellDelegate {
         }
         
         cellContents[indexPath.section].remove(at: indexPath.row)
+        locationNames[indexPath.section].remove(at: indexPath.row)
         
         self.tableView.beginUpdates()
         self.tableView.deleteRows(at: [indexPath], with: direction)

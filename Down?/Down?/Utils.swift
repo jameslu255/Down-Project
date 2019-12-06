@@ -112,6 +112,37 @@ func filterByDistance(events: [Event], currentLocation: EventLocation, distance:
 }
 
 /// Used to load all event locations after the events have been fetched
+func loadLocations(events: [Event], completion: @escaping ([String?]) -> Void) {
+    let group = DispatchGroup()
+    //we don't use append because async appends are a bad idea
+    var geoLocations: [String?] = Array(repeating: nil, count: events.count)
+    for (index, event) in events.enumerated() {
+        if let lat = event.location?.latitude, let long = event.location?.longitude {
+            let location = CLLocation(latitude: lat, longitude: long)
+            group.enter()
+            CLGeocoder().reverseGeocodeLocation(location) { placemarks, error in
+                if error != nil {
+                  geoLocations[index] = nil
+                  group.leave()
+                  return
+              }
+                if let placemark = placemarks?[0], let name = placemark.name {
+                    geoLocations[index] = name
+                } else {
+                    geoLocations[index] = nil
+                }
+                group.leave()
+            }
+        } else {
+            geoLocations[index] = nil
+        }
+    }
+    group.notify(queue: .main) {
+        completion(geoLocations)
+    }
+}
+
+/// Used to load all event locations after the events have been fetched
 func loadLocations(completion: @escaping ([String?]) -> Void) {
     let group = DispatchGroup()
     //we don't use append because async appends are a bad idea
