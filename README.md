@@ -5,16 +5,16 @@ If the user is not logged in, upon opening the app, they are presented with a sc
 
 # Home View - Caleb
 ## Home Feed
-This is a TableView of all the events that the user has not made a decision on
+This is a TableView of all the events that the user has not made a decision on. The tableview contains cells that show basic information about the event such as the event title, event creator, duration, location, and number of people down for the event. Each cell can be swiped left or right to indicate whether the user is down or not down for the event. Once the user has swiped on the event, the cell is removed from the table and placed in the Decided events view controller table. Each cell can also be tapped which will bring up a more detailed view of the event including a description if there is one. 
 
 ## Decided Events - Caleb
-This is a TableView of all the events that the user has “Down”ed and “Not Down”ed
+This is a TableView of all the events that the user has “Down”ed and “Not Down”ed. Like the home feed, the events can be swiped, but in this view, the actions of swiping are slightly different. If you swipe left on any of the views in this table, the user is no longer down or not down for the event, it is placed back in the home feed. If the user swipes right, it makes the user down if they were not down and not down if they were down (just makes it the opposite).
 
 ## Map View
 See Map View under location services for details
 
 ## Sign out
-This screen makes an API call to Firebase to sign out the current user
+This screen makes an API call to Firebase to sign out the current user.
 
 # Filter - James/Jonathan
 The two kinds of filter that may occur are filter by categories and filter by distance. Because Firestore only allows equality operations on only field (which we use on event end time), we have to perform these filters locally. The filter by category happens using a custom intersection function that uses set operations. The category filter will find events having categories that intersect the user’s defined categories. The distance filter occurs using trigonometry to find the calculate distance from the user’s current coordinates to the event’s coordinates in miles. This filter will find events whose distance from the user’s coordinates is less than or equal to the user set distance.
