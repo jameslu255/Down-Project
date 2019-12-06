@@ -94,6 +94,8 @@ extension UIImage {
     }
 }
 
+// MARK: - Filter utility functions
+
 //https://www.geodatasource.com/developers/swift
 ///  This function converts decimal degrees to radians
 func deg2rad(_ deg:Double) -> Double {

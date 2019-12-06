@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+// Make SwipeableEventCell with swiping cues for down events
 class DownEventCell: SwipeableEventCell {
     override func commonInit() {
         super.commonInit()
@@ -18,6 +19,7 @@ class DownEventCell: SwipeableEventCell {
     }
 }
 
+// Make SwipeableEventCell with swiping cues for notDown events
 class NotDownEventCell: SwipeableEventCell {
     override func commonInit() {
         super.commonInit()
