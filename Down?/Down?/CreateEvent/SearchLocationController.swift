@@ -156,6 +156,7 @@ class SearchLocationController: UIViewController, MKMapViewDelegate {
   }
   
   func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
+    // https://developer.apple.com/documentation/mapkit/mkmapview/converting_a_user_s_location_to_a_descriptive_placemark
     // Determines whether to move map to center to user
     guard let newLocation = userLocation.location else { return }
     let lastLocation = currentLocation
@@ -167,7 +168,6 @@ class SearchLocationController: UIViewController, MKMapViewDelegate {
       let region = MKCoordinateRegion(center: coordinate, latitudinalMeters: regionInMeters, longitudinalMeters: regionInMeters)
       mapView.setRegion(region, animated: true)
     }
-    
   }
 }
 
@@ -180,7 +180,6 @@ extension SearchLocationController: CLLocationManagerDelegate {
       currentLocation = location
       locationManager.stopUpdatingLocation()
     }
-
   }
   
   func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
