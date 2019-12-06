@@ -15,7 +15,6 @@
 		035D4A352394CB0A0067E4EC /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035D4A342394CB0A0067E4EC /* ProfileViewController.swift */; };
 		0368BDA2238CFA6A00482CA1 /* DownNotDownEventCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0368BDA1238CFA6A00482CA1 /* DownNotDownEventCells.swift */; };
 		03759DE1238231A8009ACE37 /* SwipeableEventCellConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03759DE0238231A8009ACE37 /* SwipeableEventCellConstraints.swift */; };
-		03759DE5238243AA009ACE37 /* DownClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03759DE4238243AA009ACE37 /* DownClasses.swift */; };
 		03759DE72383D221009ACE37 /* EventDetailsPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03759DE62383D221009ACE37 /* EventDetailsPopupViewController.swift */; };
 		037A3050238BE12E0058FC19 /* FeedEventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037A304F238BE12E0058FC19 /* FeedEventCell.swift */; };
 		0380C120238BA23D0038558A /* MainNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0380C11F238BA23D0038558A /* MainNavigationViewController.swift */; };
@@ -59,7 +58,6 @@
 		035D4A342394CB0A0067E4EC /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		0368BDA1238CFA6A00482CA1 /* DownNotDownEventCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownNotDownEventCells.swift; sourceTree = "<group>"; };
 		03759DE0238231A8009ACE37 /* SwipeableEventCellConstraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeableEventCellConstraints.swift; sourceTree = "<group>"; };
-		03759DE4238243AA009ACE37 /* DownClasses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownClasses.swift; sourceTree = "<group>"; };
 		03759DE62383D221009ACE37 /* EventDetailsPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailsPopupViewController.swift; sourceTree = "<group>"; };
 		037A304F238BE12E0058FC19 /* FeedEventCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedEventCell.swift; sourceTree = "<group>"; };
 		0380C11F238BA23D0038558A /* MainNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavigationViewController.swift; sourceTree = "<group>"; };
@@ -234,7 +232,6 @@
 				845F4A8D237E62870054BC18 /* CreateEvent */,
 				845F4A8C237E61FC0054BC18 /* Login */,
 				037A3051238BEA830058FC19 /* MainNavigationVC */,
-				03759DE4238243AA009ACE37 /* DownClasses.swift */,
 				8486A9C52376269200ABB50B /* SceneDelegate.swift */,
 				8486A9CC2376269400ABB50B /* Assets.xcassets */,
 				8486A9C32376269200ABB50B /* AppDelegate.swift */,
@@ -389,7 +386,6 @@
 				848F3F4723971BBD005DEE88 /* CreateEventController.swift in Sources */,
 				840BE11723876BED002A6A9F /* SearchLocationController.swift in Sources */,
 				09DD15D1237BF501002BE8C9 /* ResetView.swift in Sources */,
-				03759DE5238243AA009ACE37 /* DownClasses.swift in Sources */,
 				0368BDA2238CFA6A00482CA1 /* DownNotDownEventCells.swift in Sources */,
 				03563FC32398868200340610 /* Utils.swift in Sources */,
 				0380C125238BB7020038558A /* EventCell.swift in Sources */,

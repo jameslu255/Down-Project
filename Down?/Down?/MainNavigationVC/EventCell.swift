@@ -7,9 +7,10 @@
 
 import UIKit
 
-class EventCell: UITableViewCell, UITextViewDelegate {
 
-    
+// Generic UITableViewCell that displays event information
+class EventCell: UITableViewCell {
+
     @IBOutlet weak var eventTitleLabel: UILabel!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var durationLabelBackgroundView: UIView!
@@ -22,6 +23,7 @@ class EventCell: UITableViewCell, UITextViewDelegate {
     
     var view: UIView?
     
+    // When the event object of the cell is set, load all the UIViews with their corresponding data in the event object
     var event: Event? {
         didSet {
             usernameLabel.text = self.event?.originalPoster
