@@ -155,6 +155,14 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     if let eventDetails = storyboard.instantiateViewController(identifier: "eventDetailsPopup") as? EventDetailsPopupViewController, let anno = annotation as? EventPin {
       eventDetails.event = anno.event
       annotationView.detailCalloutAccessoryView = eventDetails.view
+            if let lat = anno.event?.location?.latitude, let long = anno.event?.location?.longitude {
+            let clLocation = CLLocation(latitude: lat, longitude: long)
+            CLGeocoder().reverseGeocodeLocation(clLocation) { placemark, Error in
+                if let placemark = placemark {
+                    eventDetails.Location.setTitle(placemark[0].name, for: .normal)
+                }
+            }
+        }
     }
     
     return annotationView

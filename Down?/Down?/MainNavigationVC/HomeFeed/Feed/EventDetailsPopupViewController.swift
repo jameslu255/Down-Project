@@ -37,9 +37,15 @@ class EventDetailsPopupViewController: UIViewController {
     }
     
     func loadModelDataIntoViews() {
-        guard let event = self.event, let locationName = locationName else {
+        guard let event = self.event else {
             print("Set event to nil")
             return
+        }
+        if let locationName = locationName {
+            Location.setTitle(locationName, for: .normal)
+        }
+        else {
+            Location.setTitle("", for: .normal)
         }
         
         Name.text = event.originalPoster
