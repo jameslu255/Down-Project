@@ -28,10 +28,10 @@ The sort feature takes the current event array and then sorts it in the order of
 The create event screen displays a view to the user which will allow them to name their event, select a start and end time, provide a description, set a location, and set categories for their event. Time, location, and event name fields are auto-filled for the user when the view is loaded.
 
 ### Search location screen
-Locations are quickly and conveniently set by pinning a location to a map.
+Locations are quickly and conveniently set by pinning a location to a map. The map will center itself as the user moves as well.
 
 ## Map View - with contributions from Caleb
-The map view tab on the home screen shows events as pins based on events that the users have filtered for. This pins include annotation views that will display event details when the pin is pressed on.
+The map view tab on the home screen shows events as pins based on events that the users have filtered for. This pins include annotation views that will display event details when the pin is pressed on. Similarly to the search location screen, the map will center itself as the user moves
 
 ## Location services checks
 In all screens where a location is used, checks and alerts were put into place to ensure maximum utilization of location services. Users are prompted to enable location services for the app on every screen that uses location if the app does not have the authorization to use location services. Said prompt has the option to take users directly into their settings app.
