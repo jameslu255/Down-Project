@@ -17,16 +17,18 @@ class MapViewController: UIViewController, MKMapViewDelegate {
   let locationManager = CLLocationManager()
   let regionInMeters = 200.0
   
+  var currentLocation: CLLocation?
+  
   override func viewDidLoad() {
     super.viewDidLoad()
-    locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+    setupLocationManager()
     checkLocationAuthorization()
     setupMapView()
     setupAnnotations()
   }
   
     override func viewDidAppear(_ animated: Bool) {
-    locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+    setupLocationManager()
     checkLocationAuthorization()
     setupMapView()
     setupAnnotations()
@@ -36,6 +38,11 @@ class MapViewController: UIViewController, MKMapViewDelegate {
       // If the filter settings are changed, reload the annotations
         setupAnnotations()
     }
+  
+  func setupLocationManager() {
+    locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+    locationManager.delegate = self
+  }
     
   func setupMapView() {
     map.delegate = self
@@ -151,6 +158,30 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     }
     
     return annotationView
+  }
+  
+  func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
+    // Determines whether to move map to center to user
+    guard let newLocation = userLocation.location else { return }
+    let lastLocation = currentLocation
+    
+    // Will only move if there is a lastLocation and the new updated location is more than 15 meters away
+    if let lastLocation = lastLocation, newLocation.distance(from: lastLocation) >= 15 {
+      currentLocation = newLocation
+      let coordinate = newLocation.coordinate
+      let region = MKCoordinateRegion(center: coordinate, latitudinalMeters: regionInMeters, longitudinalMeters: regionInMeters)
+      mapView.setRegion(region, animated: true)
+    }
+  }
+}
+
+extension MapViewController: CLLocationManagerDelegate {
+  func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    guard let location = locations.last else { return }
+    if (currentLocation == nil) {
+      currentLocation = location
+      locationManager.stopUpdatingLocation()
+    }
   }
 }
 
