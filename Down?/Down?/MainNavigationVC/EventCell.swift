@@ -59,7 +59,6 @@ class EventCell: UITableViewCell, UITextViewDelegate {
     }
     
     func setupSubviews(){
-        //profilePictureImageView.layer.cornerRadius = 5
         durationLabelBackgroundView.layer.cornerRadius = 5
         addressButton.layer.cornerRadius = 5
         NumDownView.layer.cornerRadius = 5

@@ -8,6 +8,23 @@
 import Foundation
 import MapKit
 
+// MARK: - UIViewController extension functions
+
+extension UIViewController {
+    
+    /// Presents the specified view controller in the specified storyboard
+    func present(viewControllerWithName viewControllerName: String, inStoryboardWithName storyboardName: String, withStyle style: UIModalPresentationStyle, isAnimated: Bool) {
+            let storyBoard = UIStoryboard(name: storyboardName, bundle: nil)
+            let viewController = storyBoard.instantiateViewController(identifier: viewControllerName)
+            viewController.modalPresentationStyle = style
+            self.present(viewController, animated: isAnimated, completion: nil)
+    }
+    
+}
+
+// MARK: - Map utility functions
+
+/// Opens Apple Maps on the specified EventLocation
 func openMap(location: EventLocation) {
     let lat = location.latitude
     let long = location.longitude
@@ -28,6 +45,7 @@ func openMap(location: EventLocation) {
     }
 }
 
+/// Opens Apple Maps on the given coordinates displaying the given name
 func openMap(lat: Double, long: Double, name: String) {
     let regionDistance:CLLocationDistance = 100
     let coordinates = CLLocationCoordinate2DMake(lat, long)
@@ -42,7 +60,10 @@ func openMap(lat: Double, long: Double, name: String) {
     mapItem.openInMaps(launchOptions: options)
 }
 
-// Seen on Stackoverflow
+// MARK: - UIImage extension utilities
+
+// Found on StackOverflow
+// Will be used in future releases with profile pictures and event pictures
 extension UIImage {
     enum JPEGQuality: CGFloat {
         case lowest  = 0

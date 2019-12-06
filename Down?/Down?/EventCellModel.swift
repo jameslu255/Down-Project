@@ -8,6 +8,9 @@
 import UIKit
 import MapKit
 
+// To be used in future releases
+
+/// Struct containing all model data for EventCells
 struct EventCellModel {
     var event: Event
     var user: ApiUser
