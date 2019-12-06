@@ -36,12 +36,22 @@ class EventCell: UITableViewCell {
     let nibName = "EventCell"
         
     func commonInit() {
+        setupCellView()
+        setupSubviews()
+    }
+    
+    func setupCellView() {
         guard let view = loadFromNib() else {print("PROBLEMO"); return}
         self.view = view
         self.contentView.addSubview(view)
         self.selectionStyle = .none
         self.view?.frame = self.contentView.bounds
-        setupSubviews()
+    }
+    
+    func setupSubviews(){
+        durationLabelBackgroundView.layer.cornerRadius = 5
+        addressButton.layer.cornerRadius = 5
+        NumDownView.layer.cornerRadius = 5
     }
     
     override func layoutSubviews() {
@@ -58,12 +68,6 @@ class EventCell: UITableViewCell {
     func loadFromNib() -> UIView? {
         let nib = UINib(nibName: nibName, bundle: nil)
         return nib.instantiate(withOwner: self, options: nil).first as? UIView
-    }
-    
-    func setupSubviews(){
-        durationLabelBackgroundView.layer.cornerRadius = 5
-        addressButton.layer.cornerRadius = 5
-        NumDownView.layer.cornerRadius = 5
     }
     
     required init?(coder: NSCoder) {

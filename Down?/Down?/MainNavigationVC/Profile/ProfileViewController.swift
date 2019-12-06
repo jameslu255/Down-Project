@@ -15,6 +15,7 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+    
     @IBAction func signOutButtonPressed(_ sender: Any) {
         if let signOut = self.signOut {
             signOut()

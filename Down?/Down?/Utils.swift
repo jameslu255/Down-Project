@@ -134,6 +134,8 @@ func filterByDistance(events: [Event], currentLocation: EventLocation, distance:
     return filtered
 }
 
+// MARK: - Location name creation functions
+
 /// Used to load all event locations after the events have been fetched using an event array as a parameter
 func loadLocations(events: [Event], completion: @escaping ([String?]) -> Void) {
     let group = DispatchGroup()

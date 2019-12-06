@@ -132,10 +132,10 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         }
                 
         let event = events[indexPath.row]
-        let name = locations[indexPath.row] ?? "No Location"
+        let locationName = locations[indexPath.row] ?? "No Location"
         eventCell.delegate = self
         eventCell.event = event
-        eventCell.addressButton.setTitle(name, for: .normal)
+        eventCell.addressButton.setTitle(locationName, for: .normal)
         return eventCell
     }
 }

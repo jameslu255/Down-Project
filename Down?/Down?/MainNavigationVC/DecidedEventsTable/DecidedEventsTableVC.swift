@@ -11,9 +11,12 @@ import MapKit
 
 class DecidedEventsTableVC: UITableViewController {
 
+    // Model data arrays
     var cellContents: [[Event]] = [[], []]
     var locationNames: [[String?]] = [[], []]
     var sections: [String] = ["Down", "Not Down"]
+    var sectionsCellReuseIdentifiers: [String] = ["down", "notDown"]
+    
     //let geoCoder = CLGeocoder()
     //sync loading of down and not down events
     let eventsGroup = DispatchGroup()
@@ -21,19 +24,23 @@ class DecidedEventsTableVC: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.register(DownEventCell.self, forCellReuseIdentifier: "down")
-        tableView.register(NotDownEventCell.self, forCellReuseIdentifier: "notDown")
-        self.showSpinner(onView: self.view)
-        self.view.isUserInteractionEnabled = false
+        tableView.register(DownEventCell.self, forCellReuseIdentifier: sectionsCellReuseIdentifiers[0])
+        tableView.register(NotDownEventCell.self, forCellReuseIdentifier: sectionsCellReuseIdentifiers[1])
     }
     
     override func viewDidAppear(_ animated: Bool) {
         reloadModelData()
     }
     
+    // Reloads model data from database
+    // Fetches both down and not down events, creates locations names, then calls tableView.reloadData() in that order using GroupDispatches
     func reloadModelData(){
+        self.showSpinner(onView: self.view)
+        self.view.isUserInteractionEnabled = false
+        
         getDownEvents()
         getNotDownEvents()
+        // Once we have all the events, create location names from events' locations
         eventsGroup.notify(queue: .main) {
             self.locationNamesGroup.enter()
             loadLocations(events: self.cellContents[0]) { locations in
@@ -45,12 +52,14 @@ class DecidedEventsTableVC: UITableViewController {
                 self.locationNames[1] = locations
                 self.locationNamesGroup.leave()
             }
+            // Once we have loaded all location names, reload table
             self.locationNamesGroup.notify(queue: .main) {
                 self.tableView.reloadData()
             }
         }
     }
     
+    /// Gets down events and adds them to the cellContents array
     func getDownEvents() {
         guard let user = Auth.auth().currentUser else {
             print("Invalid user in DecidedEventsTableVC")
@@ -65,6 +74,7 @@ class DecidedEventsTableVC: UITableViewController {
         }
     }
 
+    /// Gets notDown events and adds them to the cellContents array
     func getNotDownEvents() {
         guard let user = Auth.auth().currentUser else {
             print("Invalid user in DecidedEventsTableVC")
@@ -94,30 +104,19 @@ class DecidedEventsTableVC: UITableViewController {
         cellContents[section].count
     }
 
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "down", for: indexPath)
-            if let eventCell = cell as? DownEventCell {
-                let event = cellContents[indexPath.section][indexPath.row]
-                eventCell.event = event
-                eventCell.delegate = self
-                eventCell.addressButton.setTitle(locationNames[indexPath.section][indexPath.row] ?? "No location", for: .normal)
-                return eventCell
-            }
+        let cell = self.tableView.dequeueReusableCell(withIdentifier: sectionsCellReuseIdentifiers[indexPath.section], for: indexPath)
+        if let cell = cell as? SwipeableEventCell {
+            let event = cellContents[indexPath.section][indexPath.row]
+            let locationName = locationNames[indexPath.section][indexPath.row]
+            cell.event = event
+            cell.delegate = self
+            cell.addressButton.setTitle(locationName ?? "No location", for: .normal)
             return cell
         }
-        else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "notDown", for: indexPath)
-            if let eventCell = cell as? NotDownEventCell {
-                let event = cellContents[indexPath.section][indexPath.row]
-                eventCell.event = event
-                eventCell.delegate = self
-                eventCell.addressButton.setTitle(locationNames[indexPath.section][indexPath.row] ?? "No location", for: .normal)
-                return eventCell
-            }
-            return cell
-        }
+        
+        print("Dequeued UITableViewCell's data was not updated")
+        return cell
     }
 }
 

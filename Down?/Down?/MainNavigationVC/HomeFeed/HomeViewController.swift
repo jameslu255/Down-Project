@@ -21,7 +21,6 @@ var events: [Event] = [] {
         }
     }
 }
-
 var locations: [String?] = []
 
 // class that provides a shared instance of the HomeViewController so that values can be called from different views.
