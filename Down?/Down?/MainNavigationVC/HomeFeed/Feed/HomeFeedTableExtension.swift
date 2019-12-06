@@ -159,7 +159,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
                 
         let event = events[indexPath.row]
         let name = locations[indexPath.row] ?? "No Location"
-        print(name)
+        //print(name)
         eventCell.delegate = self
         eventCell.event = event
         //eventCell.profilePictureImageView.image = UIImage(named: "Default.ProfilePicture")
