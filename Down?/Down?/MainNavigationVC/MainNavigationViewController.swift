@@ -67,11 +67,6 @@ class MainNavigationViewController: UIViewController {
         
         TitleNavItem.title = viewControllersNames[currentVCIndex]
         let curVC = viewControllers[currentVCIndex]
-//      if (currentVCIndex == 2) {
-//        let mapViewCo = curVC as! MapViewController
-//        mapViewCo.events = events
-//        curVC = mapViewCo
-//      }
         addChild(curVC)
         curVC.view.frame = contentView.bounds
         contentView.addSubview(curVC.view)
