@@ -50,7 +50,7 @@ class HomeViewController: UIViewController {
         let alert = UIAlertController(title: "Directions",
                                       message: "Swipe right for down and swipe left for not down.",
                                       preferredStyle: .alert)
-        
+      alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         //Present the alert.
         self.present(alert, animated: true, completion: {
         })
@@ -101,9 +101,13 @@ class HomeViewController: UIViewController {
         registerFilterNib()
         checkLocationServices()
         self.setUpFeed()
-        if firstLaunchFlag {
-            self.showFirstTimeInstructions()
-        }
+    }
+  
+    override func viewDidAppear(_ animated: Bool) {
+      // This is a safer place to display this alert
+      if firstLaunchFlag {
+          self.showFirstTimeInstructions()
+      }
     }
 }
 

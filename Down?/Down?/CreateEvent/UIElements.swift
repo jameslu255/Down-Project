@@ -40,6 +40,7 @@ class CategoryCell: UICollectionViewCell {
     label.textColor = .white
     label.textAlignment = .center
     label.tag = 1337
+    label.font = UIFont(name: "Hiragino Sans", size: 16)
     self.addSubview(label)
   }
   
