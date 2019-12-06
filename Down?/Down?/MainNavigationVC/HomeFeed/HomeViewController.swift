@@ -60,6 +60,7 @@ class HomeViewController: UIViewController {
       // This is a safer place to display this alert
       if firstLaunchFlag {
           self.showFirstTimeInstructions()
+        firstLaunchFlag = false
       }
     }
     
@@ -102,7 +103,6 @@ class HomeViewController: UIViewController {
         //Present the alert.
         self.present(alert, animated: true, completion: {
         })
-
     }
 }
 
