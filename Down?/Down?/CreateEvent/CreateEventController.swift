@@ -136,7 +136,14 @@ class CreateEventController: UITableViewController {
     
     let eventSegment = eventType.titleForSegment(at: eventType.selectedSegmentIndex)
     let isPublic = eventSegment == "Everyone"
-    let event = Event(displayName: displayName, uid: uid, startDate: startDate,endDate: endDate, isPublic: isPublic, description: eventDescription.text, title: eventName, latitude: lat, longitude: long, categories: selectedCategories)
+    var description = ""
+    if eventDescription.text.contains("Add description") {
+        description = ""
+    }
+    else {
+        description = eventDescription.text
+    }
+    let event = Event(displayName: displayName, uid: uid, startDate: startDate,endDate: endDate, isPublic: isPublic, description: description, title: eventName, latitude: lat, longitude: long, categories: selectedCategories)
     
     // Successfully added to firebase if returns an ID
     guard let _ = ApiEvent.addEvent(event: event) else { return }

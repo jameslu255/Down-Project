@@ -10,7 +10,7 @@ import UIKit
 protocol SwipeableEventCellDelegate {
     func swipeLeft(cell: EventCell)
     func swipeRight(cell: EventCell)
-    func tapped(event: Event)
+    func tapped(cell: EventCell)
 }
 
 class SwipeableEventCell: EventCell {
@@ -40,9 +40,7 @@ class SwipeableEventCell: EventCell {
     }
     
     @objc func handleTap(recognizer: UITapGestureRecognizer){
-        if let event = self.event {
-            self.delegate?.tapped(event: event)
-        }
+        self.delegate?.tapped(cell: self)
     }
     
     @objc func handlePan(recognizer: UIPanGestureRecognizer){

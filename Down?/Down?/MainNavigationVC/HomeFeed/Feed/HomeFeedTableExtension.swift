@@ -20,6 +20,7 @@ extension HomeViewController {
         else{
             DataManager.shared.firstVC.noEventsLabel.isHidden = true
         }
+        
         self.Feed.rowHeight = 100
         self.Feed.rowHeight = UITableView.automaticDimension
         self.Feed.estimatedRowHeight = UITableView.automaticDimension
@@ -36,7 +37,7 @@ extension HomeViewController {
         }
     }
 
-    
+    /// Loads event model data and then calls Feed.reloadData()
     func loadModelData() {
         if let user = Auth.auth().currentUser {
             ApiEvent.getUnviewedEvent(uid: user.uid) { apiEvents in
@@ -50,31 +51,19 @@ extension HomeViewController {
                 }
             }
         }
-        
-//         To be used in future releases
-        
-//        if let user = Auth.auth().currentUser {
-//            var events = [Event]()
-//            var placemarks = [CLPlacemark]()
-//            group.enter()
-//            ApiEvent.getUnviewedEvent(uid: user.uid) { apiEvents in
-//                events = apiEvents
-//                events.sort(by: {return $0.dates.startDate < $1.dates.startDate})
-//                self.loadPlacemarks(events: events) { placemarks in
-//
-//                }
-//                self.group.leave()
-//            }
-//        }
     }
     
+    /// Removes the specified EventCell from the Feed with the specified direction
     func removeEventCell(_ cell: EventCell, withDirection direction: UITableView.RowAnimation){
         guard let indexPath = Feed.indexPath(for: cell) else {
             return
         }
+        
+        // Removes event and location name from model data arrays
         events.remove(at: indexPath.row)
         locations.remove(at: indexPath.row)
         
+        // Let's the Feed remove the cell with an animtion
         Feed.beginUpdates()
         Feed.deleteRows(at: [indexPath], with: direction)
         Feed.endUpdates()
@@ -86,6 +75,7 @@ extension HomeViewController: SwipeableEventCellDelegate {
     
     func swipeRight(cell: EventCell) {
         removeEventCell(cell, withDirection: .right)
+        // Adds the cell's event to the user's list of down events
         if let eventID = cell.event?.autoID, let uid = Auth.auth().currentUser?.uid {
             ApiEvent.addUserDown(eventID: eventID, uid: uid) {}
         }
@@ -93,18 +83,24 @@ extension HomeViewController: SwipeableEventCellDelegate {
     
     func swipeLeft(cell: EventCell) {
         removeEventCell(cell, withDirection: .left)
+        // Adds the cell's event to the user's list of notDown events
         if let eventID = cell.event?.autoID, let uid = Auth.auth().currentUser?.uid {
             ApiEvent.addUserNotDown(eventID: eventID, uid: uid) {}
         }
     }
     
-    func tapped(event: Event) {
+    // Brings up the detailed view of the event
+    func tapped(cell: EventCell) {
+        guard let event = cell.event else {
+            return
+        }
+        
         let storyboard = UIStoryboard(name: "HomeFeed", bundle: nil)
         guard let eventDetailsPopup = storyboard.instantiateViewController(withIdentifier: "eventDetailsPopup") as? EventDetailsPopupViewController else {return}
         eventDetailsPopup.event = event
-        self.present(eventDetailsPopup, animated: true) {
-            
-        }        
+        // Bad practice, but will fix in a future release when we are passing around a data structure that holds the locationName as well as the event
+        eventDetailsPopup.locationName = cell.addressButton.titleLabel?.text
+        self.present(eventDetailsPopup, animated: true)
     }
 }
 

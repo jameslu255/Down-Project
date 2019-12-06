@@ -8,7 +8,7 @@
 import Foundation
 import MapKit
 
-// MARK: - UIViewController extension functions
+// MARK: - UIViewController extension: Present function
 
 extension UIViewController {
     
@@ -60,7 +60,7 @@ func openMap(lat: Double, long: Double, name: String) {
     mapItem.openInMaps(launchOptions: options)
 }
 
-// MARK: - UIImage extension utilities
+// MARK: - UIImage extension: Image resizing and compression
 
 // Found on StackOverflow
 // Will be used in future releases with profile pictures and event pictures
@@ -185,5 +185,43 @@ func loadLocations(completion: @escaping ([String?]) -> Void) {
     }
     group.notify(queue: .main) {
         completion(geoLocations)
+    }
+}
+
+// MARK: - UIView extension: Gradients
+
+// Found in "Let's Build That App" YouTube channel.
+extension UIView {
+    func addConstraintWithFormat(format: String, views: UIView...){
+        var viewsDictionary = [String: UIView]()
+        for(index, view) in views.enumerated() {
+            let key = "v\(index)"
+            viewsDictionary[key] = view
+        }
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: format, options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: viewsDictionary))
+    }
+    
+    // Found in "Mark Moeykens" YouTube channel
+    func setGradientBackground(gradient: CAGradientLayer, colorOne: UIColor, colorTwo: UIColor){
+        setGradientBackground(gradient: gradient, colorOne: colorOne, colorTwo: colorTwo, firstColorStart: 0.0, secondColorStart: 1.0)
+    }
+    
+    func setGradientBackground(gradient: CAGradientLayer, colorOne: UIColor, colorTwo: UIColor, firstColorStart: NSNumber, secondColorStart: NSNumber) {
+        let gradientLayer = gradient
+        gradientLayer.frame = self.bounds
+        gradientLayer.colors = [colorOne.cgColor, colorTwo.cgColor]
+        gradientLayer.locations = [firstColorStart, secondColorStart]
+        
+        layer.insertSublayer(gradientLayer, at: 0)
+    }
+    
+    func updateGradient(gradient: CAGradientLayer){
+        gradient.frame = self.bounds
+    }
+}
+
+extension CGFloat {
+    static func random() -> CGFloat {
+        return CGFloat(arc4random()) / CGFloat(UInt32.max)
     }
 }

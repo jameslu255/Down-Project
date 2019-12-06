@@ -44,22 +44,27 @@ class HomeViewController: UIViewController {
     var refreshControl = UIRefreshControl()
     var user: User = Auth.auth().currentUser!
     
-    func showFirstTimeInstructions() {
-        //Create the alert controller.
-        let alert = UIAlertController(title: "Directions",
-                                      message: "Swipe right for down and swipe left for not down.",
-                                      preferredStyle: .alert)
-      alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        //Present the alert.
-        self.present(alert, animated: true, completion: {
-        })
-
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.loadModelData()
+        // adds the refresh target on the table and calls refresh function
+        refreshControl.addTarget(self, action:  #selector(refresh(_:)), for: .valueChanged)
+        // sets the DataManager as a delegate so that shared instance will work
+        DataManager.shared.firstVC = self
+        registerFilterNib()
+        checkLocationServices()
+        self.setUpFeed()
+    }
+  
+    override func viewDidAppear(_ animated: Bool) {
+      // This is a safer place to display this alert
+      if firstLaunchFlag {
+          self.showFirstTimeInstructions()
+      }
     }
     
-    
     // This refresh function is called when the table is being pulled down
-    @objc func refresh(_ sender:Any)
-    {
+    @objc func refresh(_ sender:Any) {
         // Updating your data here...
         ApiEvent.getUnviewedEventFilter(uid: user.uid, categories: categoryFilters) { apiEvents in
             events = apiEvents
@@ -85,28 +90,19 @@ class HomeViewController: UIViewController {
                 self.refreshControl.endRefreshing()
                 self.Feed.reloadData()
             }
-
         }
-        
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.loadModelData()
-        // adds the refresh target on the table and calls refresh function
-        refreshControl.addTarget(self, action:  #selector(refresh(_:)), for: .valueChanged)
-        // sets the DataManager as a delegate so that shared instance will work
-        DataManager.shared.firstVC = self
-        registerFilterNib()
-        checkLocationServices()
-        self.setUpFeed()
-    }
-  
-    override func viewDidAppear(_ animated: Bool) {
-      // This is a safer place to display this alert
-      if firstLaunchFlag {
-          self.showFirstTimeInstructions()
-      }
+    func showFirstTimeInstructions() {
+        //Create the alert controller.
+        let alert = UIAlertController(title: "Directions",
+                                      message: "Swipe right for down and swipe left for not down.",
+                                      preferredStyle: .alert)
+      alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        //Present the alert.
+        self.present(alert, animated: true, completion: {
+        })
+
     }
 }
 
@@ -192,40 +188,4 @@ extension HomeViewController: CLLocationManagerDelegate {
       currentLocation = EventLocation(latitude: latitude, longitude: longitude)
     }
   }
-}
-
-// Found in "Let's Build That App" YouTube channel.
-extension UIView {
-    func addConstraintWithFormat(format: String, views: UIView...){
-        var viewsDictionary = [String: UIView]()
-        for(index, view) in views.enumerated() {
-            let key = "v\(index)"
-            viewsDictionary[key] = view
-        }
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: format, options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: viewsDictionary))
-    }
-    
-    // Found in "Mark Moeykens" YouTube channel
-    func setGradientBackground(gradient: CAGradientLayer, colorOne: UIColor, colorTwo: UIColor){
-        setGradientBackground(gradient: gradient, colorOne: colorOne, colorTwo: colorTwo, firstColorStart: 0.0, secondColorStart: 1.0)
-    }
-    
-    func setGradientBackground(gradient: CAGradientLayer, colorOne: UIColor, colorTwo: UIColor, firstColorStart: NSNumber, secondColorStart: NSNumber) {
-        let gradientLayer = gradient
-        gradientLayer.frame = self.bounds
-        gradientLayer.colors = [colorOne.cgColor, colorTwo.cgColor]
-        gradientLayer.locations = [firstColorStart, secondColorStart]
-        
-        layer.insertSublayer(gradientLayer, at: 0)
-    }
-    
-    func updateGradient(gradient: CAGradientLayer){
-        gradient.frame = self.bounds
-    }
-}
-
-extension CGFloat {
-    static func random() -> CGFloat {
-        return CGFloat(arc4random()) / CGFloat(UInt32.max)
-    }
 }

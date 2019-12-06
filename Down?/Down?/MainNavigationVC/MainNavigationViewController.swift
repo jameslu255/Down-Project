@@ -33,6 +33,7 @@ class MainNavigationViewController: UIViewController {
         TabButtonPressed(buttons[currentVCIndex])
     }
     
+    // Instantiate the view controllers and place them in the view controller array
     func initializeVCs(){
         let storyboard = UIStoryboard(name: "HomeFeed", bundle: nil)
         homeVC = storyboard.instantiateViewController(identifier: "homeVC")
@@ -44,19 +45,23 @@ class MainNavigationViewController: UIViewController {
     }
 
     func signOut(){
+        // Signout from Firebase Authentication service
         do {
             try Auth.auth().signOut()
         } catch let signOutError as NSError {
             print("Error signing out: %@", signOutError)
         }
         
+        // Transition back to login flow
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let newController = storyboard.instantiateViewController(withIdentifier: "firstlogin")
         newController.modalPresentationStyle = .fullScreen
         self.present(newController, animated: false, completion: nil)
     }
     
+    // When a tab button is pressed switch content view to the corresponding view controller and handle tab button icons
     @IBAction func TabButtonPressed(_ sender: UIButton) {
+        // Remove current view controller from content view and deselect button
         let prevIndex = currentVCIndex
         currentVCIndex = sender.tag
         buttons[prevIndex].isSelected = false
@@ -65,6 +70,7 @@ class MainNavigationViewController: UIViewController {
         prevVC.view.removeFromSuperview()
         prevVC.removeFromParent()
         
+        // Add new view controller to content view and select button
         TitleNavItem.title = viewControllersNames[currentVCIndex]
         let curVC = viewControllers[currentVCIndex]
         addChild(curVC)

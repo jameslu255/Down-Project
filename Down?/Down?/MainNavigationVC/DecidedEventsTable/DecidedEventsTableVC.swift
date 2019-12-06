@@ -148,12 +148,16 @@ extension DecidedEventsTableVC: SwipeableEventCellDelegate {
         removeEventCell(cell, withDirection: .right)
     }
     
-    func tapped(event: Event) {
+    func tapped(cell: EventCell) {
+        guard let event = cell.event else {
+            return
+        }
         let storyboard = UIStoryboard(name: "HomeFeed", bundle: nil)
         guard let eventDetailsPopup = storyboard.instantiateViewController(withIdentifier: "eventDetailsPopup") as? EventDetailsPopupViewController else {return}
         eventDetailsPopup.event = event
-        self.present(eventDetailsPopup, animated: true) {
-        }
+        // Bad practice, but will fix in a future release when we are passing around a data structure that holds the locationName as well as the event
+        eventDetailsPopup.locationName = cell.addressButton.titleLabel?.text
+        self.present(eventDetailsPopup, animated: true)
     }
     
     func removeEventCell(_ cell: EventCell, withDirection direction: UITableView.RowAnimation){

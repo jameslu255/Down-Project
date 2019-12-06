@@ -10,15 +10,16 @@ import MapKit
 
 class EventDetailsPopupViewController: UIViewController {
 
-    var event: Event? = nil
+    var event: Event?
+    var locationName: String?
+    
     let geoCoder = CLGeocoder()
     
     @IBOutlet weak var Container: UIView!
-    //@IBOutlet weak var ProfilePicture: UIImageView!
     @IBOutlet weak var EventTitle: UILabel!
     @IBOutlet weak var Name: UILabel!
     @IBOutlet weak var Duration: UITextView!
-    @IBOutlet weak var Location: UITextView!
+    @IBOutlet weak var Location: UIButton!
     @IBOutlet weak var Description: UITextView!
     
     override func viewDidLoad() {
@@ -26,63 +27,38 @@ class EventDetailsPopupViewController: UIViewController {
         Container.layer.cornerRadius = 10
         Container.clipsToBounds = true
         setupViews()
-        loadEventToViews()
+        loadModelDataIntoViews()
     }
     
     func setupViews(){
-        //ProfilePicture.contentMode = .scaleAspectFill
-        //ProfilePicture.clipsToBounds = true
-        //ProfilePicture.layer.cornerRadius = 5
         Duration.layer.cornerRadius = 5
         Location.layer.cornerRadius = 5
         Description.layer.cornerRadius = 5
     }
     
-    func loadEventToViews(){
-        self.Name.text = event?.originalPoster ?? "Error"
-        if let title = event?.title {
-            self.EventTitle.text = title.isEmpty ? "No title" : title
+    func loadModelDataIntoViews() {
+        guard let event = self.event, let locationName = locationName else {
+            print("Set event to nil")
+            return
         }
-        else {
-            self.EventTitle.text = "Error"
-        }
-        self.Duration.text = event?.stringShortFormat ?? "Error"
-        if let lat = event?.location?.latitude, let long = event?.location?.longitude {
-            let location = CLLocation(latitude: lat, longitude: long)
-            var locationString: String?
-            geoCoder.reverseGeocodeLocation(location) { placemarks, error in
-                if error != nil {
-                  self.Location.text = "No location"
-                  return
-                  
-              }
-                if let placemark = placemarks?[0] {
-                    locationString = placemark.name
-                }
-              self.Location.text = locationString ?? "No location"
-            }
-            
-        }
-        else {
-            self.Location.text = "No location"
-        }
-        	
-        self.Description.text = event?.description ?? "Error"
+        
+        Name.text = event.originalPoster
+        EventTitle.text = event.title ?? "No title"
+        Duration.text = event.stringShortFormat
+        self.Description.text = event.description ?? ""
         if self.Description.text.isEmpty {
             self.Description.removeFromSuperview()
+        }
+        Location.setTitle(locationName, for: .normal)
+    }
+    
+    @IBAction func locationPressed(_ sender: Any) {
+        if let location = event?.location {
+            openMap(location: location)
         }
     }
     
     @IBAction func Tapped(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
-}
-
-
-extension EventDetailsPopupViewController {
-    
-    private func setupSubviewsConstraints(){
-        
-    }
-    
 }
