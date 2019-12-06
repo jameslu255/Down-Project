@@ -361,24 +361,25 @@ extension CreateEventController: CLLocationManagerDelegate {
   }
 
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-    // Updates the location label text as user moves
+    // Sets the location label of the user's location at time of event creation
     guard let location = locations.last else { return }
-    geoCoder.reverseGeocodeLocation(location) { placemarks, error in
-      guard let place = placemarks?[0], let name = place.name else { return }
-      if (self.location == nil) {
+    if (self.location == nil) {
+      geoCoder.reverseGeocodeLocation(location) { placemarks, error in
+        guard let place = placemarks?[0], let name = place.name else { return }
         self.location = place
-      }
-      guard let locationText = self.locationField.text else { return }
-      if (locationText == "Location not found") {
-        // If it is the default placeholder text
-        self.locationField.textColor = .label
-        self.locationField.text = name
-        self.autoFillEventName(with: name)
-      }
- 
-      if (error != nil) {
-        print("Error")
-        return
+        guard let locationText = self.locationField.text else { return }
+        if (locationText == "Location not found") {
+          // If it is the default placeholder text
+          self.locationField.textColor = .label
+          self.locationField.text = name
+          self.autoFillEventName(with: name)
+        }
+    
+        if (error != nil) {
+          print("Error")
+        }
+        // Stop updating the location once the text has been set
+        self.locationManager.stopUpdatingLocation()
       }
     }
   }

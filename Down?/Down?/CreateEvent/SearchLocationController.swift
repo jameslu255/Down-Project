@@ -20,6 +20,7 @@ class SearchLocationController: UIViewController, MKMapViewDelegate {
   let geoCoder = CLGeocoder()
   
   var selectedLocation: CLPlacemark?
+  var currentLocation: CLLocation?
   
   var createEventScreen: CreateEventController?
 
@@ -147,17 +148,37 @@ class SearchLocationController: UIViewController, MKMapViewDelegate {
   func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
     // Selects the annotation that was added
     if let annotation = views.first(where: { $0.reuseIdentifier == "anno" })?.annotation {
-      mapView.selectAnnotation(annotation, animated: true)
+      // This delay is necessary because otherwise there is a bug where the annotation view is immediately disappear
+      DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        mapView.selectAnnotation(annotation, animated: true)
+      }
     }
+  }
+  
+  func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
+    // Determines whether to move map to center to user
+    guard let newLocation = userLocation.location else { return }
+    let lastLocation = currentLocation
+    
+    // Will only move if there is a lastLocation and the new updated location is more than 15 meters away
+    if let lastLocation = lastLocation, newLocation.distance(from: lastLocation) >= 15 {
+      currentLocation = newLocation
+      let coordinate = newLocation.coordinate
+      let region = MKCoordinateRegion(center: coordinate, latitudinalMeters: regionInMeters, longitudinalMeters: regionInMeters)
+      mapView.setRegion(region, animated: true)
+    }
+    
   }
 }
 
 extension SearchLocationController: CLLocationManagerDelegate {
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
     // Moves the user's location on the map when they move
-    guard let location = locations.last, let locMan = locationManager.location else { return }
-    if (location == locMan) {
-      print("same")
+    guard let location = locations.last else { return }
+    if (currentLocation == nil) {
+      // Sets the initial currentLocation that map will use
+      currentLocation = location
+      locationManager.stopUpdatingLocation()
     }
 
   }
