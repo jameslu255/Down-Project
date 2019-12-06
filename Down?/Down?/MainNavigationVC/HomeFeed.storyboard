@@ -383,7 +383,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
-                                        <color key="backgroundColor" systemColor="tertiarySystemBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="backgroundColor" systemColor="tertiarySystemFillColor" red="0.46274509800000002" green="0.46274509800000002" blue="0.50196078430000002" alpha="0.12" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="goS-uz-N1a" secondAttribute="trailing" constant="8" id="1Du-zV-QhK"/>
                                             <constraint firstItem="1cA-JV-bGE" firstAttribute="top" secondItem="goS-uz-N1a" secondAttribute="bottom" constant="2" id="JZC-ec-geT"/>
