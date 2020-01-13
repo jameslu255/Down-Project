@@ -1,5 +1,9 @@
 # README
 
+Down is a social app that allows users to create spontaneous events that only last 24-hours in hopes of getting users to use the app only when they want to go out and do something. Users can create events or see other user-created events and swipe right on the event if they are "Down" or swipe left if they are "Not Down". Example of a Down? event: "Playing Basketball right now... Anyone down to join?".
+
+This app is different from other event creation apps because the goal is to make it as streamline and spontaneous as possible while other event creation apps tend to be drawn out and planned multiple days in advance. It is equipped with a Google Firebase database to keep track of all of the events as well as a Map API that pins the events onto a map and allows users to see where events are located.
+
 # Signup/Login - James/Jonathan
 If the user is not logged in, upon opening the app, they are presented with a screen that allows the user to signup or login. These methods are connected to Firebase, which handles all the user authentication. The auto-login will occur via the `SceneDelegate` when the Firebase `Auth` class contains authentication information for the last signed-in user.
 
